@@ -17,7 +17,7 @@ class GameScene: SKScene {
 //        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
 //        //My comments
 //        self.addChild(myLabel)
-        self.backgroundColor = UIColor(red: 34/255.0, green: 181/255.0, blue: 191/255.0, alpha: 1)
+        self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
         
         // Make ground
         let ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/3))
