@@ -17,6 +17,7 @@ class GameScene: SKScene {
     var river2:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
+    var runButton:UIButton!
     var groundWidth:CGFloat = 600
     override func didMoveToView(view: SKView) {
 
@@ -56,19 +57,36 @@ class GameScene: SKScene {
         self.addChild(tebowSprite)
         tebow = Tebow(x: tebowSprite.frame.size.width + 50, y: self.frame.size.height/2.5 - 20, sprite: tebowSprite)
 
-        //Make button
+        //Make running button
         let runButtonSize:CGFloat = 50
-        let runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - runButtonSize - 25, runButtonSize, runButtonSize))
+        runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - runButtonSize - 25, runButtonSize, runButtonSize))
         runButton.layer.cornerRadius = runButtonSize/2
         runButton.backgroundColor = UIColor(hex: 0xFFBE63)
         runButton.addTarget(self, action: "runButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         self.view?.addSubview(runButton)
         
+        
+        //Make throwing button
+        let throwButtonSize:CGFloat = 50
+        let throwButton = UIButton(frame: CGRectMake(600, self.view!.frame.size.height - throwButtonSize - 25, throwButtonSize, throwButtonSize))
+        throwButton.layer.cornerRadius = throwButtonSize/2
+        throwButton.backgroundColor = UIColor(hex: 0xFFBE63)
+        throwButton.addTarget(self, action: "throwButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view?.addSubview(throwButton)
     }
     
+    //when runButton is clicked
     func runButtonClicked() {
         println("Pressed")
         tebow.xVel += 1.5
+    }
+    
+    //when throwButton is clicked
+    //need to release the mascot
+    func throwButtonClicked(Button:UIButton){
+        println("Throw clicked")
+        runButton.removeFromSuperview()
+        Button.removeFromSuperview()
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
