@@ -13,26 +13,35 @@ let friction:CGFloat = 0.25
 class GameScene: SKScene {
 
     var tebow:Tebow!
-    var river:SKSpriteNode!
+    var river1:SKSpriteNode!
+    var river2:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
-
+    var groundWidth:CGFloat = 600
     override func didMoveToView(view: SKView) {
 
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
         self.physicsWorld.gravity = CGVectorMake(0, 0)
         //self.physicsWorld.contactDelega
 
-        //Make a river
-        river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
-        river.anchorPoint = CGPointMake(0,0)
-        river.position = CGPointMake(0, 0)
-        river.xScale = 1
-        river.yScale = 1
-        self.addChild(river)
+        //Make a river1
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
+        river1.anchorPoint = CGPointMake(0,0)
+        river1.position = CGPointMake(0, 0)
+        river1.xScale = 1
+        river1.yScale = 1
+        self.addChild(river1)
+        
+        //Make a river2
+        river2 = SKSpriteNode(color:UIColor.grayColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
+        river2.anchorPoint = CGPointMake(0,0)
+        river2.position = CGPointMake(frame.size.width, 0)
+        river2.xScale = 1
+        river2.yScale = 1
+        self.addChild(river2)
 
         // Make ground
-        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/2.5))
+        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height/2.5))
         ground.anchorPoint = CGPointMake(0,0);
         ground.position = CGPointMake(0, 0)
         ground.xScale = 1
@@ -84,12 +93,32 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-
-        if(ground.position.x < -600) {
+        
+        //moves the ground 1 position at a time to left
+        if(ground.position.x < -groundWidth) {
             self.removeChildrenInArray([ground])
         }
-        ground.position.x = ground.position.x - 1
-        river.position.x = river.position.x - 1
+        ground.position.x = ground.position.x - 10
+        
+        //moves Tim Tebow 1 position at a time to left
+        //COME BACK TO THIS
+        if(tebow.sprite.position.x < -tebow.sprite.frame.size.width){
+            self.removeChildrenInArray([tebow.sprite])
+        }
+        tebow.sprite.position.x = tebow.sprite.position.x - 10
+        
+       
+        //moves river1 1 position at a time to left
+        river1.position.x = river1.position.x - 10
+        if(river1.position.x <= 1-self.frame.size.width){
+            river1.position.x = self.frame.size.width+1
+        }
+        
+        //moves river2 1 position at a time to left
+        river2.position.x = river2.position.x - 10
+        if(river2.position.x <= 1-self.frame.size.width){
+            river2.position.x = self.frame.size.width+1
+        }
 
         if tebow.xVel > 0 {
             tebow.xVel -= friction
