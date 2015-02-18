@@ -17,7 +17,7 @@ class GameScene: SKScene {
 //        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
 //        //My comments
 //        self.addChild(myLabel)
-        
+        self.backgroundColor = UIColor(red: 34/255.0, green: 181/255.0, blue: 191/255.0, alpha: 1)
         let sprite = SKSpriteNode(imageNamed:"Tebow")
         sprite.xScale = -1
         sprite.yScale = 1
