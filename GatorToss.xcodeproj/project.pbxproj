@@ -15,6 +15,7 @@
 		F7CDC8A91A9525C2008FCB2F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7CDC8A81A9525C2008FCB2F /* Images.xcassets */; };
 		F7CDC8AC1A9525C2008FCB2F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = F7CDC8AA1A9525C2008FCB2F /* LaunchScreen.xib */; };
 		F7CDC8B81A9525C2008FCB2F /* GatorTossTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CDC8B71A9525C2008FCB2F /* GatorTossTests.swift */; };
+		F7CDC8C61A953DBB008FCB2F /* Tebow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CDC8C51A953DBB008FCB2F /* Tebow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,7 @@
 		F7CDC8B11A9525C2008FCB2F /* GatorTossTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GatorTossTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7CDC8B61A9525C2008FCB2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F7CDC8B71A9525C2008FCB2F /* GatorTossTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatorTossTests.swift; sourceTree = "<group>"; };
+		F7CDC8C51A953DBB008FCB2F /* Tebow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tebow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 		F7CDC89A1A9525C1008FCB2F /* GatorToss */ = {
 			isa = PBXGroup;
 			children = (
+				F7CDC8C41A953DA6008FCB2F /* Models */,
 				F7CDC8C11A953BD1008FCB2F /* Resources */,
 				F7CDC89D1A9525C2008FCB2F /* AppDelegate.swift */,
 				F7CDC89F1A9525C2008FCB2F /* GameScene.sks */,
@@ -124,6 +127,14 @@
 			children = (
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		F7CDC8C41A953DA6008FCB2F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F7CDC8C51A953DBB008FCB2F /* Tebow.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,6 +241,7 @@
 				F7CDC8A21A9525C2008FCB2F /* GameScene.swift in Sources */,
 				F7CDC8A41A9525C2008FCB2F /* GameViewController.swift in Sources */,
 				F7CDC89E1A9525C2008FCB2F /* AppDelegate.swift in Sources */,
+				F7CDC8C61A953DBB008FCB2F /* Tebow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

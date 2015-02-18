@@ -8,12 +8,15 @@
 
 import SpriteKit
 
+let friction:CGFloat = 0.25
+
 class GameScene: SKScene {
-    
+
+    var tebow:Tebow!
     var river:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
-    
+
     override func didMoveToView(view: SKView) {
 
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
@@ -42,6 +45,7 @@ class GameScene: SKScene {
         tebowSprite.yScale = 0.3
         tebowSprite.position = CGPointMake(tebowSprite.frame.size.width + 50, self.frame.size.height/2.5 - 20)
         self.addChild(tebowSprite)
+        tebow = Tebow(x: tebowSprite.frame.size.width + 50, y: self.frame.size.height/2.5 - 20, sprite: tebowSprite)
 
         //Make button
         let runButtonSize:CGFloat = 50
@@ -55,6 +59,7 @@ class GameScene: SKScene {
     
     func runButtonClicked() {
         println("Pressed")
+        tebow.xVel += 1.5
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -79,11 +84,20 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+
         if(ground.position.x < -600) {
             self.removeChildrenInArray([ground])
         }
         ground.position.x = ground.position.x - 1
         river.position.x = river.position.x - 1
+
+        if tebow.xVel > 0 {
+            tebow.xVel -= friction
+        } else {
+            tebow.xVel = 0
+        }
+        tebow.x += tebow.xVel
+        tebow.sprite.position.x = tebow.x
         
     }
 }
