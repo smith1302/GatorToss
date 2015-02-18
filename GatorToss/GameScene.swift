@@ -9,6 +9,11 @@
 import SpriteKit
 
 class GameScene: SKScene {
+    
+    var river:SKSpriteNode!
+    var ground:SKSpriteNode!
+    var sprite:SKSpriteNode!
+    
     override func didMoveToView(view: SKView) {
 
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
@@ -16,7 +21,7 @@ class GameScene: SKScene {
         //self.physicsWorld.contactDelega
 
         //Make a river
-        let river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/3-25))
+        river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
         river.anchorPoint = CGPointMake(0,0)
         river.position = CGPointMake(0, 0)
         river.xScale = 1
@@ -24,19 +29,19 @@ class GameScene: SKScene {
         self.addChild(river)
 
         // Make ground
-        let ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/2.5))
+        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/2.5))
         ground.anchorPoint = CGPointMake(0,0);
         ground.position = CGPointMake(0, 0)
         ground.xScale = 1
         ground.yScale = 1
         self.addChild(ground)
         
-        let sprite = SKSpriteNode(imageNamed:"Tebow")
-        sprite.anchorPoint = CGPointMake(0,0);
-        sprite.xScale = -0.3
-        sprite.yScale = 0.3
-        sprite.position = CGPointMake(sprite.frame.size.width + 50, self.frame.size.height/2.5 - 20)
-        self.addChild(sprite)
+        let tebowSprite = SKSpriteNode(imageNamed:"Tebow")
+        tebowSprite.anchorPoint = CGPointMake(0,0);
+        tebowSprite.xScale = -0.3
+        tebowSprite.yScale = 0.3
+        tebowSprite.position = CGPointMake(tebowSprite.frame.size.width + 50, self.frame.size.height/2.5 - 20)
+        self.addChild(tebowSprite)
 
         //Make button
         let runButtonSize:CGFloat = 50
