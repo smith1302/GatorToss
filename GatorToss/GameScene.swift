@@ -15,7 +15,7 @@ class GameScene: SKScene {
         myLabel.text = "Hello, World!";
         myLabel.fontSize = 65;
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-        
+        //My comments
         self.addChild(myLabel)
     }
     
