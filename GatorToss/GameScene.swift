@@ -25,7 +25,7 @@ class GameScene: SKScene {
         //self.physicsWorld.contactDelega
 
         //Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width+7, self.frame.size.height/2.5-25))
         river1.anchorPoint = CGPointMake(0,0)
         river1.position = CGPointMake(0, 0)
         river1.xScale = 1
@@ -33,9 +33,9 @@ class GameScene: SKScene {
         self.addChild(river1)
         
         //Make a river2
-        river2 = SKSpriteNode(color:UIColor.grayColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
+        river2 = SKSpriteNode(color:UIColor.grayColor(), size: CGSizeMake(self.frame.size.width+7, self.frame.size.height/2.5-25))
         river2.anchorPoint = CGPointMake(0,0)
-        river2.position = CGPointMake(frame.size.width, 0)
+        river2.position = CGPointMake(frame.size.width-1, 0)
         river2.xScale = 1
         river2.yScale = 1
         self.addChild(river2)
