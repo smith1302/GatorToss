@@ -12,7 +12,17 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
 
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
-        
+        self.physicsWorld.gravity = CGVectorMake(0, 0)
+        //self.physicsWorld.contactDelega
+
+        //Make a river
+        let river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/3-25))
+        river.anchorPoint = CGPointMake(0,0)
+        river.position = CGPointMake(0, 0)
+        river.xScale = 1
+        river.yScale = 1
+        self.addChild(river)
+
         // Make ground
         let ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/2.5))
         ground.anchorPoint = CGPointMake(0,0);
@@ -64,6 +74,8 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        
+        
     }
 }
 
