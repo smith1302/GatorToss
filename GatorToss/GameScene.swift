@@ -18,10 +18,19 @@ class GameScene: SKScene {
 //        //My comments
 //        self.addChild(myLabel)
         
+        // Make ground
+        let ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/3))
+        ground.anchorPoint = CGPointMake(0,0);
+        ground.position = CGPointMake(0, 0)
+        ground.xScale = 1
+        ground.yScale = 1
+        self.addChild(ground)
+        
         let sprite = SKSpriteNode(imageNamed:"Tebow")
-        sprite.xScale = -1
-        sprite.yScale = 1
-        sprite.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
+        sprite.anchorPoint = CGPointMake(0,0);
+        sprite.xScale = -0.3
+        sprite.yScale = 0.3
+        sprite.position = CGPointMake(sprite.frame.size.width + 50, self.frame.size.height/3 - 20)
         self.addChild(sprite)
     }
     
@@ -30,18 +39,18 @@ class GameScene: SKScene {
         
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
+            println(location)
+//            let sprite = SKSpriteNode(imageNamed:"Spaceship")
+//            
+//            sprite.xScale = 0.5
+//            sprite.yScale = 0.5
+//            sprite.position = location
+//            
+//            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
+//            
+//            sprite.runAction(SKAction.repeatActionForever(action))
+//            
+//            self.addChild(sprite)
         }
     }
    
