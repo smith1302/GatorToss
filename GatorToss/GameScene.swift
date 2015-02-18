@@ -72,14 +72,18 @@ class GameScene: SKScene {
 //            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
 //            
 //            sprite.runAction(SKAction.repeatActionForever(action))
-//            
+//
 //            self.addChild(sprite)
         }
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        
+        if(ground.position.x < -600) {
+            self.removeChildrenInArray([ground])
+        }
+        ground.position.x = ground.position.x - 1
+        river.position.x = river.position.x - 1
         
     }
 }
