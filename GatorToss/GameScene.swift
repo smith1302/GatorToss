@@ -10,13 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-//        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-//        myLabel.text = "Hello, World!";
-//        myLabel.fontSize = 65;
-//        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-//        //My comments
-//        self.addChild(myLabel)
+
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
         
         // Make ground
@@ -33,6 +27,14 @@ class GameScene: SKScene {
         sprite.yScale = 0.3
         sprite.position = CGPointMake(sprite.frame.size.width + 50, self.frame.size.height/3 - 20)
         self.addChild(sprite)
+
+        //Make button
+        let runButtonSize:CGFloat = 75
+        let runButton = UIButton(frame: CGRectMake(50, 50, runButtonSize, runButtonSize))
+        runButton.layer.cornerRadius = runButtonSize/2
+        runButton.backgroundColor = UIColor(hex: 0xFFBE63)
+        self.view?.addSubview(runButton)
+        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
