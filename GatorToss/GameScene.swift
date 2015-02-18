@@ -14,7 +14,7 @@ class GameScene: SKScene {
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
         
         // Make ground
-        let ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/3))
+        let ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/2.5))
         ground.anchorPoint = CGPointMake(0,0);
         ground.position = CGPointMake(0, 0)
         ground.xScale = 1
@@ -25,16 +25,21 @@ class GameScene: SKScene {
         sprite.anchorPoint = CGPointMake(0,0);
         sprite.xScale = -0.3
         sprite.yScale = 0.3
-        sprite.position = CGPointMake(sprite.frame.size.width + 50, self.frame.size.height/3 - 20)
+        sprite.position = CGPointMake(sprite.frame.size.width + 50, self.frame.size.height/2.5 - 20)
         self.addChild(sprite)
 
         //Make button
-        let runButtonSize:CGFloat = 75
-        let runButton = UIButton(frame: CGRectMake(50, 50, runButtonSize, runButtonSize))
+        let runButtonSize:CGFloat = 50
+        let runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - runButtonSize - 25, runButtonSize, runButtonSize))
         runButton.layer.cornerRadius = runButtonSize/2
         runButton.backgroundColor = UIColor(hex: 0xFFBE63)
+        runButton.addTarget(self, action: "runButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         self.view?.addSubview(runButton)
         
+    }
+    
+    func runButtonClicked() {
+        println("Pressed")
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {

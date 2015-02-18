@@ -81,6 +81,7 @@
 		F7CDC89A1A9525C1008FCB2F /* GatorToss */ = {
 			isa = PBXGroup;
 			children = (
+				F7CDC8C11A953BD1008FCB2F /* Resources */,
 				F7CDC89D1A9525C2008FCB2F /* AppDelegate.swift */,
 				F7CDC89F1A9525C2008FCB2F /* GameScene.sks */,
 				F7CDC8A11A9525C2008FCB2F /* GameScene.swift */,
@@ -116,6 +117,13 @@
 				F7CDC8B61A9525C2008FCB2F /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F7CDC8C11A953BD1008FCB2F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -413,6 +421,7 @@
 				F7CDC8BD1A9525C2008FCB2F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F7CDC8BE1A9525C2008FCB2F /* Build configuration list for PBXNativeTarget "GatorTossTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +430,7 @@
 				F7CDC8C01A9525C2008FCB2F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
