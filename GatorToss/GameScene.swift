@@ -13,6 +13,9 @@ let friction:CGFloat = 0.25
 class GameScene: SKScene {
 
     var tebow:Tebow!
+    var river:SKSpriteNode!
+    var ground:SKSpriteNode!
+    var sprite:SKSpriteNode!
 
     override func didMoveToView(view: SKView) {
 
@@ -21,7 +24,7 @@ class GameScene: SKScene {
         //self.physicsWorld.contactDelega
 
         //Make a river
-        let river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
+        river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
         river.anchorPoint = CGPointMake(0,0)
         river.position = CGPointMake(0, 0)
         river.xScale = 1
@@ -29,7 +32,7 @@ class GameScene: SKScene {
         self.addChild(river)
 
         // Make ground
-        let ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/2.5))
+        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(600, self.frame.size.height/2.5))
         ground.anchorPoint = CGPointMake(0,0);
         ground.position = CGPointMake(0, 0)
         ground.xScale = 1
