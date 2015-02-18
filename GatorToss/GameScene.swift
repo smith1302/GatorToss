@@ -8,7 +8,12 @@
 
 import SpriteKit
 
+let friction:CGFloat = 0.25
+
 class GameScene: SKScene {
+
+    var tebow:Tebow!
+
     override func didMoveToView(view: SKView) {
 
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
@@ -16,7 +21,7 @@ class GameScene: SKScene {
         //self.physicsWorld.contactDelega
 
         //Make a river
-        let river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/3-25))
+        let river = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
         river.anchorPoint = CGPointMake(0,0)
         river.position = CGPointMake(0, 0)
         river.xScale = 1
@@ -31,12 +36,13 @@ class GameScene: SKScene {
         ground.yScale = 1
         self.addChild(ground)
         
-        let sprite = SKSpriteNode(imageNamed:"Tebow")
-        sprite.anchorPoint = CGPointMake(0,0);
-        sprite.xScale = -0.3
-        sprite.yScale = 0.3
-        sprite.position = CGPointMake(sprite.frame.size.width + 50, self.frame.size.height/2.5 - 20)
-        self.addChild(sprite)
+        let tebowSprite = SKSpriteNode(imageNamed:"Tebow")
+        tebowSprite.anchorPoint = CGPointMake(0,0);
+        tebowSprite.xScale = -0.3
+        tebowSprite.yScale = 0.3
+        tebowSprite.position = CGPointMake(tebowSprite.frame.size.width + 50, self.frame.size.height/2.5 - 20)
+        self.addChild(tebowSprite)
+        tebow = Tebow(x: tebowSprite.frame.size.width + 50, y: self.frame.size.height/2.5 - 20, sprite: tebowSprite)
 
         //Make button
         let runButtonSize:CGFloat = 50
@@ -50,6 +56,7 @@ class GameScene: SKScene {
     
     func runButtonClicked() {
         println("Pressed")
+        tebow.xVel += 1.5
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -74,7 +81,13 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        
+        if tebow.xVel > 0 {
+            tebow.xVel -= friction
+        } else {
+            tebow.xVel = 0
+        }
+        tebow.x += tebow.xVel
+        tebow.sprite.position.x = tebow.x
         
     }
 }
