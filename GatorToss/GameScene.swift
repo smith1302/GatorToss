@@ -34,7 +34,7 @@ class GameScene: SKScene {
         self.addChild(river1)
         
         //Make a river2
-        river2 = SKSpriteNode(color:UIColor.grayColor(), size: CGSizeMake(self.frame.size.width+7, self.frame.size.height/2.5-25))
+        river2 = SKSpriteNode(color:UIColor(hex: 0x2EB6DB), size: CGSizeMake(self.frame.size.width+7, self.frame.size.height/2.5-25))
         river2.anchorPoint = CGPointMake(0,0)
         river2.position = CGPointMake(frame.size.width-1, 0)
         river2.xScale = 1
@@ -64,7 +64,6 @@ class GameScene: SKScene {
         runButton.backgroundColor = UIColor(hex: 0xFFBE63)
         runButton.addTarget(self, action: "runButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         self.view?.addSubview(runButton)
-        
         
         //Make throwing button
         let throwButtonSize:CGFloat = 50
