@@ -11,12 +11,18 @@ import SpriteKit
 class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!";
-        myLabel.fontSize = 65;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-        //My comments
-        self.addChild(myLabel)
+//        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
+//        myLabel.text = "Hello, World!";
+//        myLabel.fontSize = 65;
+//        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
+//        //My comments
+//        self.addChild(myLabel)
+        
+        let sprite = SKSpriteNode(imageNamed:"Tebow")
+        sprite.xScale = -1
+        sprite.yScale = 1
+        sprite.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
+        self.addChild(sprite)
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
