@@ -17,24 +17,28 @@ class GameScene: SKScene {
     var river2:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
-    var groundWidth:CGFloat = 600
+    var groundWidth:CGFloat = 500
+    var offsetX:CGFloat! = 0
+    var offsetY:CGFloat = 0
+    
     override func didMoveToView(view: SKView) {
-
+        
+        self.size = view.bounds.size
+        
         self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
-        self.physicsWorld.gravity = CGVectorMake(0, 0)
-        //self.physicsWorld.contactDelega
-
+        self.physicsWorld.gravity = CGVectorMake(0, -3)
+        
         //Make a river1
         river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
-        river1.anchorPoint = CGPointMake(0,0)
+        river1.anchorPoint = CGPointMake(0, 0)
         river1.position = CGPointMake(0, 0)
         river1.xScale = 1
         river1.yScale = 1
         self.addChild(river1)
         
-        //Make a river2
+        // Make a river2
         river2 = SKSpriteNode(color:UIColor.grayColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
-        river2.anchorPoint = CGPointMake(0,0)
+        river2.anchorPoint = CGPointMake(0, 0)
         river2.position = CGPointMake(frame.size.width, 0)
         river2.xScale = 1
         river2.yScale = 1
@@ -42,20 +46,41 @@ class GameScene: SKScene {
 
         // Make ground
         ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height/2.5))
-        ground.anchorPoint = CGPointMake(0,0);
-        ground.position = CGPointMake(0, 0)
+        //ground.anchorPoint = CGPointMake(0, 0)
+        ground.position = CGPointMake(ground.size.width/2, ground.size.height/2)
         ground.xScale = 1
         ground.yScale = 1
+        ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
+        ground.physicsBody!.dynamic = false
         self.addChild(ground)
         
-        let tebowSprite = SKSpriteNode(imageNamed:"Tebow")
-        tebowSprite.anchorPoint = CGPointMake(0,0);
-        tebowSprite.xScale = -0.3
-        tebowSprite.yScale = 0.3
-        tebowSprite.position = CGPointMake(tebowSprite.frame.size.width + 50, self.frame.size.height/2.5 - 20)
+        //let tebowSprite = SKSpriteNode(imageNamed:"Tebow")
+        //tebowSprite.anchorPoint = CGPointMake(0, 0)
+        //tebowSprite.xScale = -0.2
+        //tebowSprite.yScale = 0.2
+        let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(35, 70))
+        tebowSprite.position = CGPointMake(50 + tebowSprite.size.width/2, ground.frame.origin.y + ground.size.height + tebowSprite.size.height/2 + 10)
+        tebowSprite.physicsBody = SKPhysicsBody(circleOfRadius: tebowSprite.frame.size.height/2)
+        tebowSprite.physicsBody!.dynamic = true
+        tebowSprite.physicsBody?.allowsRotation = false
+        tebowSprite.physicsBody?.friction = 0.5
         self.addChild(tebowSprite)
         tebow = Tebow(x: tebowSprite.frame.size.width + 50, y: self.frame.size.height/2.5 - 20, sprite: tebowSprite)
+        
+        // Make Rotator
 
+        let rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 5))
+        rotator.anchorPoint = CGPointMake(0, 0.5)
+        tebowSprite.addChild(rotator)
+        // Rotate animation
+        rotator.position = CGPointMake(tebowSprite.size.width/2, 0)
+        let duration:Double = 0.6
+        let degToRad:CGFloat = 0.0175
+        let rotateUp = SKAction.rotateToAngle(80*degToRad, duration: duration)
+        let rotateDown = SKAction.rotateToAngle(5*degToRad, duration: duration)
+        let sequence = SKAction.repeatActionForever(SKAction.sequence([rotateUp, rotateDown]))
+        rotator.runAction(sequence)
+        
         //Make button
         let runButtonSize:CGFloat = 50
         let runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - runButtonSize - 25, runButtonSize, runButtonSize))
@@ -68,7 +93,7 @@ class GameScene: SKScene {
     
     func runButtonClicked() {
         println("Pressed")
-        tebow.xVel += 1.5
+        tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(6, 0))
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -76,18 +101,6 @@ class GameScene: SKScene {
         
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
-            println(location)
-//            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-//            
-//            sprite.xScale = 0.5
-//            sprite.yScale = 0.5
-//            sprite.position = location
-//            
-//            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-//            
-//            sprite.runAction(SKAction.repeatActionForever(action))
-//
-//            self.addChild(sprite)
         }
     }
    
@@ -95,30 +108,30 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
         
         //moves the ground 1 position at a time to left
-        if(ground.position.x < -groundWidth) {
-            self.removeChildrenInArray([ground])
-        }
-        ground.position.x = ground.position.x - 10
-        
-        //moves Tim Tebow 1 position at a time to left
-        //COME BACK TO THIS
-        if(tebow.sprite.position.x < -tebow.sprite.frame.size.width){
-            self.removeChildrenInArray([tebow.sprite])
-        }
-        tebow.sprite.position.x = tebow.sprite.position.x - 10
-        
-       
-        //moves river1 1 position at a time to left
-        river1.position.x = river1.position.x - 10
-        if(river1.position.x <= 1-self.frame.size.width){
-            river1.position.x = self.frame.size.width+1
-        }
-        
-        //moves river2 1 position at a time to left
-        river2.position.x = river2.position.x - 10
-        if(river2.position.x <= 1-self.frame.size.width){
-            river2.position.x = self.frame.size.width+1
-        }
+//        if(ground.position.x < -groundWidth) {
+//            self.removeChildrenInArray([ground])
+//        }
+//        ground.position.x = ground.position.x - 10
+//        
+//        //moves Tim Tebow 1 position at a time to left
+//        //COME BACK TO THIS
+//        if(tebow.sprite.position.x < -tebow.sprite.frame.size.width){
+//            self.removeChildrenInArray([tebow.sprite])
+//        }
+//        tebow.sprite.position.x = tebow.sprite.position.x - 10
+//        
+//       
+//        //moves river1 1 position at a time to left
+//        river1.position.x = river1.position.x - 10
+//        if(river1.position.x <= 1-self.frame.size.width){
+//            river1.position.x = self.frame.size.width+1
+//        }
+//        
+//        //moves river2 1 position at a time to left
+//        river2.position.x = river2.position.x - 10
+//        if(river2.position.x <= 1-self.frame.size.width){
+//            river2.position.x = self.frame.size.width+1
+//        }
 
         if tebow.xVel > 0 {
             tebow.xVel -= friction
@@ -126,7 +139,7 @@ class GameScene: SKScene {
             tebow.xVel = 0
         }
         tebow.x += tebow.xVel
-        tebow.sprite.position.x = tebow.x
+        //tebow.sprite.position.x = tebow.x
         
     }
 }
