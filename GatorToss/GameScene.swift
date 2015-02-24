@@ -17,10 +17,11 @@ class GameScene: SKScene {
     var river2:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
-    var groundWidth:CGFloat = 500
+    var groundWidth:CGFloat = 600
     var offsetX:CGFloat! = 0
     var offsetY:CGFloat = 0
-    
+    var runButton:UIButton!
+
     override func didMoveToView(view: SKView) {
         
         self.size = view.bounds.size
@@ -29,17 +30,18 @@ class GameScene: SKScene {
         self.physicsWorld.gravity = CGVectorMake(0, -3)
         
         //Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
-        river1.anchorPoint = CGPointMake(0, 0)
+
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width+7, self.frame.size.height/2.5-25))
+        river1.anchorPoint = CGPointMake(0,0)
         river1.position = CGPointMake(0, 0)
         river1.xScale = 1
         river1.yScale = 1
         self.addChild(river1)
         
-        // Make a river2
-        river2 = SKSpriteNode(color:UIColor.grayColor(), size: CGSizeMake(self.frame.size.width, self.frame.size.height/2.5-25))
-        river2.anchorPoint = CGPointMake(0, 0)
-        river2.position = CGPointMake(frame.size.width, 0)
+        //Make a river2
+        river2 = SKSpriteNode(color:UIColor(hex: 0x2EB6DB), size: CGSizeMake(self.frame.size.width+7, self.frame.size.height/2.5-25))
+        river2.anchorPoint = CGPointMake(0,0)
+        river2.position = CGPointMake(frame.size.width-1, 0)
         river2.xScale = 1
         river2.yScale = 1
         self.addChild(river2)
@@ -68,7 +70,6 @@ class GameScene: SKScene {
         tebow = Tebow(x: tebowSprite.frame.size.width + 50, y: self.frame.size.height/2.5 - 20, sprite: tebowSprite)
         
         // Make Rotator
-
         let rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 5))
         rotator.anchorPoint = CGPointMake(0, 0.5)
         tebowSprite.addChild(rotator)
@@ -81,19 +82,35 @@ class GameScene: SKScene {
         let sequence = SKAction.repeatActionForever(SKAction.sequence([rotateUp, rotateDown]))
         rotator.runAction(sequence)
         
-        //Make button
+        //Make running button
         let runButtonSize:CGFloat = 50
-        let runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - runButtonSize - 25, runButtonSize, runButtonSize))
+        runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - runButtonSize - 25, runButtonSize, runButtonSize))
         runButton.layer.cornerRadius = runButtonSize/2
         runButton.backgroundColor = UIColor(hex: 0xFFBE63)
         runButton.addTarget(self, action: "runButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         self.view?.addSubview(runButton)
         
+        //Make throwing button
+        let throwButtonSize:CGFloat = 50
+        let throwButton = UIButton(frame: CGRectMake(600, self.view!.frame.size.height - throwButtonSize - 25, throwButtonSize, throwButtonSize))
+        throwButton.layer.cornerRadius = throwButtonSize/2
+        throwButton.backgroundColor = UIColor(hex: 0xFFBE63)
+        throwButton.addTarget(self, action: "throwButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view?.addSubview(throwButton)
     }
     
+    //when runButton is clicked
     func runButtonClicked() {
         println("Pressed")
         tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(6, 0))
+    }
+    
+    //when throwButton is clicked
+    //need to release the mascot
+    func throwButtonClicked(Button:UIButton){
+        println("Throw clicked")
+        runButton.removeFromSuperview()
+        Button.removeFromSuperview()
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
