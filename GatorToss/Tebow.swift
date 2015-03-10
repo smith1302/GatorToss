@@ -15,10 +15,14 @@ class Tebow {
     var sprite:SKSpriteNode
     var didThrow:Bool
     var power:CGFloat
+    var canThrow:Bool
+    var didMove:Bool
     
     init(sprite:SKSpriteNode) {
         self.sprite = sprite
         self.didThrow = false
+        self.canThrow = true
+        self.didMove = false
         self.power = 10
     }
     

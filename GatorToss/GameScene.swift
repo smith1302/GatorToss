@@ -24,6 +24,7 @@ class GameScene: SKScene {
     var offsetX:CGFloat! = 0
     var offsetY:CGFloat = 0
     var runButton:UIButton!
+    var throwButton:UIButton!
     var worldGoalPos:CGPoint!
 
     override func didMoveToView(view: SKView) {
@@ -48,8 +49,6 @@ class GameScene: SKScene {
 
         // Make ground
         ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
-        //ground.anchorPoint = CGPointMake(0, 0)
-        ground.position = CGPointMake(ground.size.width/2, -1*ground.size.height/10)
         ground.xScale = 1
         ground.yScale = 1
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
@@ -57,12 +56,6 @@ class GameScene: SKScene {
         world.addChild(ground)
 
         let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(35, 70))
-        // Cant use anchor point on physics body. This means the default anchor point is in the middle of tebow instead of the corners
-        tebowSprite.position = CGPointMake(50 + tebowSprite.size.width/2, ground.frame.origin.y + ground.size.height + tebowSprite.size.height/2 + 10)
-        tebowSprite.physicsBody = SKPhysicsBody(circleOfRadius: tebowSprite.frame.size.height/2)
-        tebowSprite.physicsBody!.dynamic = true
-        tebowSprite.physicsBody?.allowsRotation = false
-        tebowSprite.physicsBody?.friction = 0.5
         world.addChild(tebowSprite)
         tebow = Tebow(sprite: tebowSprite)
         
@@ -81,7 +74,6 @@ class GameScene: SKScene {
         
         // Make Mascot
         mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
-        mascot.position = CGPointMake(mascotSize/2,mascotSize/2)
         mascot.xScale = 1
         mascot.yScale = 1
         world.addChild(mascot)
@@ -96,25 +88,31 @@ class GameScene: SKScene {
         
         //Make throwing button
         let throwButtonSize:CGFloat = 50
-        let throwButton = UIButton(frame: CGRectMake(self.view!.frame.size.width-throwButtonSize-25, self.view!.frame.size.height - throwButtonSize - 25, throwButtonSize, throwButtonSize))
+        throwButton = UIButton(frame: CGRectMake(self.view!.frame.size.width-throwButtonSize-25, self.view!.frame.size.height - throwButtonSize - 25, throwButtonSize, throwButtonSize))
         throwButton.layer.cornerRadius = throwButtonSize/2
         throwButton.backgroundColor = UIColor(hex: 0xFFBE63)
         throwButton.addTarget(self, action: "throwButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view?.addSubview(throwButton)
+        
+        reset()
     }
     
     //when runButton is clicked
     func runButtonClicked() {
         tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(6, 0))
         rotator.removeActionForKey("rotateSequence")
+        tebow.didMove = true
     }
     
     //when throwButton is clicked
     //need to release the mascot
     func throwButtonClicked(Button:UIButton){
+        if !tebow.canThrow {
+            return
+        }
         rotator.removeActionForKey("rotateSequence")
-        runButton.removeFromSuperview()
-        Button.removeFromSuperview()
+        runButton.hidden = true
+        Button.hidden = true
         tebow.didThrow = true
         // Throw mascot
         mascot.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(mascotSize, mascotSize))
@@ -167,6 +165,35 @@ class GameScene: SKScene {
         var diffY = worldGoalPos.y - world.position.y
         world.position.x += diffX/6
         world.position.y += diffY/6
+        
+        // If our player fell off the stage, disable throw and reset
+    
+        if let yVel = tebow.sprite.physicsBody?.velocity.dy {
+            if abs(yVel) > 0.5 && tebow.didMove {
+                tebow.canThrow = false
+                reset()
+            }
+        }
+    }
+    
+    func reset() {
+        world.position = CGPointMake(0, 0)
+        worldGoalPos = world.position
+        river1.position = CGPointMake(river1.size.width/2, -1*river1.size.height/4)
+        ground.position = CGPointMake(ground.size.width/2, -1*ground.size.height/10)
+        tebow.sprite.position = CGPointMake(50 + tebow.sprite.size.width/2, (ground.size.height/2 - ground.size.height/10) + tebow.sprite.size.height/2 + 10)
+        // Cant use anchor point on physics body. This means the default anchor point is in the middle of tebow instead of the corners
+        tebow.sprite.physicsBody = SKPhysicsBody(circleOfRadius: tebow.sprite.frame.size.height/2)
+        tebow.sprite.physicsBody!.dynamic = true
+        tebow.sprite.physicsBody?.allowsRotation = false
+        tebow.sprite.physicsBody?.friction = 0.5
+        tebow.canThrow = true
+        tebow.didThrow = false
+        tebow.didMove = false
+        
+        mascot.position = CGPointMake(mascotSize/2,mascotSize/2)
+        runButton.hidden = false
+        throwButton.hidden = false
     }
     
     func sceneRelativePosition(node:SKSpriteNode) -> CGPoint {
