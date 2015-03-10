@@ -135,8 +135,12 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        for touch: AnyObject in touches {
-            let location = touch.locationInNode(self)
+        if tebow.didThrow {
+            let river1Y = river1.position.y + river1.frame.height/2
+            let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height*3/4
+            let distanceToBounce = mascotY - river1Y
+            
+            
         }
     }
    
@@ -178,10 +182,6 @@ class GameScene: SKScene {
                 reset()
             }
         }
-        
-        let river1Y = river1.position.y + river1.frame.height/2
-        let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
-        println(mascotY - river1Y)
     }
     
     func reset() {
