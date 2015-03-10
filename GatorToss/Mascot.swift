@@ -20,7 +20,7 @@ class Mascot {
         self.mascotIdentityTracker = 0
         self.mascotIdentities = [UIColor.redColor(), UIColor.purpleColor(), UIColor.brownColor(), UIColor.blueColor(), UIColor.blackColor()]
         self.sprite = sprite
-        self.sprite.color = mascotIdentities[mascotIdentityTracker+1]
+        self.sprite.color = mascotIdentities[mascotIdentityTracker]
         
     }
     
