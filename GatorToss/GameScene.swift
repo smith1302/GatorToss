@@ -14,8 +14,9 @@ class GameScene: SKScene {
 
     var world:SKNode!
     var tebow:Tebow!
+    var mascot1:Mascot!
     var river1:SKSpriteNode!
-    var mascot:SKSpriteNode!
+    //var mascot:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
     var rotator:SKSpriteNode!
@@ -80,11 +81,12 @@ class GameScene: SKScene {
         rotator.runAction(rotateSequence, withKey: "rotateSequence")
         
         // Make Mascot
-        mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
+        let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
         mascot.position = CGPointMake(mascotSize/2,mascotSize/2)
         mascot.xScale = 1
         mascot.yScale = 1
         world.addChild(mascot)
+        mascot1 = Mascot(sprite: mascot)
         
         //Make running button
         let runButtonSize:CGFloat = 50
@@ -117,11 +119,11 @@ class GameScene: SKScene {
         Button.removeFromSuperview()
         tebow.didThrow = true
         // Throw mascot
-        mascot.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(mascotSize, mascotSize))
-        mascot.physicsBody!.dynamic = true
-        mascot.physicsBody?.allowsRotation = true
+        mascot1.sprite.physicsBody = SKPhysicsBody(rectangleOfSize: CGSizeMake(mascotSize, mascotSize))
+        mascot1.sprite.physicsBody!.dynamic = true
+        mascot1.sprite.physicsBody?.allowsRotation = true
         //mascot.physicsBody?.friction = 0.5
-        mascot.physicsBody?.applyImpulse(CGVectorMake(tebow.getXPower(rotator.zRotation), tebow.getYPower(rotator.zRotation)))
+        mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake(tebow.getXPower(rotator.zRotation), tebow.getYPower(rotator.zRotation)))
         println(tebow.getVelocityBonus())
         // Stop tebow from sliding
         tebow.sprite.physicsBody = nil
@@ -155,11 +157,11 @@ class GameScene: SKScene {
         }
         
         if !tebow.didThrow {
-            mascot.position.x = tebow.sprite.position.x + tebow.sprite.frame.width/2
-            mascot.position.y = tebow.sprite.position.y + tebow.sprite.frame.height/2
+            mascot1.sprite.position.x = tebow.sprite.position.x + tebow.sprite.frame.width/2
+            mascot1.sprite.position.y = tebow.sprite.position.y + tebow.sprite.frame.height/2
             self.centerOnNode(tebow.sprite)
         } else {
-            self.centerOnNode(mascot)
+            self.centerOnNode(mascot1.sprite)
         }
         
         // Animate camera to position. Animating to prevent jerkiness
