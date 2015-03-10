@@ -21,7 +21,7 @@ class GameScene: SKScene {
     var sprite:SKSpriteNode!
     var rotator:SKSpriteNode!
     let mascotSize:CGFloat = 30
-    var groundWidth:CGFloat = 600
+    var groundWidth:CGFloat = 400
     var offsetX:CGFloat! = 0
     var offsetY:CGFloat = 0
     var runButton:UIButton!
@@ -40,21 +40,6 @@ class GameScene: SKScene {
         world.position = CGPointMake(0, 0)
         self.addChild(world)
         worldGoalPos = world.position
-        
-        // Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, self.frame.size.height))
-        river1.position = CGPointMake(river1.size.width/2, -1*river1.size.height/4)
-        river1.xScale = 1
-        river1.yScale = 1
-        world.addChild(river1)
-
-        // Make ground
-        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
-        ground.xScale = 1
-        ground.yScale = 1
-        ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
-        ground.physicsBody!.dynamic = false
-        world.addChild(ground)
 
         let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(35, 70))
         world.addChild(tebowSprite)
@@ -81,6 +66,22 @@ class GameScene: SKScene {
         mascot.yScale = 1
         world.addChild(mascot)
         mascot1 = Mascot(sprite: mascot)
+        
+        // Make a river1
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, self.frame.size.height))
+        river1.position = CGPointMake(river1.size.width/2, -1*river1.size.height/4)
+        river1.xScale = 1
+        river1.yScale = 1
+        river1.alpha = 0.5
+        world.addChild(river1)
+        
+        // Make ground
+        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
+        ground.xScale = 1
+        ground.yScale = 1
+        ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
+        ground.physicsBody!.dynamic = false
+        world.addChild(ground)
         
         //Make running button
         let runButtonSize:CGFloat = 50
