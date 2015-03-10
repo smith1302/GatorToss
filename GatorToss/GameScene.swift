@@ -41,7 +41,7 @@ class GameScene: SKScene {
         
         // Make a river1
         river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, self.frame.size.height))
-        river1.position = CGPointMake(river1.size.width/2, 0)
+        river1.position = CGPointMake(river1.size.width/2, -1*river1.size.height/4)
         river1.xScale = 1
         river1.yScale = 1
         world.addChild(river1)
@@ -49,7 +49,7 @@ class GameScene: SKScene {
         // Make ground
         ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
         //ground.anchorPoint = CGPointMake(0, 0)
-        ground.position = CGPointMake(ground.size.width/2, 20)
+        ground.position = CGPointMake(ground.size.width/2, -1*ground.size.height/10)
         ground.xScale = 1
         ground.yScale = 1
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
@@ -64,7 +64,7 @@ class GameScene: SKScene {
         tebowSprite.physicsBody?.allowsRotation = false
         tebowSprite.physicsBody?.friction = 0.5
         world.addChild(tebowSprite)
-        tebow = Tebow(x: tebowSprite.frame.size.width + 50, y: self.frame.size.height/2.5 - 20, sprite: tebowSprite)
+        tebow = Tebow(sprite: tebowSprite)
         
         // Make Rotator
         rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 5))

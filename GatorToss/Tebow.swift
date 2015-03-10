@@ -11,18 +11,12 @@ import UIKit
 import SpriteKit
 
 class Tebow {
-    
-    var x:CGFloat
-    var y:CGFloat
-    var xVel:CGFloat
+
     var sprite:SKSpriteNode
     var didThrow:Bool
     var power:CGFloat
     
-    init(x:CGFloat, y:CGFloat, sprite:SKSpriteNode) {
-        self.x = x
-        self.y = y
-        xVel = 0
+    init(sprite:SKSpriteNode) {
         self.sprite = sprite
         self.didThrow = false
         self.power = 10
