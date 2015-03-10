@@ -24,7 +24,7 @@ class GameScene: SKScene {
     var offsetX:CGFloat! = 0
     var offsetY:CGFloat = 0
     var runButton:UIButton!
-    var worldPos:CGPoint!
+    var worldGoalPos:CGPoint!
 
     override func didMoveToView(view: SKView) {
         
@@ -37,29 +37,25 @@ class GameScene: SKScene {
         world = SKNode()
         world.position = CGPointMake(0, 0)
         self.addChild(world)
-        worldPos = world.position
+        worldGoalPos = world.position
         
         // Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, self.frame.size.height/2.5-25))
-        river1.position = CGPointMake(river1.size.width/2, river1.size.height/2)
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, self.frame.size.height))
+        river1.position = CGPointMake(river1.size.width/2, 0)
         river1.xScale = 1
         river1.yScale = 1
         world.addChild(river1)
 
         // Make ground
-        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height/2.5))
+        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
         //ground.anchorPoint = CGPointMake(0, 0)
-        ground.position = CGPointMake(ground.size.width/2, ground.size.height/2)
+        ground.position = CGPointMake(ground.size.width/2, 20)
         ground.xScale = 1
         ground.yScale = 1
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
         ground.physicsBody!.dynamic = false
         world.addChild(ground)
-        
-        //let tebowSprite = SKSpriteNode(imageNamed:"Tebow")
-        //tebowSprite.anchorPoint = CGPointMake(0, 0)
-        //tebowSprite.xScale = -0.2
-        //tebowSprite.yScale = 0.2
+
         let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(35, 70))
         // Cant use anchor point on physics body. This means the default anchor point is in the middle of tebow instead of the corners
         tebowSprite.position = CGPointMake(50 + tebowSprite.size.width/2, ground.frame.origin.y + ground.size.height + tebowSprite.size.height/2 + 10)
@@ -147,21 +143,12 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
         
         //moves the ground 1 position at a time to left
-        if(ground.position.x < -groundWidth) {
+        let groundPos = self.convertPoint(ground.position, fromNode: world)
+        if(groundPos.x < -groundWidth) {
             self.removeChildrenInArray([ground])
         }
-        //ground.position.x = ground.position.x - 10
-        
-        //moves Tim Tebow 1 position at a time to left
-        //COME BACK TO THIS
-//        if(tebow.sprite.position.x < -tebow.sprite.frame.size.width){
-//            self.removeChildrenInArray([tebow.sprite])
-//        }
-//        tebow.sprite.position.x = tebow.sprite.position.x - 10
-        
        
         //moves river1 1 position at a time to left
-        //river1.position.x = river1.position.x - 10
         let river1Pos = self.convertPoint(river1.position, fromNode: world)
         if(river1Pos.x <= 0){
             river1.position.x += river1.frame.size.width/2
@@ -176,8 +163,8 @@ class GameScene: SKScene {
         }
         
         // Animate camera to position. Animating to prevent jerkiness
-        var diffX = worldPos.x - world.position.x
-        var diffY = worldPos.y - world.position.y
+        var diffX = worldGoalPos.x - world.position.x
+        var diffY = worldGoalPos.y - world.position.y
         world.position.x += diffX/6
         world.position.y += diffY/6
     }
@@ -194,7 +181,7 @@ class GameScene: SKScene {
         if centerOffsetX < 0 {
             return
         }
-        worldPos = CGPointMake(-1*centerOffsetX, -1*centerOffsetY);
+        worldGoalPos = CGPointMake(-1*centerOffsetX, -1*centerOffsetY);
     }
     
 }
