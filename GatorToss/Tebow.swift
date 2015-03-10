@@ -28,12 +28,6 @@ class Tebow {
         self.power = 10
     }
     
-    func radToDegree(rad:CGFloat) -> CGFloat {
-        let conversion:CGFloat = CGFloat(180/M_PI)
-        let degree:CGFloat = rad*conversion
-        return degree
-    }
-    
     func getXPower(rad:CGFloat) -> CGFloat {
         let xRatio = cos(rad)
         return self.getVelocityBonus()*power*xRatio
