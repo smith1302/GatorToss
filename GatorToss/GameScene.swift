@@ -75,7 +75,7 @@ class GameScene: SKScene {
         
         // Make Mascot
         let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
-        mascot.position = CGPointMake(mascotSize/2,mascotSize/2)
+        mascot.hidden = true
         mascot.xScale = 1
         mascot.yScale = 1
         world.addChild(mascot)
@@ -156,6 +156,7 @@ class GameScene: SKScene {
         }
         
         if !tebow.didThrow {
+            mascot1.sprite.hidden = false
             mascot1.sprite.position.x = tebow.sprite.position.x + tebow.sprite.frame.width/2
             mascot1.sprite.position.y = tebow.sprite.position.y + tebow.sprite.frame.height/2
             self.centerOnNode(tebow.sprite)
@@ -195,6 +196,7 @@ class GameScene: SKScene {
         tebow.didMove = false
         
         mascot1.sprite.position = CGPointMake(mascotSize/2,mascotSize/2)
+        mascot1.sprite.hidden = true
         runButton.hidden = false
         throwButton.hidden = false
     }
