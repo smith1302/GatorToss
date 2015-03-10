@@ -7,6 +7,7 @@
 //
 
 import UIKit
+var game = Game()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

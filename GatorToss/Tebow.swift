@@ -43,8 +43,8 @@ class Tebow {
     }
     
     func getVelocityBonus() -> CGFloat {
-        let cap:CGFloat = 200
-        let capBonus:CGFloat = 7
+        let cap:CGFloat = 500
+        let capBonus:CGFloat = 9
         
         if let xVel = self.getXVelocity() {
             let ratio = xVel/cap
