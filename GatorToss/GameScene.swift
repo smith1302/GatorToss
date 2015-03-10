@@ -75,6 +75,7 @@ class GameScene: SKScene {
         
         // Make Mascot
         let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
+        mascot.anchorPoint = CGPointMake(0.5, 1.25)
         mascot.hidden = true
         mascot.xScale = 1
         mascot.yScale = 1
@@ -123,7 +124,6 @@ class GameScene: SKScene {
         mascot1.sprite.physicsBody?.allowsRotation = true
         //mascot.physicsBody?.friction = 0.5
         mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake(tebow.getXPower(rotator.zRotation), tebow.getYPower(rotator.zRotation)))
-        println(tebow.getVelocityBonus())
         // Stop tebow from sliding
         tebow.sprite.physicsBody = nil
         self.centerOnNode(tebow.sprite)
@@ -158,7 +158,7 @@ class GameScene: SKScene {
         if !tebow.didThrow {
             mascot1.sprite.hidden = false
             mascot1.sprite.position.x = tebow.sprite.position.x + tebow.sprite.frame.width/2
-            mascot1.sprite.position.y = tebow.sprite.position.y + tebow.sprite.frame.height/2
+            mascot1.sprite.position.y = tebow.sprite.position.y + tebow.sprite.frame.height/2 + mascot1.sprite.frame.height*3/4
             self.centerOnNode(tebow.sprite)
         } else {
             self.centerOnNode(mascot1.sprite)
@@ -178,6 +178,10 @@ class GameScene: SKScene {
                 reset()
             }
         }
+        
+        let river1Y = river1.position.y + river1.frame.height/2
+        let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
+        println(mascotY - river1Y)
     }
     
     func reset() {
