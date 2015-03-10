@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GatorToss/Tebow.swift"
-            timestampString = "447714895.463253"
+            timestampString = "447716556.876584"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "getVelocityBonus()"
             landmarkType = "5">
          </BreakpointContent>
