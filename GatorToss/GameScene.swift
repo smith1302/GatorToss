@@ -137,13 +137,13 @@ class GameScene: SKScene {
             let mascotHeight = mascot1.sprite.frame.size.height
             
             if distanceToBounce < mascotHeight {
-                mascot1.bounceFriction = game.bounceMultiplier[0]
+                mascot1.sprite.physicsBody?.restitution = game.bounceMultiplier[0]
                 println("Perfect")
             } else if distanceToBounce < mascotHeight*3 {
-                mascot1.bounceFriction = game.bounceMultiplier[1]
+                mascot1.sprite.physicsBody?.restitution = game.bounceMultiplier[1]
                 println("Good")
             } else if distanceToBounce < mascotHeight*5 {
-                mascot1.bounceFriction = game.bounceMultiplier[2]
+                mascot1.sprite.physicsBody?.restitution = game.bounceMultiplier[2]
                 println("Poor")
             }
         }
@@ -152,23 +152,27 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        //Save landing speed to use when he bounces back up
-        if let fallSpeed = mascot1.sprite.physicsBody?.velocity.dy { // Check for nil
-            if fallSpeed < 0 { // check if falling downwards
-                mascot1.fallSpeed = fallSpeed
-            }
+        if mascot1.sprite.physicsBody?.velocity.dy > 0 {
+            mascot1.sprite.physicsBody?.restitution = mascot1.defaultRestituion
         }
+        
+        //Save landing speed to use when he bounces back up
+//        if let fallSpeed = mascot1.sprite.physicsBody?.velocity.dy { // Check for nil
+//            if fallSpeed < 0 { // check if falling downwards
+//                mascot1.fallSpeed = fallSpeed
+//            }
+//        }
         
         // If we have a bounce bonus and the user is going up, add additional speed.
         // We use the last known falling speed since if the user gets a bonus after the
         // mascot is bouncing up, the speed may have already decreased some
-        if mascot1.bounceFriction > mascot1.bounceFrictionDefault {
-            if mascot1.sprite.physicsBody?.velocity.dy > 0 {
-                var newSpeed = mascot1.fallSpeed * mascot1.bounceFriction * -1
-                mascot1.sprite.physicsBody!.velocity.dy = newSpeed
-                mascot1.bounceFriction = mascot1.bounceFrictionDefault
-            }
-        }
+//        if mascot1.bounceFriction > mascot1.bounceFrictionDefault {
+//            if mascot1.sprite.physicsBody?.velocity.dy > 0 {
+//                var newSpeed = mascot1.fallSpeed * mascot1.bounceFriction * -1
+//                mascot1.sprite.physicsBody!.velocity.dy = newSpeed
+//                mascot1.bounceFriction = mascot1.bounceFrictionDefault
+//            }
+//        }
         
         //moves the ground 1 position at a time to left
         let groundPos = self.convertPoint(ground.position, fromNode: world)
