@@ -61,7 +61,7 @@ class GameScene: SKScene {
         mascot1 = Mascot(sprite: mascot)
         
         // Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, self.frame.size.height))
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, 150))
         river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
         river1.position = CGPointMake(river1.size.width/2, -1*river1.size.height/3 - mascot.size.height)
         river1.xScale = 1
@@ -151,11 +151,11 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
-        
+
         if mascot1.sprite.physicsBody?.velocity.dy > 0 {
-            mascot1.sprite.physicsBody?.restitution = mascot1.defaultRestituion
+            //mascot1.sprite.physicsBody?.restitution = mascot1.defaultRestituion
         }
-        
+        //println(mascot1.sprite.physicsBody?.restitution);
         //Save landing speed to use when he bounces back up
 //        if let fallSpeed = mascot1.sprite.physicsBody?.velocity.dy { // Check for nil
 //            if fallSpeed < 0 { // check if falling downwards
@@ -251,8 +251,7 @@ class GameScene: SKScene {
         if centerOffsetX < 0 { // Dont follow it if its left of center
             return
         }
-        if centerOffsetY > self.frame.size.height*3/4 {
-            worldGoalPos = CGPointMake(-1*centerOffsetX, worldGoalPos.y);
+        if world.frame.origin.y <= 0 {
             return
         }
         worldGoalPos = CGPointMake(-1*centerOffsetX, -1*centerOffsetY - node.scene!.size.height/7);
