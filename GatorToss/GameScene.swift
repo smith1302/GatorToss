@@ -26,6 +26,7 @@ class GameScene: SKScene {
     var offsetY:CGFloat = 0
     var runButton:UIButton!
     var throwButton:UIButton!
+    var resetButton:UIButton!
     var worldGoalPos:CGPoint!
 
     override func didMoveToView(view: SKView) {
@@ -92,7 +93,21 @@ class GameScene: SKScene {
         throwButton.backgroundColor = UIColor(hex: 0xFFBE63)
         throwButton.addTarget(self, action: "throwButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
         self.view?.addSubview(throwButton)
+
+        //make reset button
+        let resetButtonSize:CGFloat = 70
+        resetButton = UIButton(frame: CGRectMake(self.view!.frame.size.width-resetButtonSize-25, self.view!.frame.size.height - resetButtonSize - 225, resetButtonSize, resetButtonSize))
+        resetButton.layer.cornerRadius = throwButtonSize/2
+        resetButton.backgroundColor = UIColor(hex:0xFFBE63)
+        resetButton.addTarget(self, action: "resetButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view?.addSubview(resetButton)
         
+        
+        reset()
+    }
+    
+    //when resetButton is clicked
+    func resetButtonClicked() {
         reset()
     }
     
@@ -116,8 +131,8 @@ class GameScene: SKScene {
         // Throw mascot
         mascot1.applyPhysicsBody()
         mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake(tebow.getXPower(rotator.zRotation), tebow.getYPower(rotator.zRotation)))
-        let rotateAction:SKAction = SKAction.rotateByAngle(CGFloat(-1*M_PI_2), duration: 1)
-        let rotateForever = SKAction.repeatActionForever(rotateAction)
+        //let rotateAction:SKAction = SKAction.rotateByAngle(CGFloat(-1*M_PI_2), duration: 1)
+        //let rotateForever = SKAction.repeatActionForever(rotateAction)
         //mascot1.sprite.runAction(rotateForever)
         // Stop tebow from sliding
         tebow.sprite.physicsBody = nil
@@ -225,6 +240,7 @@ class GameScene: SKScene {
         tebow.didMove = false
         
         mascot1.sprite.position = CGPointMake(mascotSize/2,mascotSize/2)
+        mascot1.sprite.physicsBody = nil
         mascot1.sprite.hidden = true
         runButton.hidden = false
         throwButton.hidden = false
