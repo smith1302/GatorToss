@@ -15,12 +15,18 @@ class Mascot {
     var sprite:SKSpriteNode
     var mascotIdentityTracker: Int  //used to keep track of the position we are in within the array
     var mascotIdentities:[UIColor]! //used to keep track of all the different mascots
+    var bounceFrictionDefault:CGFloat
+    var fallSpeed:CGFloat // tracks the speed in which the mascot hits the water
+    var bounceFriction:CGFloat
     
     init(sprite:SKSpriteNode) {
         self.mascotIdentityTracker = 0
         self.mascotIdentities = [UIColor.redColor(), UIColor.purpleColor(), UIColor.brownColor(), UIColor.blueColor(), UIColor.blackColor()]
         self.sprite = sprite
         self.sprite.color = mascotIdentities[mascotIdentityTracker]
+        self.bounceFrictionDefault = 0.3
+        self.bounceFriction = bounceFrictionDefault
+        self.fallSpeed = 0
         
     }
     
@@ -46,6 +52,13 @@ class Mascot {
         else{
             println("OUT OF BOUNDS")
         }
+    }
+    
+    func applyPhysicsBody() {
+        self.sprite.physicsBody = SKPhysicsBody(rectangleOfSize: sprite.size)
+        self.sprite.physicsBody!.dynamic = true
+        self.sprite.physicsBody!.allowsRotation = true
+        self.sprite.physicsBody!.restitution = self.bounceFrictionDefault
     }
     
     //make a method that reads current points and updates the mascot accordingly

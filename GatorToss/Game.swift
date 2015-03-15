@@ -13,9 +13,11 @@ import SpriteKit
 class Game {
     
     var points:Int
+    var bounceMultiplier:[CGFloat]
     
     init() {
         points = 0
+        bounceMultiplier = [1,0.8,0.5,0.1]
     }
     
 }

@@ -14,6 +14,7 @@ class Tebow {
 
     var sprite:SKSpriteNode
     var didThrow:Bool
+    var moveSpeed:CGFloat
     var power:CGFloat
     var canThrow:Bool
     var didMove:Bool
@@ -23,7 +24,8 @@ class Tebow {
         self.didThrow = false
         self.canThrow = true
         self.didMove = false
-        self.power = 10
+        self.moveSpeed = 3.5
+        self.power = 2
     }
     
     func getXPower(rad:CGFloat) -> CGFloat {
@@ -41,8 +43,8 @@ class Tebow {
     }
     
     func getVelocityBonus() -> CGFloat {
-        let cap:CGFloat = 500
-        let capBonus:CGFloat = 9
+        let cap:CGFloat = 400
+        let capBonus:CGFloat = 5
         
         if let xVel = self.getXVelocity() {
             let ratio = xVel/cap
@@ -51,6 +53,13 @@ class Tebow {
         } else {
             return 1
         }
+    }
+    
+    func applyPhysicsBody() {
+        self.sprite.physicsBody = SKPhysicsBody(circleOfRadius: self.sprite.frame.size.height/2)
+        self.sprite.physicsBody!.dynamic = true
+        self.sprite.physicsBody?.allowsRotation = false
+        self.sprite.physicsBody?.friction = 0.5
     }
     
 }
