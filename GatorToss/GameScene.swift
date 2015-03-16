@@ -221,13 +221,16 @@ class GameScene: SKScene {
         //moves clouds 1 poisiton at a time to left
         let cloud1Position = self.convertPoint(cloud1.position, fromNode: world)
         if(cloud1Position.x <= 0){
-            cloud1.position.x += cloud1.frame.size.width/2
+            //cloud1.position.x += cloud1.frame.size.width/2
+            cloud1.position.x += self.frame.size.width
+            
         }
         
         //moves clouds 1 poisiton at a time to left
         let cloud2Position = self.convertPoint(cloud2.position, fromNode: world)
         if(cloud2Position.x <= 0){
-            cloud2.position.x += cloud2.frame.size.width/2
+            //cloud2.position.x += cloud2.frame.size.width/2
+            cloud2.position.x += self.frame.size.width
         }
         
         
