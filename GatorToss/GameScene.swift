@@ -41,42 +41,6 @@ class GameScene: SKScene {
         world.position = CGPointMake(0, 0)
         self.addChild(world)
         worldGoalPos = world.position
-
-        let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(25, 55))
-        world.addChild(tebowSprite)
-        tebow = Tebow(sprite: tebowSprite)
-        
-        // Make Rotator
-        rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(20, 3))
-        rotator.anchorPoint = CGPointMake(0, 0.5)
-        tebowSprite.addChild(rotator)
-        
-        // Make Mascot
-        let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
-        mascot.anchorPoint = CGPointMake(0.5, 0.5)
-        mascot.hidden = true
-        mascot.xScale = 1
-        mascot.yScale = 1
-        //physics body is applied when thrown
-        world.addChild(mascot)
-        mascot1 = Mascot(sprite: mascot)
-        
-        // Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, 150))
-        river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
-        river1.position = CGPointMake(river1.size.width/2, -1*river1.size.height/3 - mascot.size.height)
-        river1.xScale = 1
-        river1.yScale = 1
-        river1.alpha = 0.5
-        world.addChild(river1)
-        
-        // Make ground
-        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
-        ground.xScale = 1
-        ground.yScale = 1
-        ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
-        ground.physicsBody!.dynamic = false
-        world.addChild(ground)
         
         //Make running button
         let runButtonSize:CGFloat = 70
@@ -152,13 +116,13 @@ class GameScene: SKScene {
             let mascotHeight = mascot1.sprite.frame.size.height
             
             if distanceToBounce < mascotHeight {
-                mascot1.sprite.physicsBody?.restitution = game.bounceMultiplier[0]
+                mascot1.bounceFriction = game.bounceMultiplier[0]
                 println("Perfect")
             } else if distanceToBounce < mascotHeight*3 {
-                mascot1.sprite.physicsBody?.restitution = game.bounceMultiplier[1]
+                mascot1.bounceFriction = game.bounceMultiplier[1]
                 println("Good")
             } else if distanceToBounce < mascotHeight*5 {
-                mascot1.sprite.physicsBody?.restitution = game.bounceMultiplier[2]
+                mascot1.bounceFriction = game.bounceMultiplier[2]
                 println("Poor")
             }
         }
@@ -167,27 +131,31 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
 
-        if mascot1.sprite.physicsBody?.velocity.dy > 0 {
-            //mascot1.sprite.physicsBody?.restitution = mascot1.defaultRestituion
-        }
-        //println(mascot1.sprite.physicsBody?.restitution);
         //Save landing speed to use when he bounces back up
-//        if let fallSpeed = mascot1.sprite.physicsBody?.velocity.dy { // Check for nil
-//            if fallSpeed < 0 { // check if falling downwards
-//                mascot1.fallSpeed = fallSpeed
-//            }
-//        }
+        if let fallSpeed = mascot1.sprite.physicsBody?.velocity.dy { // Check for nil
+            if fallSpeed < 0 { // check if falling downwards
+                mascot1.fallSpeed = fallSpeed
+            }
+        }
+        
+        if let mascotYVel = mascot1.sprite.physicsBody?.velocity.dy {
+            if mascot1.oldDy < 0 && mascotYVel >= 0 {
+                mascot1.sprite.physicsBody?.velocity.dy = (mascot1.fallSpeed * -1)*mascot1.bounceFrictionDefault
+            }
+            mascot1.oldDy = mascotYVel
+        }
+        
         
         // If we have a bounce bonus and the user is going up, add additional speed.
         // We use the last known falling speed since if the user gets a bonus after the
         // mascot is bouncing up, the speed may have already decreased some
-//        if mascot1.bounceFriction > mascot1.bounceFrictionDefault {
-//            if mascot1.sprite.physicsBody?.velocity.dy > 0 {
-//                var newSpeed = mascot1.fallSpeed * mascot1.bounceFriction * -1
-//                mascot1.sprite.physicsBody!.velocity.dy = newSpeed
-//                mascot1.bounceFriction = mascot1.bounceFrictionDefault
-//            }
-//        }
+        if mascot1.bounceFriction > mascot1.bounceFrictionDefault {
+            if mascot1.sprite.physicsBody?.velocity.dy > 0 {
+                var newSpeed = mascot1.fallSpeed * mascot1.bounceFriction * -1
+                mascot1.sprite.physicsBody!.velocity.dy = newSpeed
+                mascot1.bounceFriction = mascot1.bounceFrictionDefault
+            }
+        }
         
         //moves the ground 1 position at a time to left
         let groundPos = self.convertPoint(ground.position, fromNode: world)
@@ -228,23 +196,47 @@ class GameScene: SKScene {
     }
     
     func reset() {
+        
+        world.removeAllActions()
+        world.removeAllChildren()
+        self.removeAllActions()
+        
         world.position = CGPointMake(0, 0)
         worldGoalPos = world.position
-        river1.position = CGPointMake(river1.size.width/2, -1*river1.size.height/4)
+        
+        // Make Mascot
+        let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
+        mascot.anchorPoint = CGPointMake(0.5, 0.5)
+        mascot.position = CGPointMake(mascotSize/2,mascotSize/2)
+        mascot.physicsBody = nil
+        mascot.xScale = 1
+        mascot.yScale = 1
+        mascot1 = Mascot(sprite: mascot)
+        
+        // Make a river1
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, 150))
+        river1.position = CGPointMake(river1.size.width/2, 0 - mascot.size.height)
+        river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
+        river1.xScale = 1
+        river1.yScale = 1
+        river1.alpha = 0.5
+        
+        // Make ground
+        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
         ground.position = CGPointMake(ground.size.width/2, -1*ground.size.height/10)
-        tebow.sprite.position = CGPointMake(50 + tebow.sprite.size.width/2, (ground.size.height/2 - ground.size.height/10) + tebow.sprite.size.height/2 + 10)
-        // Cant use anchor point on physics body. This means the default anchor point is in the middle of tebow instead of the corners
+        ground.xScale = 1
+        ground.yScale = 1
+        ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
+        ground.physicsBody!.dynamic = false
+        
+        let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(25, 55))
+        tebowSprite.position = CGPointMake(50 + tebowSprite.size.width/2, (ground.size.height/2 - ground.size.height/10) + tebowSprite.size.height/2 + 10)
+        tebow = Tebow(sprite: tebowSprite)
         tebow.applyPhysicsBody()
-        tebow.canThrow = true
-        tebow.didThrow = false
-        tebow.didMove = false
         
-        mascot1.sprite.position = CGPointMake(mascotSize/2,mascotSize/2)
-        mascot1.sprite.physicsBody = nil
-        mascot1.sprite.hidden = true
-        runButton.hidden = false
-        throwButton.hidden = false
-        
+        // Make Rotator
+        rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(20, 3))
+        rotator.anchorPoint = CGPointMake(0, 0.5)
         // Rotate animation
         rotator.position = CGPointMake(tebow.sprite.size.width/2, 0)
         let duration:Double = 0.6
@@ -253,6 +245,16 @@ class GameScene: SKScene {
         let rotateDown = SKAction.rotateToAngle(5*degToRad, duration: duration)
         let rotateSequence = SKAction.repeatActionForever(SKAction.sequence([rotateUp, rotateDown]))
         rotator.runAction(rotateSequence, withKey: "rotateSequence")
+        
+        runButton.hidden = false
+        throwButton.hidden = false
+        resetButton.hidden = false
+        
+        world.addChild(tebowSprite)
+        tebowSprite.addChild(rotator)
+        world.addChild(mascot)
+        world.addChild(river1)
+        world.addChild(ground)
     }
     
     func sceneRelativePosition(node:SKSpriteNode) -> CGPoint {
@@ -260,17 +262,22 @@ class GameScene: SKScene {
         return nodePositionInScene
     }
     
-    func centerOnNode(node:SKSpriteNode) {
+    func centerOnNode(nodeOpt:SKSpriteNode?) {
+        if nodeOpt?.scene == nil{
+            return
+        }
+        let node = nodeOpt!
         var nodePositionInScene = sceneRelativePosition(node)
         let centerOffsetX = nodePositionInScene.x - node.scene!.size.width/2
         let centerOffsetY = nodePositionInScene.y - node.scene!.size.height/2
         if centerOffsetX < 0 { // Dont follow it if its left of center
             return
         }
-        if world.frame.origin.y <= 0 {
-            return
+        worldGoalPos = CGPointMake(-1*centerOffsetX, -1*centerOffsetY + node.scene!.size.height/4);
+        // Make sure the camera sticks to the bottom
+        if worldGoalPos.y > 0 {
+            worldGoalPos.y = 0;
         }
-        worldGoalPos = CGPointMake(-1*centerOffsetX, -1*centerOffsetY - node.scene!.size.height/7);
     }
     
 }

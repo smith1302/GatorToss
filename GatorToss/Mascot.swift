@@ -15,19 +15,20 @@ class Mascot {
     var sprite:SKSpriteNode
     var mascotIdentityTracker: Int  //used to keep track of the position we are in within the array
     var mascotIdentities:[UIColor]! //used to keep track of all the different mascots
-    //var bounceFrictionDefault:CGFloat
-    //var fallSpeed:CGFloat // tracks the speed in which the mascot hits the water
-    //var bounceFriction:CGFloat
-    var defaultRestituion: CGFloat
+    var bounceFrictionDefault:CGFloat
+    var fallSpeed:CGFloat // tracks the speed in which the mascot hits the water
+    var bounceFriction:CGFloat
+    var oldDy:CGFloat
     
     init(sprite:SKSpriteNode) {
         self.mascotIdentityTracker = 0
         self.mascotIdentities = [UIColor.redColor(), UIColor.purpleColor(), UIColor.brownColor(), UIColor.blueColor(), UIColor.blackColor()]
         self.sprite = sprite
         self.sprite.color = mascotIdentities[mascotIdentityTracker]
-        self.defaultRestituion = 0.4
-        //self.bounceFriction = bounceFrictionDefault
-        //self.fallSpeed = 0
+        self.bounceFrictionDefault = 0.4
+        self.bounceFriction = bounceFrictionDefault
+        self.fallSpeed = 0
+        self.oldDy = 0
         
     }
     
@@ -59,7 +60,7 @@ class Mascot {
         self.sprite.physicsBody = SKPhysicsBody(rectangleOfSize: sprite.size)
         self.sprite.physicsBody!.dynamic = true
         self.sprite.physicsBody!.allowsRotation = true
-        self.sprite.physicsBody!.restitution = defaultRestituion //self.bounceFrictionDefault
+        self.sprite.physicsBody!.restitution = 0
     }
     
     //make a method that reads current points and updates the mascot accordingly
