@@ -169,6 +169,7 @@ class GameScene: SKScene {
             if mascot1.sprite.physicsBody?.velocity.dy > 0 {
                 var newSpeed = mascot1.fallSpeed * mascot1.bounceFriction * -1
                 mascot1.sprite.physicsBody!.velocity.dy = newSpeed
+                mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake(mascot1.bounceFriction, 0))
                 mascot1.bounceFriction = mascot1.bounceFrictionDefault
             }
         }
