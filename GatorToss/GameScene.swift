@@ -16,6 +16,8 @@ class GameScene: SKScene {
     var tebow:Tebow!
     var mascot1:Mascot!
     var river1:SKSpriteNode!
+    var cloud1:SKSpriteNode!
+    var cloud2:SKSpriteNode!
     //var mascot:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
@@ -50,6 +52,21 @@ class GameScene: SKScene {
         rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(20, 3))
         rotator.anchorPoint = CGPointMake(0, 0.5)
         tebowSprite.addChild(rotator)
+        
+        //Make clouds
+        cloud1 = SKSpriteNode(color:UIColor.whiteColor(), size: CGSizeMake(self.frame.size.width/4,self.frame.size.height/4))
+        cloud1.anchorPoint = CGPointMake(0.5, 0.5)
+        cloud1.xScale = 1
+        cloud1.yScale = 1
+        cloud1.position = CGPointMake(250, 250)
+        world.addChild(cloud1)
+        
+        cloud2 = SKSpriteNode(color:UIColor.whiteColor(), size: CGSizeMake(self.frame.size.width/4,self.frame.size.height/4))
+        cloud2.anchorPoint = CGPointMake(0.5, 0.5)
+        cloud2.xScale = 1
+        cloud2.yScale = 1
+        cloud2.position = CGPointMake(450, 250)
+        world.addChild(cloud2)
         
         // Make Mascot
         let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
@@ -200,6 +217,20 @@ class GameScene: SKScene {
         if(river1Pos.x <= 0){
             river1.position.x += river1.frame.size.width/2
         }
+        
+        //moves clouds 1 poisiton at a time to left
+        let cloud1Position = self.convertPoint(cloud1.position, fromNode: world)
+        if(cloud1Position.x <= 0){
+            cloud1.position.x += cloud1.frame.size.width/2
+        }
+        
+        //moves clouds 1 poisiton at a time to left
+        let cloud2Position = self.convertPoint(cloud2.position, fromNode: world)
+        if(cloud2Position.x <= 0){
+            cloud2.position.x += cloud2.frame.size.width/2
+        }
+        
+        
         
         if !tebow.didThrow {
             mascot1.sprite.hidden = false
