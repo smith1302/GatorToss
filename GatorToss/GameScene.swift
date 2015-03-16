@@ -29,10 +29,11 @@ class GameScene: SKScene {
     var runButton:UIButton!
     var throwButton:UIButton!
     var resetButton:UIButton!
+    var distanceLabel:UILabel!
     var worldGoalPos:CGPoint!
     var bounceLabel:UILabel?
     let bounceLabelTimer:Double = 1.5
-    var canBounce = true
+    var canBounce:Bool!
 
     override func didMoveToView(view: SKView) {
         
@@ -68,6 +69,12 @@ class GameScene: SKScene {
         resetButton.backgroundColor = UIColor(hex:0xFFBE63)
         resetButton.addTarget(self, action: "resetButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
         self.view?.addSubview(resetButton)
+
+        // Distance label
+        distanceLabel = UILabel()
+        distanceLabel.frame = CGRectMake(self.frame.size.width - 50, 0, 50, 50)
+        distanceLabel.text = "0 meters"
+        self.view?.addSubview(distanceLabel)
         
         
         reset()
@@ -112,7 +119,7 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault && canBounce {
+        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault && canBounce == true {
             let river1Y = river1.position.y + river1.frame.height/2
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
             let distance = distanceToBounce()
@@ -226,8 +233,10 @@ class GameScene: SKScene {
             //cloud2.position.x += cloud2.frame.size.width/2
             cloud2.position.x += self.frame.size.width
         }
-        
-        
+
+        let mascotDistanceThrown = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
+        let distanceThrownX:Int = Int(mascotDistanceThrown.x)
+        distanceLabel.text = String(distanceThrownX)
         
         if !tebow.didThrow {
             mascot1.sprite.hidden = false
@@ -259,7 +268,7 @@ class GameScene: SKScene {
         
         bounceLabel = UILabel()
         resetText()
-        
+        canBounce = true
 
         world.removeAllActions()
         world.removeAllChildren()
