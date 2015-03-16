@@ -114,16 +114,26 @@ class GameScene: SKScene {
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
             let distanceToBounce = abs(mascotY - river1Y)
             let mascotHeight = mascot1.sprite.frame.size.height
+            let label = UILabel()
             
             if distanceToBounce < mascotHeight {
                 mascot1.bounceFriction = game.bounceMultiplier[0]
                 println("Perfect")
+                label.text = "PERFECT!"
+                label.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+                self.view?.addSubview(label)
             } else if distanceToBounce < mascotHeight*3 {
                 mascot1.bounceFriction = game.bounceMultiplier[1]
                 println("Good")
+                label.text = "Good!"
+                label.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+                self.view?.addSubview(label)
             } else if distanceToBounce < mascotHeight*5 {
                 mascot1.bounceFriction = game.bounceMultiplier[2]
                 println("Poor")
+                label.text = "Poor"
+                label.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+                self.view?.addSubview(label)
             }
         }
     }
