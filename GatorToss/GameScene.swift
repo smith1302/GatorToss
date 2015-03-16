@@ -125,6 +125,7 @@ class GameScene: SKScene {
             let distance = distanceToBounce()
             let mascotHeight = mascot1.sprite.frame.size.height
             
+            
             if distance < mascotHeight {
                 mascot1.bounceFriction = game.bounceMultiplier[0]
                 println("Perfect")
@@ -253,8 +254,9 @@ class GameScene: SKScene {
     
     func reset() {
         
-        bounceLabel = UILabel()
         resetText()
+        bounceLabel = UILabel()
+
         canBounce = true
 
         world.removeAllActions()
