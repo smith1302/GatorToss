@@ -17,7 +17,7 @@ class Game {
     
     init() {
         points = 0
-        bounceMultiplier = [0.95,0.8,0.5]
+        bounceMultiplier = [0.9,0.8,0.5]
     }
     
 }

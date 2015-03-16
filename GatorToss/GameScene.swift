@@ -124,31 +124,18 @@ class GameScene: SKScene {
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
             let distance = distanceToBounce()
             let mascotHeight = mascot1.sprite.frame.size.height
-            //bounceLabel = UILabel()
             
             if distance < mascotHeight {
                 mascot1.bounceFriction = game.bounceMultiplier[0]
                 println("Perfect")
-//                bounceLabel?.text = "PERFECT!"
-//                bounceLabel?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
-//                self.view?.addSubview(bounceLabel!)
-//                NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
                 addBounceLabel("PERFECT!")
             } else if distance < mascotHeight*3 {
                 mascot1.bounceFriction = game.bounceMultiplier[1]
                 println("Good")
-//                bounceLabel!.text = "Good!"
-//                bounceLabel!.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
-//                self.view?.addSubview(bounceLabel!)
-//                NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
                 addBounceLabel("Good")
             } else if distance < mascotHeight*5 {
                 mascot1.bounceFriction = game.bounceMultiplier[2]
                 println("Poor")
-//                bounceLabel!.text = "Poor"
-//                bounceLabel!.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
-//                self.view?.addSubview(bounceLabel!)
-//                NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
                 addBounceLabel("Poor")
             }
         }
@@ -164,7 +151,7 @@ class GameScene: SKScene {
     func addBounceLabel(textForLabel: String) {
         canBounce = false
         bounceLabel?.text = textForLabel
-        bounceLabel!.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+        bounceLabel!.frame = CGRectMake(self.frame.size.width/2-30, self.frame.size.height/2, 100, 150)
         self.view?.addSubview(bounceLabel!)
         NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
     }
@@ -300,7 +287,8 @@ class GameScene: SKScene {
         mascot1 = Mascot(sprite: mascot)
         
         // Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, 150))
+        let riverHeight:CGFloat = 200
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, riverHeight))
         river1.position = CGPointMake(river1.size.width/2, 0 - mascot.size.height)
         river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
         river1.xScale = 1
