@@ -61,6 +61,7 @@ class Mascot {
         self.sprite.physicsBody!.dynamic = true
         self.sprite.physicsBody!.allowsRotation = true
         self.sprite.physicsBody!.restitution = 0
+        self.sprite.physicsBody!.friction = 0.1
     }
     
     //make a method that reads current points and updates the mascot accordingly
