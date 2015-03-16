@@ -30,6 +30,8 @@ class GameScene: SKScene {
     var throwButton:UIButton!
     var resetButton:UIButton!
     var worldGoalPos:CGPoint!
+    var bounceLabel:UILabel?
+    let bounceLabelTimer:Double = 1.5
 
     override func didMoveToView(view: SKView) {
         
@@ -109,33 +111,40 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        if tebow.didThrow {
+        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault {
             let river1Y = river1.position.y + river1.frame.height/2
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
             let distanceToBounce = abs(mascotY - river1Y)
             let mascotHeight = mascot1.sprite.frame.size.height
-            let label = UILabel()
+            bounceLabel = UILabel()
             
             if distanceToBounce < mascotHeight {
                 mascot1.bounceFriction = game.bounceMultiplier[0]
                 println("Perfect")
-                label.text = "PERFECT!"
-                label.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
-                self.view?.addSubview(label)
+                bounceLabel?.text = "PERFECT!"
+                bounceLabel?.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+                self.view?.addSubview(bounceLabel!)
+                NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
             } else if distanceToBounce < mascotHeight*3 {
                 mascot1.bounceFriction = game.bounceMultiplier[1]
                 println("Good")
-                label.text = "Good!"
-                label.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
-                self.view?.addSubview(label)
+                bounceLabel!.text = "Good!"
+                bounceLabel!.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+                self.view?.addSubview(bounceLabel!)
+                NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
             } else if distanceToBounce < mascotHeight*5 {
                 mascot1.bounceFriction = game.bounceMultiplier[2]
                 println("Poor")
-                label.text = "Poor"
-                label.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
-                self.view?.addSubview(label)
+                bounceLabel!.text = "Poor"
+                bounceLabel!.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+                self.view?.addSubview(bounceLabel!)
+                NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
             }
         }
+    }
+    
+    func resetText() {
+        bounceLabel?.removeFromSuperview()
     }
    
     override func update(currentTime: CFTimeInterval) {
@@ -224,6 +233,8 @@ class GameScene: SKScene {
     
     func reset() {
         
+        resetText()
+
         world.removeAllActions()
         world.removeAllChildren()
         self.removeAllActions()
