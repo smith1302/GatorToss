@@ -32,7 +32,7 @@ class GameScene: SKScene {
     var worldGoalPos:CGPoint!
     var bounceLabel:UILabel?
     let bounceLabelTimer:Double = 1.5
-    //var canClick:Bool
+    var canBounce = true
 
     override func didMoveToView(view: SKView) {
         
@@ -112,21 +112,21 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        if (tebow.didThrow) && (mascot1.bounceFriction == mascot1.bounceFrictionDefault) {
+        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault && canBounce {
             let river1Y = river1.position.y + river1.frame.height/2
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
-            let distanceToBounce = abs(mascotY - river1Y)
+            let distance = distanceToBounce()
             let mascotHeight = mascot1.sprite.frame.size.height
             
-            if distanceToBounce < mascotHeight {
+            if distance < mascotHeight {
                 mascot1.bounceFriction = game.bounceMultiplier[0]
                 println("Perfect")
                 addBounceLabel("PERFECT!")
-            } else if distanceToBounce < mascotHeight*3 {
+            } else if distance < mascotHeight*3 {
                 mascot1.bounceFriction = game.bounceMultiplier[1]
                 println("Good")
                 addBounceLabel("Good")
-            } else if distanceToBounce < mascotHeight*5 {
+            } else if distance < mascotHeight*5 {
                 mascot1.bounceFriction = game.bounceMultiplier[2]
                 println("Poor")
                 addBounceLabel("Poor")
@@ -134,9 +134,17 @@ class GameScene: SKScene {
         }
     }
 
-    func addBounceLabel(textForLabel: String){
+    func distanceToBounce() -> CGFloat {
+        let river1Y = river1.position.y + river1.frame.height/2
+        let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
+        let distance = abs(mascotY - river1Y)
+        return distance
+    }
+
+    func addBounceLabel(textForLabel: String) {
+        canBounce = false
         bounceLabel?.text = textForLabel
-        bounceLabel!.frame = CGRectMake(self.frame.size.width/2, self.frame.size.height/2, 100, 25)
+        bounceLabel!.frame = CGRectMake(self.frame.size.width/2-30, self.frame.size.height/2, 100, 150)
         self.view?.addSubview(bounceLabel!)
         NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
     }
@@ -160,6 +168,10 @@ class GameScene: SKScene {
                 mascot1.sprite.physicsBody?.velocity.dy = (mascot1.fallSpeed * -1)*mascot1.bounceFrictionDefault
             }
             mascot1.oldDy = mascotYVel
+        }
+        
+        if distanceToBounce() > mascot1.sprite.frame.size.height*5 {
+            canBounce = true
         }
         
         
@@ -266,7 +278,8 @@ class GameScene: SKScene {
         mascot1 = Mascot(sprite: mascot)
         
         // Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, 150))
+        let riverHeight:CGFloat = 200
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, riverHeight))
         river1.position = CGPointMake(river1.size.width/2, 0 - mascot.size.height)
         river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
         river1.xScale = 1
