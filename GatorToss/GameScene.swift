@@ -16,6 +16,8 @@ class GameScene: SKScene {
     var tebow:Tebow!
     var mascot1:Mascot!
     var river1:SKSpriteNode!
+    var cloud1:SKSpriteNode!
+    var cloud2:SKSpriteNode!
     //var mascot:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
@@ -38,9 +40,7 @@ class GameScene: SKScene {
         
         // World Scene (basically our camera)
         world = SKNode()
-        world.position = CGPointMake(0, 0)
         self.addChild(world)
-        worldGoalPos = world.position
         
         //Make running button
         let runButtonSize:CGFloat = 70
@@ -169,6 +169,23 @@ class GameScene: SKScene {
             river1.position.x += river1.frame.size.width/2
         }
         
+        //moves clouds 1 poisiton at a time to left
+        let cloud1Position = self.convertPoint(cloud1.position, fromNode: world)
+        if(cloud1Position.x <= 0){
+            //cloud1.position.x += cloud1.frame.size.width/2
+            cloud1.position.x += self.frame.size.width
+            
+        }
+        
+        //moves clouds 1 poisiton at a time to left
+        let cloud2Position = self.convertPoint(cloud2.position, fromNode: world)
+        if(cloud2Position.x <= 0){
+            //cloud2.position.x += cloud2.frame.size.width/2
+            cloud2.position.x += self.frame.size.width
+        }
+        
+        
+        
         if !tebow.didThrow {
             mascot1.sprite.hidden = false
             mascot1.sprite.position.x = tebow.sprite.position.x + tebow.sprite.frame.width/2
@@ -203,6 +220,19 @@ class GameScene: SKScene {
         
         world.position = CGPointMake(0, 0)
         worldGoalPos = world.position
+
+        //Make clouds
+        cloud1 = SKSpriteNode(color:UIColor.whiteColor(), size: CGSizeMake(self.frame.size.width/4,self.frame.size.height/4))
+        cloud1.anchorPoint = CGPointMake(0.5, 0.5)
+        cloud1.xScale = 1
+        cloud1.yScale = 1
+        cloud1.position = CGPointMake(250, 250)
+        
+        cloud2 = SKSpriteNode(color:UIColor.whiteColor(), size: CGSizeMake(self.frame.size.width/4,self.frame.size.height/4))
+        cloud2.anchorPoint = CGPointMake(0.5, 0.5)
+        cloud2.xScale = 1
+        cloud2.yScale = 1
+        cloud2.position = CGPointMake(450, 250)
         
         // Make Mascot
         let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
@@ -252,6 +282,8 @@ class GameScene: SKScene {
         
         world.addChild(tebowSprite)
         tebowSprite.addChild(rotator)
+        world.addChild(cloud1)
+        world.addChild(cloud2)
         world.addChild(mascot)
         world.addChild(river1)
         world.addChild(ground)
