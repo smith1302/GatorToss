@@ -32,6 +32,7 @@ class GameScene: SKScene {
     var worldGoalPos:CGPoint!
     var bounceLabel:UILabel?
     let bounceLabelTimer:Double = 1.5
+    //var canClick:Bool
 
     override func didMoveToView(view: SKView) {
         
@@ -111,7 +112,7 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault {
+        if (tebow.didThrow) && (mascot1.bounceFriction == mascot1.bounceFrictionDefault) {
             let river1Y = river1.position.y + river1.frame.height/2
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
             let distanceToBounce = abs(mascotY - river1Y)
