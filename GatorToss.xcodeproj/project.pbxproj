@@ -92,6 +92,7 @@
 				F7CDC8C41A953DA6008FCB2F /* Models */,
 				F7CDC8C11A953BD1008FCB2F /* Resources */,
 				F7CDC89D1A9525C2008FCB2F /* AppDelegate.swift */,
+				F7D526D91AB8A9AB00240DDA /* PopupViewController.swift */,
 				F7CDC89F1A9525C2008FCB2F /* GameScene.sks */,
 				F7CDC8A11A9525C2008FCB2F /* GameScene.swift */,
 				F7CDC8A31A9525C2008FCB2F /* GameViewController.swift */,
@@ -131,7 +132,6 @@
 		F7CDC8C11A953BD1008FCB2F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F7D526D91AB8A9AB00240DDA /* PopupViewController.swift */,
 			);
 			name = Resources;
 			sourceTree = "<group>";

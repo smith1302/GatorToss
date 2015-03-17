@@ -18,8 +18,14 @@ class PopupViewController: UIViewController {
         
         let screenWidth = self.view.frame.size.width
         let screenHeight = self.view.frame.size.height
-        popUp = UIView(frame: CGRectMake(50, 50, screenWidth - 50*2, screenHeight - 50*2))
-        //popUp.backgroundColor = UIColor(hex: <#Int#>)
+        let paddingX:CGFloat = screenWidth/5
+        let paddingY:CGFloat = 50
+        popUp = UIView(frame: CGRectMake(paddingX, paddingY, screenWidth - paddingX*2, screenHeight - paddingY*2))
+        popUp.backgroundColor = UIColor(hex: 0xFFEAB8)
+        popUp.layer.cornerRadius = 9
+        popUp.layer.borderColor = UIColor(hex:0xF5DB9F).CGColor
+        popUp.layer.borderWidth = 6
+        self.view.addSubview(popUp)
         // Do any additional setup after loading the view.
     }
 

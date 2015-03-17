@@ -172,7 +172,10 @@ class GameScene: SKScene {
         if game.bestDistance < distanceAdjusted {
             game.bestDistance = distanceAdjusted
         }
-        reset()
+        //reset()
+        let popUp = PopupViewController()
+        popUp.view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
+        self.view?.addSubview(popUp.view)
     }
     
     func mascotDistance() -> Int {
