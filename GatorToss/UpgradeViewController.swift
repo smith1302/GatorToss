@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 SeniorDesign. All rights reserved.
 //
 
+//COACH'S CORNER
+
 import UIKit
 
 class UpgradeViewController: UIViewController {
