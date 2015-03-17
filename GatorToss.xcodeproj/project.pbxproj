@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		373AD05F1AB8AD9A00AB52D0 /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AD05E1AB8AD9A00AB52D0 /* OpeningViewController.swift */; };
 		373AD0611AB8AF7900AB52D0 /* LeaderBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AD0601AB8AF7900AB52D0 /* LeaderBoardViewController.swift */; };
+		373AD0631AB8B0C400AB52D0 /* UpgradeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AD0621AB8B0C400AB52D0 /* UpgradeViewController.swift */; };
 		37FE12331AAF9C0100683344 /* Mascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE12321AAF9C0100683344 /* Mascot.swift */; };
 		F7CDC89E1A9525C2008FCB2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CDC89D1A9525C2008FCB2F /* AppDelegate.swift */; };
 		F7CDC8A01A9525C2008FCB2F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7CDC89F1A9525C2008FCB2F /* GameScene.sks */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		373AD05E1AB8AD9A00AB52D0 /* OpeningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		373AD0601AB8AF7900AB52D0 /* LeaderBoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoardViewController.swift; sourceTree = "<group>"; };
+		373AD0621AB8B0C400AB52D0 /* UpgradeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpgradeViewController.swift; sourceTree = "<group>"; };
 		37FE12321AAF9C0100683344 /* Mascot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mascot.swift; sourceTree = "<group>"; };
 		F7CDC8981A9525C1008FCB2F /* GatorToss.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GatorToss.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7CDC89C1A9525C2008FCB2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				F7CDC8C41A953DA6008FCB2F /* Models */,
 				F7CDC8C11A953BD1008FCB2F /* Resources */,
 				F7CDC89D1A9525C2008FCB2F /* AppDelegate.swift */,
+				373AD0621AB8B0C400AB52D0 /* UpgradeViewController.swift */,
 				F7CDC89F1A9525C2008FCB2F /* GameScene.sks */,
 				F7CDC8A11A9525C2008FCB2F /* GameScene.swift */,
 				F7CDC8A31A9525C2008FCB2F /* GameViewController.swift */,
@@ -255,6 +258,7 @@
 				F7CDC8A21A9525C2008FCB2F /* GameScene.swift in Sources */,
 				373AD05F1AB8AD9A00AB52D0 /* OpeningViewController.swift in Sources */,
 				F7D3D6A31AAF998D00714457 /* Game.swift in Sources */,
+				373AD0631AB8B0C400AB52D0 /* UpgradeViewController.swift in Sources */,
 				F7CDC8A41A9525C2008FCB2F /* GameViewController.swift in Sources */,
 				F7CDC89E1A9525C2008FCB2F /* AppDelegate.swift in Sources */,
 				373AD0611AB8AF7900AB52D0 /* LeaderBoardViewController.swift in Sources */,
