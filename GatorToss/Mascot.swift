@@ -19,6 +19,7 @@ class Mascot {
     var fallSpeed:CGFloat // tracks the speed in which the mascot hits the water
     var bounceFriction:CGFloat
     var oldDy:CGFloat
+    var didStop:Bool // boolean that signals if the mascot has stopped moving after being thrown
     
     init(sprite:SKSpriteNode) {
         self.mascotIdentityTracker = 0
@@ -29,7 +30,7 @@ class Mascot {
         self.bounceFriction = bounceFrictionDefault
         self.fallSpeed = 0
         self.oldDy = 0
-        
+        self.didStop = false
     }
     
     //returns the POSITION we are currently in regarding the mascotIdentities array

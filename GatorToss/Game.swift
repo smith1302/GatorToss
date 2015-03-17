@@ -14,8 +14,10 @@ class Game {
     
     var points:Int
     var bounceMultiplier:[CGFloat]
+    var bestDistance:Int
     
     init() {
+        bestDistance = 0
         points = 0
         bounceMultiplier = [0.9,0.8,0.5]
     }

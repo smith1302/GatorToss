@@ -18,12 +18,15 @@ class GameScene: SKScene {
     var river1:SKSpriteNode!
     var cloud1:SKSpriteNode!
     var cloud2:SKSpriteNode!
+    var buoy:SKSpriteNode?
     //var mascot:SKSpriteNode!
     var ground:SKSpriteNode!
     var sprite:SKSpriteNode!
     var rotator:SKSpriteNode!
     let mascotSize:CGFloat = 15
     var groundWidth:CGFloat = 400
+    let riverHeight:CGFloat = 200
+    var startingPoint:CGFloat = 50
     var offsetX:CGFloat! = 0
     var offsetY:CGFloat = 0
     var runButton:UIButton!
@@ -34,12 +37,13 @@ class GameScene: SKScene {
     var bounceLabel:UILabel?
     let bounceLabelTimer:Double = 1.5
     var canBounce:Bool!
+    var distanceDivider:CGFloat = 11 // Dividing the pixel distance to meters
 
     override func didMoveToView(view: SKView) {
         
         self.size = view.bounds.size
         
-        self.backgroundColor = UIColor(red: 135/255.0, green: 187/255.0, blue: 222/255.0, alpha: 1)
+        self.backgroundColor = UIColor(hex: 0x95CBF0)
         self.physicsWorld.gravity = CGVectorMake(0, -2)
         
         // World Scene (basically our camera)
@@ -72,7 +76,8 @@ class GameScene: SKScene {
 
         // Distance label
         distanceLabel = UILabel()
-        distanceLabel.frame = CGRectMake(self.frame.size.width - 50, 0, 50, 50)
+        distanceLabel.textAlignment = .Right
+        distanceLabel.frame = CGRectMake(self.frame.size.width - 120, 0, 100, 50)
         distanceLabel.text = "0 meters"
         self.view?.addSubview(distanceLabel)
         
@@ -119,7 +124,7 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault && canBounce == true {
+        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault && canBounce == true && mascotDistance() > 0 {
             let river1Y = river1.position.y + river1.frame.height/2
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
             let distance = distanceToBounce()
@@ -154,11 +159,27 @@ class GameScene: SKScene {
         bounceLabel?.text = textForLabel
         bounceLabel!.frame = CGRectMake(self.frame.size.width/2-30, self.frame.size.height/2, 100, 150)
         self.view?.addSubview(bounceLabel!)
-        NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetText", userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(bounceLabelTimer, target: self, selector: "resetDistanceLabel", userInfo: nil, repeats: false)
     }
     
-    func resetText() {
+    func resetDistanceLabel() {
         bounceLabel?.removeFromSuperview()
+    }
+    
+    func mascotStopped() {
+        mascot1.didStop = true
+        let distanceAdjusted = mascotDistance()
+        if game.bestDistance < distanceAdjusted {
+            game.bestDistance = distanceAdjusted
+        }
+        reset()
+    }
+    
+    func mascotDistance() -> Int {
+        let mascotDistanceToSide = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
+        let distanceThrownX = mascotDistanceToSide.x - groundWidth
+        let distanceAdjusted = Int(distanceThrownX/distanceDivider)
+        return distanceAdjusted
     }
    
     override func update(currentTime: CFTimeInterval) {
@@ -180,6 +201,10 @@ class GameScene: SKScene {
         
         if distanceToBounce() > mascot1.sprite.frame.size.height*5 {
             canBounce = true
+        }
+
+        if mascot1.sprite.physicsBody?.velocity.dx <= 0 && mascot1.didStop == false && tebow.didThrow == true {
+            mascotStopped()
         }
         
         
@@ -204,27 +229,28 @@ class GameScene: SKScene {
         //moves river1 1 position at a time to left
         let river1Pos = self.convertPoint(river1.position, fromNode: world)
         if(river1Pos.x <= 0){
-            river1.position.x += river1.frame.size.width/2
+            river1.position.x += river1.scene!.frame.size.width
         }
         
         //moves clouds 1 poisiton at a time to left
         let cloud1Position = self.convertPoint(cloud1.position, fromNode: world)
-        if(cloud1Position.x <= 0){
-            //cloud1.position.x += cloud1.frame.size.width/2
-            cloud1.position.x += self.frame.size.width
+        if(cloud1Position.x <= 0 - cloud1.size.width/2){
+            cloud1.position.x += self.frame.size.width  + cloud1.size.width
             
         }
         
         //moves clouds 1 poisiton at a time to left
         let cloud2Position = self.convertPoint(cloud2.position, fromNode: world)
-        if(cloud2Position.x <= 0){
-            //cloud2.position.x += cloud2.frame.size.width/2
-            cloud2.position.x += self.frame.size.width
+        if(cloud2Position.x <= 0 - cloud2.size.width/2){
+            cloud2.position.x += self.frame.size.width + cloud2.size.width
         }
 
-        let mascotDistanceThrown = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
-        let distanceThrownX:Int = Int(mascotDistanceThrown.x)
-        distanceLabel.text = String(distanceThrownX)
+        // Distance Label
+        let mascotDistanceToSide = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
+        let distanceThrownX = mascotDistanceToSide.x - groundWidth
+        if distanceThrownX >= 0 {
+            distanceLabel.text = "\(Int(distanceThrownX/distanceDivider)) Meters"
+        }
         
         if !tebow.didThrow {
             mascot1.sprite.hidden = false
@@ -254,8 +280,9 @@ class GameScene: SKScene {
     
     func reset() {
         
-        resetText()
+        resetDistanceLabel()
         bounceLabel = UILabel()
+        distanceLabel.text = "0 Meters"
 
         canBounce = true
 
@@ -267,35 +294,17 @@ class GameScene: SKScene {
         worldGoalPos = world.position
 
         //Make clouds
-        cloud1 = SKSpriteNode(color:UIColor.whiteColor(), size: CGSizeMake(self.frame.size.width/4,self.frame.size.height/4))
-        cloud1.anchorPoint = CGPointMake(0.5, 0.5)
-        cloud1.xScale = 1
-        cloud1.yScale = 1
-        cloud1.position = CGPointMake(250, 250)
+        cloud1 = SKSpriteNode(imageNamed: "cloud1.png")
+        cloud1.xScale = 0.4
+        cloud1.yScale = 0.4
+        cloud1.position = CGPointMake(50, 275)
+        cloud1.zPosition = -2
         
-        cloud2 = SKSpriteNode(color:UIColor.whiteColor(), size: CGSizeMake(self.frame.size.width/4,self.frame.size.height/4))
-        cloud2.anchorPoint = CGPointMake(0.5, 0.5)
-        cloud2.xScale = 1
-        cloud2.yScale = 1
-        cloud2.position = CGPointMake(450, 250)
-        
-        // Make Mascot
-        let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
-        mascot.anchorPoint = CGPointMake(0.5, 0.5)
-        mascot.position = CGPointMake(mascotSize/2,mascotSize/2)
-        mascot.physicsBody = nil
-        mascot.xScale = 1
-        mascot.yScale = 1
-        mascot1 = Mascot(sprite: mascot)
-        
-        // Make a river1
-        let riverHeight:CGFloat = 200
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2, riverHeight))
-        river1.position = CGPointMake(river1.size.width/2, 0 - mascot.size.height)
-        river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
-        river1.xScale = 1
-        river1.yScale = 1
-        river1.alpha = 0.5
+        cloud2 = SKSpriteNode(imageNamed: "cloud2.png")
+        cloud2.xScale = 0.4
+        cloud2.yScale = 0.4
+        cloud2.position = CGPointMake(450, 305)
+        cloud2.zPosition = -2
         
         // Make ground
         ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
@@ -306,9 +315,26 @@ class GameScene: SKScene {
         ground.physicsBody!.dynamic = false
         
         let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(25, 55))
-        tebowSprite.position = CGPointMake(50 + tebowSprite.size.width/2, (ground.size.height/2 - ground.size.height/10) + tebowSprite.size.height/2 + 10)
+        tebowSprite.position = CGPointMake(startingPoint + tebowSprite.size.width/2, (ground.size.height/2 - ground.size.height/10) + tebowSprite.size.height/2 + 10)
         tebow = Tebow(sprite: tebowSprite)
         tebow.applyPhysicsBody()
+        
+        // Make Mascot
+        let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
+        mascot.anchorPoint = CGPointMake(0.5, 0.5)
+        mascot.position = CGPointMake(tebow.sprite.position.x + tebow.sprite.frame.width/2, mascotSize/2)
+        mascot.physicsBody = nil
+        mascot.xScale = 1
+        mascot.yScale = 1
+        mascot1 = Mascot(sprite: mascot)
+        
+        // Make a river1
+        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2 + 10, riverHeight))
+        river1.position = CGPointMake(river1.size.width/2, 0 - mascot.size.height)
+        river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
+        river1.xScale = 1
+        river1.yScale = 1
+        river1.alpha = 0.5
         
         // Make Rotator
         rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(20, 3))
@@ -322,17 +348,30 @@ class GameScene: SKScene {
         let rotateSequence = SKAction.repeatActionForever(SKAction.sequence([rotateUp, rotateDown]))
         rotator.runAction(rotateSequence, withKey: "rotateSequence")
         
+        // Make best distance buoy
+        if game.bestDistance > 0 {
+            buoy = SKSpriteNode(imageNamed: "buoy.png")
+            buoy!.xScale = 0.4
+            buoy!.yScale = 0.4
+            buoy!.position = CGPointMake(CGFloat(game.bestDistance)*distanceDivider + groundWidth, riverHeight - buoy!.size.height/2 - 14)
+            buoy!.zPosition = -1
+        }
+        
         runButton.hidden = false
         throwButton.hidden = false
         resetButton.hidden = false
         
-        world.addChild(tebowSprite)
-        tebowSprite.addChild(rotator)
         world.addChild(cloud1)
         world.addChild(cloud2)
+        if game.bestDistance > 0 {
+            world.addChild(buoy!)
+        }
+        world.addChild(tebowSprite)
+        tebowSprite.addChild(rotator)
         world.addChild(mascot)
         world.addChild(river1)
         world.addChild(ground)
+
     }
     
     func sceneRelativePosition(node:SKSpriteNode) -> CGPoint {
