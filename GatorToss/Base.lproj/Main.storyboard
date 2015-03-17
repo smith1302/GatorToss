@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kdd-Fg-94s">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
@@ -22,10 +23,28 @@
             </objects>
             <point key="canvasLocation" x="1066" y="509"/>
         </scene>
-        <!--View Controller-->
+        <!--Leader Board View Controller-->
+        <scene sceneID="cXq-Fs-oFw">
+            <objects>
+                <viewController id="MRj-hh-NSn" customClass="LeaderBoardViewController" customModule="GatorToss" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="M77-zF-AVo"/>
+                        <viewControllerLayoutGuide type="bottom" id="Sm9-fs-xl0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nQt-pf-hIN">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8lV-0l-iil" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="383.5" y="1016.5"/>
+        </scene>
+        <!--Opening View Controller-->
         <scene sceneID="6oY-Ca-R9c">
             <objects>
-                <viewController id="kdd-Fg-94s" sceneMemberID="viewController">
+                <viewController id="kdd-Fg-94s" customClass="OpeningViewController" customModule="GatorToss" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JPg-Gf-HbT"/>
                         <viewControllerLayoutGuide type="bottom" id="nMM-6R-nA0"/>
@@ -43,11 +62,30 @@
                                     <segue destination="LVB-YS-i5n" kind="show" id="DC2-hE-i9d"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJ2-pE-C33">
+                                <rect key="frame" x="289" y="235" width="89" height="30"/>
+                                <state key="normal" title="LeaderBoard">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="MRj-hh-NSn" kind="show" id="0Au-Jw-rAh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D96-MX-rPX">
+                                <rect key="frame" x="568" y="36" width="48" height="30"/>
+                                <state key="normal" title="Sign In">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="cJ2-pE-C33" firstAttribute="top" secondItem="844-I3-BEK" secondAttribute="bottom" constant="22" id="2bo-w8-z2J"/>
                             <constraint firstAttribute="centerX" secondItem="844-I3-BEK" secondAttribute="centerX" id="BYr-dw-5yq"/>
                             <constraint firstAttribute="centerY" secondItem="844-I3-BEK" secondAttribute="centerY" id="LBW-qS-AAO"/>
+                            <constraint firstItem="D96-MX-rPX" firstAttribute="top" secondItem="JPg-Gf-HbT" secondAttribute="bottom" constant="16" id="YlG-Zj-ARl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="D96-MX-rPX" secondAttribute="trailing" constant="35" id="bCw-Cc-c8z"/>
+                            <constraint firstAttribute="centerX" secondItem="cJ2-pE-C33" secondAttribute="centerX" id="fne-w6-hKQ"/>
                         </constraints>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -55,7 +93,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fai-jc-IQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="413" y="509"/>
+            <point key="canvasLocation" x="412.5" y="508.5"/>
         </scene>
     </scenes>
 </document>

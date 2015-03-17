@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		373AD05F1AB8AD9A00AB52D0 /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AD05E1AB8AD9A00AB52D0 /* OpeningViewController.swift */; };
+		373AD0611AB8AF7900AB52D0 /* LeaderBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373AD0601AB8AF7900AB52D0 /* LeaderBoardViewController.swift */; };
 		37FE12331AAF9C0100683344 /* Mascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE12321AAF9C0100683344 /* Mascot.swift */; };
 		F7CDC89E1A9525C2008FCB2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CDC89D1A9525C2008FCB2F /* AppDelegate.swift */; };
 		F7CDC8A01A9525C2008FCB2F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7CDC89F1A9525C2008FCB2F /* GameScene.sks */; };
@@ -31,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		373AD05E1AB8AD9A00AB52D0 /* OpeningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
+		373AD0601AB8AF7900AB52D0 /* LeaderBoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoardViewController.swift; sourceTree = "<group>"; };
 		37FE12321AAF9C0100683344 /* Mascot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mascot.swift; sourceTree = "<group>"; };
 		F7CDC8981A9525C1008FCB2F /* GatorToss.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GatorToss.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7CDC89C1A9525C2008FCB2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -93,6 +97,8 @@
 				F7CDC89F1A9525C2008FCB2F /* GameScene.sks */,
 				F7CDC8A11A9525C2008FCB2F /* GameScene.swift */,
 				F7CDC8A31A9525C2008FCB2F /* GameViewController.swift */,
+				373AD0601AB8AF7900AB52D0 /* LeaderBoardViewController.swift */,
+				373AD05E1AB8AD9A00AB52D0 /* OpeningViewController.swift */,
 				F7CDC8A51A9525C2008FCB2F /* Main.storyboard */,
 				F7CDC8A81A9525C2008FCB2F /* Images.xcassets */,
 				F7CDC8AA1A9525C2008FCB2F /* LaunchScreen.xib */,
@@ -247,9 +253,11 @@
 			files = (
 				37FE12331AAF9C0100683344 /* Mascot.swift in Sources */,
 				F7CDC8A21A9525C2008FCB2F /* GameScene.swift in Sources */,
+				373AD05F1AB8AD9A00AB52D0 /* OpeningViewController.swift in Sources */,
 				F7D3D6A31AAF998D00714457 /* Game.swift in Sources */,
 				F7CDC8A41A9525C2008FCB2F /* GameViewController.swift in Sources */,
 				F7CDC89E1A9525C2008FCB2F /* AppDelegate.swift in Sources */,
+				373AD0611AB8AF7900AB52D0 /* LeaderBoardViewController.swift in Sources */,
 				F7CDC8C61A953DBB008FCB2F /* Tebow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
