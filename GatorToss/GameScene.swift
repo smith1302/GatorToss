@@ -249,7 +249,7 @@ class GameScene: SKScene {
         let mascotDistanceToSide = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
         let distanceThrownX = mascotDistanceToSide.x - groundWidth
         if distanceThrownX >= 0 {
-            distanceLabel.text = "\(Int(distanceThrownX/distanceDivider)) Meters"
+            distanceLabel.text = "\(Int(distanceThrownX/distanceDivider)) Yards"
         }
         
         if !tebow.didThrow {
