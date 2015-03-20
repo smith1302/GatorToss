@@ -98,11 +98,8 @@
 				F7CDC8C41A953DA6008FCB2F /* Models */,
 				F7CDC8C11A953BD1008FCB2F /* Resources */,
 				F7CDC89D1A9525C2008FCB2F /* AppDelegate.swift */,
-<<<<<<< HEAD
 				F7D526D91AB8A9AB00240DDA /* PopupViewController.swift */,
-=======
 				373AD0641AB8B17B00AB52D0 /* CoachsCornerViewController.swift */,
->>>>>>> ba954fe961755af5f3e43ac7d733cb4759c505e9
 				F7CDC89F1A9525C2008FCB2F /* GameScene.sks */,
 				F7CDC8A11A9525C2008FCB2F /* GameScene.swift */,
 				F7CDC8A31A9525C2008FCB2F /* GameViewController.swift */,
