@@ -14,8 +14,6 @@ class Tebow {
 
     var sprite:SKSpriteNode
     var didThrow:Bool
-    var moveSpeed:CGFloat
-    var power:CGFloat
     var canThrow:Bool
     var didMove:Bool
     
@@ -24,18 +22,16 @@ class Tebow {
         self.didThrow = false
         self.canThrow = true
         self.didMove = false
-        self.moveSpeed = 3.5
-        self.power = 2
     }
     
     func getXPower(rad:CGFloat) -> CGFloat {
         let xRatio = cos(rad)
-        return self.getVelocityBonus()*power*xRatio
+        return self.getVelocityBonus()*game.power*xRatio
     }
     
     func getYPower(rad:CGFloat) -> CGFloat {
         let yRatio = sin(rad)
-        return self.getVelocityBonus()*power*yRatio
+        return self.getVelocityBonus()*game.power*yRatio
     }
     
     func getXVelocity() -> CGFloat? {

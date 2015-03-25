@@ -10,6 +10,12 @@ import UIKit
 
 class CoachsCornerViewController: UIViewController {
     
+    //arm strength - increases power
+    //calmness - slows down the arrow
+    //accuracy - makes getting perfect easier, good easier, poor harder
+    //speed - increases speed of tebow running up
+    //ability to purchase mascots - we'll worry about it later.
+    
     var titleLabel:UILabel!
     // Upgrades
     var upgradeView:UIView!
