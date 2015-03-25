@@ -16,10 +16,17 @@ class Game {
     var bounceMultiplier:[CGFloat]
     var bestDistance:Int
     
+    var power:Int
+    var accuracy:Int
+    var speed:Int
+    
     init() {
         bestDistance = 0
         points = 0
         bounceMultiplier = [0.9,0.8,0.5]
+        power = 1
+        accuracy = 1
+        speed = 1
     }
     
 }
