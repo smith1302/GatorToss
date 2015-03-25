@@ -27,7 +27,7 @@ class Game {
         power = 1
         accuracy = 1
         speed = 3.5
-        power = 2.0
+        power = 1.0
     }
     
 }
