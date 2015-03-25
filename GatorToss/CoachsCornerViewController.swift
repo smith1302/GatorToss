@@ -19,24 +19,40 @@ class CoachsCornerViewController: UIViewController {
     var titleLabel:UILabel!
     // Upgrades
     var upgradeView:UIView!
-    var power:UILabel!
-    var powerPrice:UILabel!
-    var powerButton:UIButton!
-    var accuracy:UILabel!
-    var accuracyPrice:UILabel!
-    var accuracyButton:UIButton!
-    var speed:UILabel!
-    var speedPrice:UILabel!
-    var speedButton:UIButton!
     var pointsLabel:UILabel!
     var backButton:UIButton!
+    var roundLabel:UILabel!
+    
+    //Upgrade Text
+    var power:UILabel!
+    var accuracy:UILabel!
+    var speed:UILabel!
+    var calmness:UILabel!
+    
+    // Purchase buttons
+    var powerButton:UIButton!
+    var accuracyButton:UIButton!
+    var speedButton:UIButton!
+    var calmnessButton:UIButton!
+    
+    //Pricing
+    var powerPrice:UILabel!
+    var accuracyPrice:UILabel!
+    var speedPrice:UILabel!
+    var calmnessPrice:UILabel!
+    
     
     var coachImage:UIImageView!
+    var upgradePriceLabel:[String:UILabel] = [String:UILabel]()
+    var upgradeButtons:[String:UIButton] = [String:UIButton]()
+    var upgradeLabels:[String:UILabel] = [String:UILabel]()
+    var upgrades:[String]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.whiteColor()
+        upgrades = ["Arm Strength", "Calmness", "Accuracy" , "Speed"]
 
         var startingY:CGFloat = 30
         let backButtonH:CGFloat = 24
@@ -62,6 +78,12 @@ class CoachsCornerViewController: UIViewController {
         backButton.frame.size.width = backButton.titleLabel!.frame.size.width
         backButton.addTarget(self, action: "goBack", forControlEvents: .TouchUpInside)
         
+        
+        self.view.addSubview(titleLabel)
+        self.view.addSubview(upgradeView)
+        self.view.addSubview(coachImage)
+        self.view.addSubview(backButton)
+        
         // Upgrades
         let textPadding:CGFloat = 13
         let textH:CGFloat = 19
@@ -69,80 +91,44 @@ class CoachsCornerViewController: UIViewController {
         let upgradeButtonPadding:CGFloat = 5
         startingY = 0
         
-        pointsLabel = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width, textH))
+        roundLabel = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width/2, textH))
+        roundLabel.text = "Round \(game.round)"
+        roundLabel.font = UIFont.systemFontOfSize(textH)
+        roundLabel.textAlignment = .Left
+        
+        pointsLabel = UILabel(frame: CGRectMake(upgradeView.frame.width/2, startingY, upgradeView.frame.width/2, textH))
         pointsLabel.text = "\(game.points) points"
         pointsLabel.font = UIFont.systemFontOfSize(textH)
         pointsLabel.textAlignment = .Right
         
         startingY += textH + textPadding
-        power = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width, textH))
-        power.text = "Power: \(game.power)"
-        power.font = UIFont.systemFontOfSize(textH)
         
-        powerPrice = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
-        powerPrice.text = "\(scalePrice(game.power))"
-        powerPrice.font = UIFont.systemFontOfSize(textH)
-        powerPrice.textColor = UIColor(hex: 0x1AB000)
-        powerPrice.textAlignment = .Right
+        for key in upgrades {
+            upgradeLabels[key] = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width, textH))
+            upgradeLabels[key]?.text = "\(key): \(game.nameToVar[key]!)"
+            upgradeLabels[key]?.font = UIFont.systemFontOfSize(textH)
+            
+            upgradePriceLabel[key] = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
+            upgradePriceLabel[key]?.text = "$\(scalePrice(game.nameToVar[key]!))"
+            upgradePriceLabel[key]?.font = UIFont.systemFontOfSize(textH)
+            upgradePriceLabel[key]?.textColor = UIColor(hex: 0x1AB000)
+            upgradePriceLabel[key]?.textAlignment = .Right
+            
+            upgradeButtons[key] = UIButton(frame: CGRectMake(upgradeView.frame.width - upgradePriceLabel[key]!.frame.width - upgradeButtonPadding, startingY, textH, textH))
+            upgradeButtons[key]?.setTitle("+", forState: UIControlState.Normal)
+            upgradeButtons[key]?.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+            upgradeButtons[key]?.titleLabel?.textAlignment = .Right
+            upgradeButtons[key]?.titleLabel?.font = UIFont.boldSystemFontOfSize(textH)
+            upgradeButtons[key]?.addTarget(self, action: "upgradePressed:", forControlEvents: .TouchUpInside)
+            startingY += textH + textPadding
+            
+            upgradeView.addSubview(upgradeLabels[key]!)
+            upgradeView.addSubview(upgradePriceLabel[key]!)
+            upgradeView.addSubview(upgradeButtons[key]!)
+        }
         
-        powerButton = UIButton(frame: CGRectMake(upgradeView.frame.width - powerPrice.frame.width - upgradeButtonPadding, startingY, textH, textH))
-        powerButton.setTitle("+", forState: UIControlState.Normal)
-        powerButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        powerButton.titleLabel?.textAlignment = .Right
-        powerButton.titleLabel?.font = UIFont.boldSystemFontOfSize(textH)
-        powerButton.addTarget(self, action: "upgradePressed:", forControlEvents: .TouchUpInside)
-        
-        startingY += textH + textPadding
-        accuracy = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width, textH))
-        accuracy.text = "Accuracy: \(game.accuracy)"
-        accuracy.font = UIFont.systemFontOfSize(textH)
-        
-        accuracyPrice = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
-        accuracyPrice.text = "\(scalePrice(game.accuracy))"
-        accuracyPrice.font = UIFont.systemFontOfSize(textH)
-        accuracyPrice.textColor = UIColor(hex: 0x1AB000)
-        accuracyPrice.textAlignment = .Right
-        
-        accuracyButton = UIButton(frame: CGRectMake(upgradeView.frame.width - powerPrice.frame.width - upgradeButtonPadding, startingY, textH, textH))
-        accuracyButton.setTitle("+", forState: UIControlState.Normal)
-        accuracyButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        accuracyButton.titleLabel?.textAlignment = .Right
-        accuracyButton.titleLabel?.font = UIFont.boldSystemFontOfSize(textH)
-        accuracyButton.addTarget(self, action: "upgradePressed:", forControlEvents: .TouchUpInside)
-        
-        startingY += textH + textPadding
-        speed = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width, textH))
-        speed.text = "Speed: \(game.speed)"
-        speed.font = UIFont.systemFontOfSize(textH)
-        
-        speedPrice = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
-        speedPrice.text = "\(scalePrice(game.speed))"
-        speedPrice.font = UIFont.systemFontOfSize(textH)
-        speedPrice.textColor = UIColor(hex: 0x1AB000)
-        speedPrice.textAlignment = .Right
-        
-        speedButton = UIButton(frame: CGRectMake(upgradeView.frame.width - powerPrice.frame.width - upgradeButtonPadding, startingY, textH, textH))
-        speedButton.setTitle("+", forState: UIControlState.Normal)
-        speedButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        speedButton.titleLabel?.textAlignment = .Right
-        speedButton.titleLabel?.font = UIFont.boldSystemFontOfSize(textH)
-        speedButton.addTarget(self, action: "upgradePressed:", forControlEvents: .TouchUpInside)
-        
-        self.view.addSubview(titleLabel)
-        self.view.addSubview(upgradeView)
-        self.view.addSubview(coachImage)
-        self.view.addSubview(backButton)
-        
+        upgradeView.addSubview(roundLabel)
         upgradeView.addSubview(pointsLabel)
-        upgradeView.addSubview(power)
-        upgradeView.addSubview(accuracy)
-        upgradeView.addSubview(speed)
-        upgradeView.addSubview(powerButton)
-        upgradeView.addSubview(accuracyButton)
-        upgradeView.addSubview(speedButton)
-        upgradeView.addSubview(powerPrice)
-        upgradeView.addSubview(accuracyPrice)
-        upgradeView.addSubview(speedPrice)
         
         //Navigation Controller
         self.navigationController?.navigationBarHidden = true
@@ -160,27 +146,29 @@ class CoachsCornerViewController: UIViewController {
     }
     
     func upgradePressed(button:UIButton) {
-        if button == powerButton && game.points >= scalePrice(game.power) {
+        if button == upgradeButtons["Arm Strength"] && game.points >= scalePrice(game.nameToVar["Arm Strength"]!) {
             game.power++
-            game.points -= scalePrice(game.power)
-        } else if button == accuracyButton && game.points >= scalePrice(game.accuracy) {
+            game.points -= scalePrice(game.power-1)
+        } else if button == upgradeButtons["Accuracy"] && game.points >= scalePrice(game.nameToVar["Accuracy"]!) {
             game.accuracy++
-            game.points -= scalePrice(game.accuracy)
-        } else if button == speedButton && game.points >= scalePrice(game.speed) {
+            game.points -= scalePrice(game.accuracy-1)
+        } else if button == upgradeButtons["Speed"] && game.points >= scalePrice(game.nameToVar["Speed"]!) {
             game.speed++
-            game.points -= scalePrice(game.speed)
+            game.points -= scalePrice(game.speed-1)
+        } else if button == upgradeButtons["Calmness"] && game.points >= scalePrice(game.nameToVar["Calmness"]!) {
+            game.calmness++
+            game.points -= scalePrice(game.calmness-1)
         }
         updateText()
     }
     
     func updateText() {
         pointsLabel.text = "\(game.points) points"
-        accuracy.text = "Accuracy: \(Int(game.accuracy))"
-        power.text = "Power: \(Int(game.power))"
-        speed.text = "Speed: \(Int(game.speed))"
-        powerPrice.text = "\(scalePrice(game.power))"
-        accuracyPrice.text = "\(scalePrice(game.accuracy))"
-        speedPrice.text = "\(scalePrice(game.speed))"
+        
+        for (key, value) in upgradeLabels {
+            upgradeLabels[key]?.text = "\(key): \(game.nameToVar[key]!)"
+            upgradePriceLabel[key]?.text = "$\(scalePrice(game.nameToVar[key]!))"
+        }
     }
     
     func scalePrice(unit:CGFloat) -> Int {

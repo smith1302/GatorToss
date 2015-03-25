@@ -174,6 +174,7 @@ class GameScene: SKScene {
         if game.bestDistance < distanceAdjusted {
             game.bestDistance = distanceAdjusted
         }
+        game.round++
         //reset()
         popUpController = PopupViewController(distance: game.bestDistance)
         popUpController!.gameDelegate = self
