@@ -94,7 +94,7 @@ class GameScene: SKScene {
     
     //when runButton is clicked
     func runButtonClicked() {
-        tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(tebow.moveSpeed, 0))
+        tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(game.speed, 0))
         rotator.removeActionForKey("rotateSequence")
         tebow.didMove = true
     }
