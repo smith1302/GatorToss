@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import SpriteKit
-import Darwin
 
 class Tebow {
 

@@ -94,7 +94,7 @@ class GameScene: SKScene {
     
     //when runButton is clicked
     func runButtonClicked() {
-        tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(game.speed, 0))
+        tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(log10(game.speed)+3.0, 0))
         rotator.removeActionForKey("rotateSequence")
         tebow.didMove = true
     }
@@ -132,17 +132,25 @@ class GameScene: SKScene {
             let distance = distanceToBounce()
             let mascotHeight = mascot1.sprite.frame.size.height
             
-            
-            if distance < mascotHeight {
+            if distance < mascotHeight/3.50 {
                 mascot1.bounceFriction = game.bounceMultiplier[0]
-                println("Perfect")
+                println("PERFECT!")
                 addBounceLabel("PERFECT!")
-            } else if distance < mascotHeight*3 {
+            }
+            else if distance < mascotHeight * 1.5 {
                 mascot1.bounceFriction = game.bounceMultiplier[1]
+                println("Very Good!")
+                addBounceLabel("Very Good!")
+            } else if distance < mascotHeight*2.5 {
+                mascot1.bounceFriction = game.bounceMultiplier[2]
                 println("Good")
                 addBounceLabel("Good")
-            } else if distance < mascotHeight*5 {
-                mascot1.bounceFriction = game.bounceMultiplier[2]
+            } else if distance < mascotHeight*4.0 {
+                mascot1.bounceFriction = game.bounceMultiplier[3]
+                println("OK")
+                addBounceLabel("OK")
+            } else if distance < mascotHeight*5.0{
+                mascot1.bounceFriction = game.bounceMultiplier[4]
                 println("Poor")
                 addBounceLabel("Poor")
             }

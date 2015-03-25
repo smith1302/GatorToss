@@ -23,10 +23,10 @@ class Game {
     init() {
         bestDistance = 0
         points = 0
-        bounceMultiplier = [0.9,0.8,0.5]
+        bounceMultiplier = [0.98,0.9,0.8,0.65,0.5]
         power = 1
         accuracy = 1
-        speed = 3.5
+        speed = 1.0
         power = 1.0
     }
     
