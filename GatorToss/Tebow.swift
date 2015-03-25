@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SpriteKit
+import Darwin
 
 class Tebow {
 
@@ -26,12 +27,12 @@ class Tebow {
     
     func getXPower(rad:CGFloat) -> CGFloat {
         let xRatio = cos(rad)
-        return self.getVelocityBonus()*game.power*xRatio
+        return self.getVelocityBonus()*(2*log10(game.power) + 2)*xRatio
     }
     
     func getYPower(rad:CGFloat) -> CGFloat {
         let yRatio = sin(rad)
-        return self.getVelocityBonus()*game.power*yRatio
+        return self.getVelocityBonus()*(2*log10(game.power) + 2) * yRatio
     }
     
     func getXVelocity() -> CGFloat? {
