@@ -39,6 +39,7 @@ class GameScene: SKScene {
     var canBounce:Bool!
     var distanceDivider:CGFloat = 11 // Dividing the pixel distance to meters
     var popUpController:PopupViewController?
+    var gameViewController:GameViewController!
 
     override func didMoveToView(view: SKView) {
         
@@ -285,6 +286,10 @@ class GameScene: SKScene {
     
     func reset() {
         
+        if popUpController != nil {
+            popUpController!.view.removeFromSuperview()
+        }
+        
         resetDistanceLabel()
         bounceLabel = UILabel()
         distanceLabel.text = "0 Yards"
@@ -400,6 +405,12 @@ class GameScene: SKScene {
         if worldGoalPos.y > 0 {
             worldGoalPos.y = 0;
         }
+    }
+    
+    func goToCoachsCorner() {
+        let coachsCorner = CoachsCornerViewController()
+        gameViewController.navigationController?.pushViewController(coachsCorner, animated: true)
+        self.reset()
     }
     
 }

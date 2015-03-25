@@ -98,11 +98,10 @@ class PopupViewController: UIViewController {
     
     func resumePlay() {
         gameDelegate?.reset()
-        self.view.removeFromSuperview()
     }
     
     func upgradePressed() {
-        
+        gameDelegate?.goToCoachsCorner()
     }
     
     func calculatePoints(distance:Int) -> Int {

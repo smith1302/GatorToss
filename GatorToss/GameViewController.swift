@@ -30,6 +30,8 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.navigationController?.navigationBarHidden = true
+        
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
             let skView = self.view as SKView
@@ -41,7 +43,7 @@ class GameViewController: UIViewController {
             
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .AspectFill
-            
+            scene.gameViewController = self
             skView.presentScene(scene)
         }
     }
