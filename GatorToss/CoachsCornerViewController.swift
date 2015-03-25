@@ -14,10 +14,13 @@ class CoachsCornerViewController: UIViewController {
     // Upgrades
     var upgradeView:UIView!
     var power:UILabel!
+    var powerPrice:UILabel!
     var powerButton:UIButton!
     var accuracy:UILabel!
+    var accuracyPrice:UILabel!
     var accuracyButton:UIButton!
     var speed:UILabel!
+    var speedPrice:UILabel!
     var speedButton:UIButton!
     var pointsLabel:UILabel!
     var backButton:UIButton!
@@ -56,6 +59,7 @@ class CoachsCornerViewController: UIViewController {
         // Upgrades
         let textPadding:CGFloat = 13
         let textH:CGFloat = 19
+        let priceW:CGFloat = 50
         startingY = 0
         
         pointsLabel = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width, textH))
@@ -68,7 +72,13 @@ class CoachsCornerViewController: UIViewController {
         power.text = "Power: \(game.power)"
         power.font = UIFont.systemFontOfSize(textH)
         
-        powerButton = UIButton(frame: CGRectMake(upgradeView.frame.width - 20, startingY, textPadding, textH))
+        powerPrice = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
+        powerPrice.text = "$10"
+        powerPrice.font = UIFont.systemFontOfSize(textH)
+        powerPrice.textColor = UIColor(hex: 0x1AB000)
+        powerPrice.textAlignment = .Right
+        
+        powerButton = UIButton(frame: CGRectMake(upgradeView.frame.width - powerPrice.frame.width - 15, startingY, textPadding, textH))
         powerButton.setTitle("+", forState: UIControlState.Normal)
         powerButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         powerButton.titleLabel?.textAlignment = .Right
@@ -80,7 +90,13 @@ class CoachsCornerViewController: UIViewController {
         accuracy.text = "Accuracy: \(game.accuracy)"
         accuracy.font = UIFont.systemFontOfSize(textH)
         
-        accuracyButton = UIButton(frame: CGRectMake(upgradeView.frame.width - 20, startingY, textPadding, textH))
+        accuracyPrice = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
+        accuracyPrice.text = "$10"
+        accuracyPrice.font = UIFont.systemFontOfSize(textH)
+        accuracyPrice.textColor = UIColor(hex: 0x1AB000)
+        accuracyPrice.textAlignment = .Right
+        
+        accuracyButton = UIButton(frame: CGRectMake(upgradeView.frame.width - powerPrice.frame.width - 15, startingY, textPadding, textH))
         accuracyButton.setTitle("+", forState: UIControlState.Normal)
         accuracyButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         accuracyButton.titleLabel?.textAlignment = .Right
@@ -92,7 +108,13 @@ class CoachsCornerViewController: UIViewController {
         speed.text = "Speed: \(game.speed)"
         speed.font = UIFont.systemFontOfSize(textH)
         
-        speedButton = UIButton(frame: CGRectMake(upgradeView.frame.width - 20, startingY, textPadding, textH))
+        speedPrice = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
+        speedPrice.text = "$10"
+        speedPrice.font = UIFont.systemFontOfSize(textH)
+        speedPrice.textColor = UIColor(hex: 0x1AB000)
+        speedPrice.textAlignment = .Right
+        
+        speedButton = UIButton(frame: CGRectMake(upgradeView.frame.width - powerPrice.frame.width - 15, startingY, textPadding, textH))
         speedButton.setTitle("+", forState: UIControlState.Normal)
         speedButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
         speedButton.titleLabel?.textAlignment = .Right
@@ -111,6 +133,7 @@ class CoachsCornerViewController: UIViewController {
         upgradeView.addSubview(powerButton)
         upgradeView.addSubview(accuracyButton)
         upgradeView.addSubview(speedButton)
+        upgradeView.addSubview(powerPrice)
         
         //Navigation Controller
         self.navigationController?.navigationBarHidden = true
@@ -147,6 +170,11 @@ class CoachsCornerViewController: UIViewController {
         accuracy.text = "Accuracy: \(game.accuracy)"
         power.text = "Power: \(game.power)"
         speed.text = "Speed: \(game.speed)"
+        powerPrice.text =
+    }
+    
+    func scalePrice(unit:CGFloat) -> CGFloat {
+        return unit*6
     }
     
 
