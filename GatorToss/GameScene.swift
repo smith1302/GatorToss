@@ -7,6 +7,8 @@
 //
 
 import SpriteKit
+import QuartzCore
+import UIKit
 
 let friction:CGFloat = 0.25
 
@@ -15,17 +17,20 @@ class GameScene: SKScene {
     var world:SKNode!
     var tebow:Tebow!
     var mascot1:Mascot!
+    var clouds:[SKSpriteNode] = [SKSpriteNode]()
     var river1:SKSpriteNode!
     var cloud1:SKSpriteNode!
     var cloud2:SKSpriteNode!
+    var gradNode:SKSpriteNode!
     var buoy:SKSpriteNode?
     //var mascot:SKSpriteNode!
     var ground:SKSpriteNode!
+    var groundArt:Ground!
     var sprite:SKSpriteNode!
     var rotator:SKSpriteNode!
     let mascotSize:CGFloat = 15
     var groundWidth:CGFloat = 400
-    let riverHeight:CGFloat = 200
+    var riverHeight:CGFloat!
     var startingPoint:CGFloat = 50
     var offsetX:CGFloat! = 0
     var offsetY:CGFloat = 0
@@ -35,46 +40,60 @@ class GameScene: SKScene {
     var distanceLabel:UILabel!
     var worldGoalPos:CGPoint!
     var bounceLabel:UILabel?
+    let spaceColor:UIColor = UIColor(hex: 0x32394F)
     let bounceLabelTimer:Double = 1.5
     var canBounce:Bool!
     var distanceDivider:CGFloat = 11 // Dividing the pixel distance to meters
     var popUpController:PopupViewController?
     var gameViewController:GameViewController!
+    
+    let waterGravity:CGFloat = -0.5
+    let airGravity:CGFloat = -2
 
     override func didMoveToView(view: SKView) {
         
         self.size = view.bounds.size
+        self.backgroundColor = spaceColor
         
-        self.backgroundColor = UIColor(hex: 0x95CBF0)
-        self.physicsWorld.gravity = CGVectorMake(0, -2)
+        self.physicsWorld.gravity = CGVectorMake(0, airGravity)
         
         // World Scene (basically our camera)
         world = SKNode()
         self.addChild(world)
         
         //Make running button
-        let runButtonSize:CGFloat = 70
-        runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - runButtonSize - 25, runButtonSize, runButtonSize))
-        runButton.layer.cornerRadius = runButtonSize/2
+        let buttonSize:CGFloat = 80
+        runButton = UIButton(frame: CGRectMake(25, self.view!.frame.size.height - buttonSize - 25, buttonSize, buttonSize))
+        runButton.setImage(UIImage(named: "running"), forState: .Normal)
+        runButton.layer.cornerRadius = buttonSize/2
+        runButton.layer.borderWidth = 4
+        runButton.layer.borderColor = UIColor(hex: 0xEDA745).CGColor
         runButton.backgroundColor = UIColor(hex: 0xFFBE63)
-        runButton.addTarget(self, action: "runButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
+        runButton.addTarget(self, action: "buttonDown:", forControlEvents: UIControlEvents.TouchDown)
+        runButton.addTarget(self, action: "buttonUp:", forControlEvents: UIControlEvents.TouchUpOutside)
+        runButton.addTarget(self, action: "runButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+        runButton.imageEdgeInsets = UIEdgeInsetsMake(21,21,21,21)
         self.view?.addSubview(runButton)
         
         //Make throwing button
-        let throwButtonSize:CGFloat = 70
-        throwButton = UIButton(frame: CGRectMake(self.view!.frame.size.width-throwButtonSize-25, self.view!.frame.size.height - throwButtonSize - 25, throwButtonSize, throwButtonSize))
-        throwButton.layer.cornerRadius = throwButtonSize/2
+        throwButton = UIButton(frame: CGRectMake(self.view!.frame.size.width-buttonSize-25, self.view!.frame.size.height - buttonSize - 25, buttonSize, buttonSize))
+        throwButton.setImage(UIImage(named: "football"), forState: .Normal)
+        throwButton.layer.cornerRadius = buttonSize/2
+        throwButton.layer.borderWidth = 4
+        throwButton.layer.borderColor = UIColor(hex: 0xEDA745).CGColor
         throwButton.backgroundColor = UIColor(hex: 0xFFBE63)
+        throwButton.addTarget(self, action: "buttonDown:", forControlEvents: UIControlEvents.TouchDown)
+        throwButton.addTarget(self, action: "buttonUp:", forControlEvents: UIControlEvents.TouchUpOutside)
         throwButton.addTarget(self, action: "throwButtonClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+        throwButton.imageEdgeInsets = UIEdgeInsetsMake(21,21,21,21)
         self.view?.addSubview(throwButton)
 
         //make reset button
-        let resetButtonSize:CGFloat = 70
-        resetButton = UIButton(frame: CGRectMake(self.view!.frame.size.width-resetButtonSize-25, self.view!.frame.size.height - resetButtonSize - 225, resetButtonSize, resetButtonSize))
-        resetButton.layer.cornerRadius = throwButtonSize/2
+        resetButton = UIButton(frame: CGRectMake(self.view!.frame.size.width-buttonSize-25, self.view!.frame.size.height - buttonSize - 225, buttonSize, buttonSize))
+        resetButton.layer.cornerRadius = buttonSize/2
         resetButton.backgroundColor = UIColor(hex:0xFFBE63)
         resetButton.addTarget(self, action: "resetButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view?.addSubview(resetButton)
+        //self.view?.addSubview(resetButton)
 
         // Distance label
         distanceLabel = UILabel()
@@ -92,11 +111,22 @@ class GameScene: SKScene {
         reset()
     }
     
+    func buttonDown(button:UIButton) {
+        button.transform = CGAffineTransformMakeScale(1.1, 1.1)
+        button.alpha = 0.6
+    }
+    
+    func buttonUp(button:UIButton) {
+        button.transform = CGAffineTransformMakeScale(1, 1)
+        button.alpha = 1
+    }
+    
     //when runButton is clicked
-    func runButtonClicked() {
+    func runButtonClicked(button:UIButton) {
         tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(log10(game.speed)+3.0, 0))
         rotator.removeActionForKey("rotateSequence")
         tebow.didMove = true
+        buttonUp(button)
     }
     
     //when throwButton is clicked
@@ -121,6 +151,7 @@ class GameScene: SKScene {
         // Make the water a physics block
         river1.physicsBody = SKPhysicsBody(rectangleOfSize: river1.size)
         river1.physicsBody!.dynamic = false
+        buttonUp(Button)
 
     }
     
@@ -183,11 +214,17 @@ class GameScene: SKScene {
             game.bestDistance = distanceAdjusted
         }
         game.round++
-        //reset()
-        popUpController = PopupViewController(distance: game.bestDistance)
-        popUpController!.gameDelegate = self
-        popUpController!.view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
-        self.view?.addSubview(popUpController!.view)
+        self.physicsWorld.gravity = CGVectorMake(0, waterGravity)
+        river1.physicsBody = nil
+        
+        let delay = 1.3 * Double(NSEC_PER_SEC)
+        var time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            self.popUpController = PopupViewController(distance: distanceAdjusted)
+            self.popUpController!.gameDelegate = self
+            self.popUpController!.view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)
+            self.view?.addSubview(self.popUpController!.view)
+        })
     }
     
     func mascotDistance() -> Int {
@@ -207,6 +244,7 @@ class GameScene: SKScene {
             }
         }
         
+        // Do the bounce
         if let mascotYVel = mascot1.sprite.physicsBody?.velocity.dy {
             if mascot1.oldDy < 0 && mascotYVel >= 0 {
                 mascot1.sprite.physicsBody?.velocity.dy = (mascot1.fallSpeed * -1)*mascot1.bounceFrictionDefault
@@ -218,7 +256,7 @@ class GameScene: SKScene {
             canBounce = true
         }
 
-        if mascot1.sprite.physicsBody?.velocity.dx <= 0 && mascot1.didStop == false && tebow.didThrow == true {
+        if mascot1.sprite.physicsBody?.velocity.dx <= 1 && mascot1.sprite.physicsBody?.velocity.dy <= 1 && mascot1.didStop == false && tebow.didThrow == true {
             mascotStopped()
         }
         
@@ -230,7 +268,7 @@ class GameScene: SKScene {
             if mascot1.sprite.physicsBody?.velocity.dy > 0 {
                 var newSpeed = mascot1.fallSpeed * mascot1.bounceFriction * -1
                 mascot1.sprite.physicsBody!.velocity.dy = newSpeed
-                mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake(mascot1.bounceFriction, 0))
+                mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake((mascot1.bounceFriction * newSpeed)*0.005, 0))
                 mascot1.bounceFriction = mascot1.bounceFrictionDefault
             }
         }
@@ -247,17 +285,19 @@ class GameScene: SKScene {
             river1.position.x += river1.scene!.frame.size.width
         }
         
-        //moves clouds 1 poisiton at a time to left
-        let cloud1Position = self.convertPoint(cloud1.position, fromNode: world)
-        if(cloud1Position.x <= 0 - cloud1.size.width/2){
-            cloud1.position.x += self.frame.size.width  + cloud1.size.width
-            
+        //moves background 1 position at a time to left
+        let gradNodePos = self.convertPoint(gradNode.position, fromNode: world)
+        if(gradNodePos.x <= 0){
+            gradNode.position.x += gradNode.scene!.frame.size.width
         }
         
         //moves clouds 1 poisiton at a time to left
-        let cloud2Position = self.convertPoint(cloud2.position, fromNode: world)
-        if(cloud2Position.x <= 0 - cloud2.size.width/2){
-            cloud2.position.x += self.frame.size.width + cloud2.size.width
+        for cloud in clouds {
+            let cloudPosition = self.convertPoint(cloud.position, fromNode: world)
+            if(cloudPosition.x <= 0 - cloud.size.width/2){
+                cloud.position.x += self.frame.size.width + cloud.size.width
+                
+            }
         }
 
         // Distance Label
@@ -294,7 +334,7 @@ class GameScene: SKScene {
     }
     
     func reset() {
-        
+        self.physicsWorld.gravity = CGVectorMake(0, airGravity)
         if popUpController != nil {
             popUpController!.view.removeFromSuperview()
         }
@@ -311,30 +351,45 @@ class GameScene: SKScene {
         
         world.position = CGPointMake(0, 0)
         worldGoalPos = world.position
+        
+        //make gradient background
+        let gradHRatio:CGFloat = 9
+        UIGraphicsBeginImageContext(CGSizeMake(self.frame.size.width*2.5, self.frame.size.height*gradHRatio))
+        let context = UIGraphicsGetCurrentContext()
+        let gradient : CAGradientLayer = CAGradientLayer()
+        let arrayColors: [AnyObject] = [
+            spaceColor.CGColor,
+            UIColor(hex: 0xACDCFC).CGColor
+        ]
+        gradient.frame = CGRectMake(0, 0, self.frame.size.width*2.5, self.frame.size.height*gradHRatio)
+        gradient.colors = arrayColors
+        gradient.renderInContext(context)
+        let gradImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        let texture = SKTexture(CGImage: gradImage.CGImage)
+        gradNode = SKSpriteNode(texture: texture)
+        gradNode.position = CGPointMake(gradNode.size.width/2, gradNode.size.height/2)
 
         //Make clouds
-        cloud1 = SKSpriteNode(imageNamed: "cloud1.png")
-        cloud1.xScale = 0.4
-        cloud1.yScale = 0.4
-        cloud1.position = CGPointMake(50, 275)
-        cloud1.zPosition = -2
-        
-        cloud2 = SKSpriteNode(imageNamed: "cloud2.png")
-        cloud2.xScale = 0.4
-        cloud2.yScale = 0.4
-        cloud2.position = CGPointMake(450, 305)
-        cloud2.zPosition = -2
+        makeCloud(50, y: 240, alpha: 1)
+        makeCloud(450, y: 350, alpha: 1)
+        makeCloud(20, y: 790, alpha: 0.8)
+        makeCloud(400, y: 920, alpha: 0.8)
         
         // Make ground
-        ground = SKSpriteNode(color: UIColor.greenColor(), size: CGSizeMake(groundWidth, self.frame.size.height))
-        ground.position = CGPointMake(ground.size.width/2, -1*ground.size.height/10)
+        ground = SKSpriteNode(imageNamed: "ground.fw.png")
+        // if the grounds height is bigger than half the screen, move it down until it fills half the screen
+        let groundRemainderH = (ground.size.height - self.frame.size.height/2)
+        let groundPosition = (groundRemainderH > 0) ? (groundRemainderH + self.frame.size.height/20): 0
+        ground.anchorPoint = CGPointMake(0.5, 0.45)
+        ground.position = CGPointMake(ground.size.width/2, ground.size.height/2 - groundPosition)
         ground.xScale = 1
         ground.yScale = 1
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
         ground.physicsBody!.dynamic = false
         
         let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(25, 55))
-        tebowSprite.position = CGPointMake(startingPoint + tebowSprite.size.width/2, (ground.size.height/2 - ground.size.height/10) + tebowSprite.size.height/2 + 10)
+        tebowSprite.position = CGPointMake(startingPoint + tebowSprite.size.width/2, ground.size.height + tebowSprite.size.height/2 + 10)
         tebow = Tebow(sprite: tebowSprite)
         tebow.applyPhysicsBody()
         
@@ -348,12 +403,13 @@ class GameScene: SKScene {
         mascot1 = Mascot(sprite: mascot)
         
         // Make a river1
-        river1 = SKSpriteNode(color:UIColor.blueColor(), size: CGSizeMake(self.frame.size.width*2 + 10, riverHeight))
-        river1.position = CGPointMake(river1.size.width/2, 0 - mascot.size.height)
+        riverHeight = self.frame.size.height/4.5
+        river1 = SKSpriteNode(color:UIColor(hex: 0x138BED), size: CGSizeMake(self.frame.size.width*2 + 10, riverHeight))
+        river1.position = CGPointMake(river1.size.width/2, river1.size.height/2 - mascot.size.height)
         river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
         river1.xScale = 1
         river1.yScale = 1
-        river1.alpha = 0.5
+        river1.alpha = 0.7
         
         // Make Rotator
         rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(20, 3))
@@ -372,25 +428,50 @@ class GameScene: SKScene {
             buoy = SKSpriteNode(imageNamed: "buoy.png")
             buoy!.xScale = 0.4
             buoy!.yScale = 0.4
-            buoy!.position = CGPointMake(CGFloat(game.bestDistance)*distanceDivider + groundWidth, riverHeight - buoy!.size.height/2 - 14)
+            buoy!.position = CGPointMake(CGFloat(game.bestDistance)*distanceDivider + groundWidth, riverHeight + buoy!.size.height/2 - 23)
             buoy!.zPosition = -1
         }
         
         runButton.hidden = false
         throwButton.hidden = false
         resetButton.hidden = false
-        
-        world.addChild(cloud1)
-        world.addChild(cloud2)
+    
         if game.bestDistance > 0 {
             world.addChild(buoy!)
         }
-        world.addChild(tebowSprite)
         tebowSprite.addChild(rotator)
+        world.addChild(gradNode)
+        world.addChild(ground)
         world.addChild(mascot)
         world.addChild(river1)
-        world.addChild(ground)
+        world.addChild(tebowSprite)
+        
+        gradNode.zPosition = -10
+        river1.zPosition = 10
+        tebowSprite.zPosition = 9
+        mascot.zPosition = 8
+        ground.zPosition = 7
 
+    }
+    
+    func makeCloud(x:CGFloat, y:CGFloat, alpha:CGFloat) {
+        // 0 - n-1
+        let diceRoll = Int(arc4random_uniform(2))
+        var cloud:SKSpriteNode!
+        if diceRoll == 0 {
+            cloud = SKSpriteNode(imageNamed: "cloud1.png")
+        } else {
+            cloud = SKSpriteNode(imageNamed: "cloud2.png")
+        }
+        let randomNum = arc4random_uniform(15)
+        let scale = 0.35 + CGFloat(randomNum/100)
+        cloud.xScale = scale
+        cloud.yScale = scale
+        cloud.position = CGPointMake(x, y)
+        cloud.zPosition = -2
+        cloud.alpha = alpha
+        clouds.append(cloud)
+        world.addChild(cloud)
     }
     
     func sceneRelativePosition(node:SKSpriteNode) -> CGPoint {

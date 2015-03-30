@@ -20,6 +20,7 @@ class Mascot {
     var bounceFriction:CGFloat
     var oldDy:CGFloat
     var didStop:Bool // boolean that signals if the mascot has stopped moving after being thrown
+    var distanceTraveledInterval:CGFloat! // used as a counter to generate background objects (clouds) every so often
     
     init(sprite:SKSpriteNode) {
         self.mascotIdentityTracker = 0
@@ -30,6 +31,7 @@ class Mascot {
         self.bounceFriction = bounceFrictionDefault
         self.fallSpeed = 0
         self.oldDy = 0
+        self.distanceTraveledInterval = 0
         self.didStop = false
     }
     

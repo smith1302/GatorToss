@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import GameKit
 
-class PopupViewController: UIViewController {
+class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     
     var popUp: UIView!
     var continueButton:UIButton!
     var upgradeButton:UIButton!
+    var leaderboardButton: UIButton!
     var leagueLabel:UILabel!
+    var bestLabel:UILabel!
     var distanceLabel:UILabel!
     var chasingLabel:UILabel!
     var pointsLabel:UILabel!
@@ -40,14 +43,16 @@ class PopupViewController: UIViewController {
         var buttonPadding:CGFloat = 20
         var popUpH:CGFloat = screenHeight - paddingY*2 - buttonH - buttonPadding
         var popUpW:CGFloat = screenWidth - paddingX*2
-        var buttonW:CGFloat = popUpW/2 - buttonPadding/2
         
         popUp = UIView(frame: CGRectMake(paddingX, paddingY, popUpW, popUpH))
         popUp.backgroundColor = UIColor(hex: 0xFFEAB8)
         popUp.layer.cornerRadius = 9
         popUp.layer.borderColor = UIColor(hex:0xF5DB9F).CGColor
-        popUp.layer.borderWidth = 6
+        popUp.layer.borderWidth = 5
         self.view.addSubview(popUp)
+        
+        let numButtons:CGFloat = 3
+        let buttonW:CGFloat =  (popUpW - (numButtons-1)*buttonPadding)/numButtons
         
         continueButton = UIButton(frame: CGRectMake(paddingX, popUpH + paddingY + buttonPadding, buttonW, buttonH))
         continueButton.backgroundColor = UIColor(hex: 0xFFEAB8)
@@ -66,6 +71,14 @@ class PopupViewController: UIViewController {
         upgradeButton.addTarget(self, action: "upgradePressed", forControlEvents: UIControlEvents.TouchUpInside)
         self.view.addSubview(upgradeButton)
         
+        leaderboardButton = UIButton(frame: CGRectMake(paddingX + buttonW*2 + buttonPadding*2, popUpH + paddingY + buttonPadding, buttonW, buttonH))
+        leaderboardButton.backgroundColor = UIColor(hex: 0xFFEAB8)
+        leaderboardButton.layer.cornerRadius = 6
+        leaderboardButton.setTitle("Leaderboard", forState: .Normal)
+        leaderboardButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
+        leaderboardButton.addTarget(self, action: "leaderboardPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(leaderboardButton)
+        
         var startingY:CGFloat = 20
         let titleH:CGFloat = 20
         let title = UILabel(frame: CGRectMake(0, startingY, popUpW, titleH))
@@ -83,11 +96,18 @@ class PopupViewController: UIViewController {
         distanceLabel.text = "Distance: \(distance) Yards"
         popUp.addSubview(distanceLabel)
         
+        startingY += titleH+20
+        bestLabel = UILabel(frame: CGRectMake(sideInnerPadding, startingY, popUpW, labelH))
+        bestLabel.text = "Best: \(game.bestDistance) Yards"
+        popUp.addSubview(bestLabel)
+        
         startingY += labelH+20
         pointsLabel = UILabel(frame: CGRectMake(sideInnerPadding, startingY, popUpW, labelH))
         pointsLabel.text = "Points: \(game.points)"
         popUp.addSubview(pointsLabel)
         handlePoints()
+        
+        saveHighscore(distance)
         
     }
 
@@ -98,6 +118,12 @@ class PopupViewController: UIViewController {
     
     func resumePlay() {
         gameDelegate?.reset()
+    }
+    
+    func leaderboardPressed() {
+        var gc = GKGameCenterViewController()
+        gc.gameCenterDelegate = self
+        self.presentViewController(gc, animated: true, completion: nil)
     }
     
     func upgradePressed() {
@@ -116,6 +142,32 @@ class PopupViewController: UIViewController {
         pointsLabel.text = "Points: \(game.points)"
     }
     
+    //hides leaderboard screen
+    func gameCenterViewControllerDidFinish(gameCenterViewController: GKGameCenterViewController!) {
+        gameCenterViewController.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    //send high score to leaderboard
+    func saveHighscore(score:Int) {
+        
+        //check if user is signed in
+        if GKLocalPlayer.localPlayer().authenticated {
+            
+            var scoreReporter = GKScore(leaderboardIdentifier: "gatortoss_leaderboard") //leaderboard id here
+            
+            scoreReporter.value = Int64(score) //score variable here (same as above)
+            
+            var scoreArray: [GKScore] = [scoreReporter]
+            
+            GKScore.reportScores(scoreArray, {(error : NSError!) -> Void in
+                if error != nil {
+                    println("error")
+                }
+            })
+            
+        }
+        
+    }
 
     /*
     // MARK: - Navigation

@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+import GameKit
 
 extension SKNode {
     class func unarchiveFromFile(file : NSString) -> SKNode? {
@@ -29,7 +30,7 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.navigationController?.navigationBarHidden = true
         
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
@@ -46,6 +47,7 @@ class GameViewController: UIViewController {
             scene.gameViewController = self
             skView.presentScene(scene)
         }
+        authenticateLocalPlayer();
     }
 
     override func shouldAutorotate() -> Bool {
@@ -68,4 +70,22 @@ class GameViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    //initiate gamecenter
+    func authenticateLocalPlayer() {
+        
+        var localPlayer = GKLocalPlayer.localPlayer()
+        localPlayer.authenticateHandler = {(viewController, error) -> Void in
+            if error != nil {
+                println(error)
+            }
+            if (viewController != nil) {
+                self.presentViewController(viewController, animated: true, completion: nil)
+            } else {
+                println((GKLocalPlayer.localPlayer().authenticated))
+            }
+        }
+        
+    }
+
 }

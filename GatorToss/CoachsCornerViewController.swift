@@ -88,7 +88,7 @@ class CoachsCornerViewController: UIViewController {
         let textPadding:CGFloat = 13
         let textH:CGFloat = 19
         let priceW:CGFloat = 50
-        let upgradeButtonPadding:CGFloat = 5
+        let upgradeButtonPadding:CGFloat = 15
         startingY = 0
         
         roundLabel = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width/2, textH))
@@ -101,11 +101,11 @@ class CoachsCornerViewController: UIViewController {
         pointsLabel.font = UIFont.systemFontOfSize(textH)
         pointsLabel.textAlignment = .Right
         
-        startingY += textH + textPadding
+        startingY += textH + textPadding + 5
         
         for key in upgrades {
             upgradeLabels[key] = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width, textH))
-            upgradeLabels[key]?.text = "\(key): \(game.nameToVar[key]!)"
+            upgradeLabels[key]?.text = "\(key): \(Int(game.nameToVar[key]!))"
             upgradeLabels[key]?.font = UIFont.systemFontOfSize(textH)
             
             upgradePriceLabel[key] = UILabel(frame: CGRectMake(upgradeView.frame.width-priceW, startingY, priceW, textH))
@@ -118,7 +118,7 @@ class CoachsCornerViewController: UIViewController {
             upgradeButtons[key]?.setTitle("+", forState: UIControlState.Normal)
             upgradeButtons[key]?.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             upgradeButtons[key]?.titleLabel?.textAlignment = .Right
-            upgradeButtons[key]?.titleLabel?.font = UIFont.boldSystemFontOfSize(textH)
+            upgradeButtons[key]?.titleLabel?.font = UIFont.boldSystemFontOfSize(textH+4)
             upgradeButtons[key]?.addTarget(self, action: "upgradePressed:", forControlEvents: .TouchUpInside)
             startingY += textH + textPadding
             
@@ -166,7 +166,7 @@ class CoachsCornerViewController: UIViewController {
         pointsLabel.text = "\(game.points) points"
         
         for (key, value) in upgradeLabels {
-            upgradeLabels[key]?.text = "\(key): \(game.nameToVar[key]!)"
+            upgradeLabels[key]?.text = "\(key): \(Int(game.nameToVar[key]!))"
             upgradePriceLabel[key]?.text = "$\(scalePrice(game.nameToVar[key]!))"
         }
     }

@@ -12,10 +12,47 @@ import SpriteKit
 
 class Game {
     
-    var points:Int
+    let defaults = NSUserDefaults.standardUserDefaults()
+    var points:Int {
+        get {
+            if let points = defaults.stringForKey("points")?.toInt() {
+                return points
+            } else {
+                return 0
+            }
+        }
+        set (value) {
+            defaults.setValue(value, forKey: "points")
+            defaults.synchronize()
+        }
+    }
     var bounceMultiplier:[CGFloat]
-    var bestDistance:Int
-    var round:Int
+    var bestDistance:Int {
+        get {
+            if let distance = defaults.stringForKey("distance")?.toInt() {
+                return distance
+            } else {
+                return 0
+            }
+        }
+        set (value) {
+            defaults.setValue(value, forKey: "distance")
+            defaults.synchronize()
+        }
+    }
+    var round:Int {
+        get {
+            if let round = defaults.stringForKey("round")?.toInt() {
+                return round
+            } else {
+                return 0
+            }
+        }
+        set (value) {
+            defaults.setValue(value, forKey: "round")
+            defaults.synchronize()
+        }
+    }
     
     var nameToVar:[String:CGFloat]!
     
@@ -25,6 +62,8 @@ class Game {
         }
         set (value) {
             nameToVar["Arm Strength"] = value
+            defaults.setValue(value, forKey: "Arm Strength")
+            defaults.synchronize()
         }
     }
     var accuracy:CGFloat {
@@ -33,6 +72,8 @@ class Game {
         }
         set (value) {
             nameToVar["Accuracy"] = value
+            defaults.setValue(value, forKey: "Accuracy")
+            defaults.synchronize()
         }
     }
     var speed:CGFloat {
@@ -41,6 +82,8 @@ class Game {
         }
         set (value) {
             nameToVar["Speed"] = value
+            defaults.setValue(value, forKey: "Speed")
+            defaults.synchronize()
         }
     }
     var calmness:CGFloat {
@@ -49,20 +92,21 @@ class Game {
         }
         set (value) {
             nameToVar["Calmness"] = value
+            defaults.setValue(value, forKey: "Calmness")
+            defaults.synchronize()
         }
     }
     
     init() {
-        bestDistance = 0
-        points = 0
-        round = 0
-        nameToVar = ["Arm Strength":0, "Calmness": 0, "Accuracy": 0 , "Speed": 0]
+        nameToVar = ["Arm Strength":1, "Calmness": 1, "Accuracy": 1 , "Speed": 1] // just set some defaults
+        
+        // Using key values of "nameToVar" get saved values and store
+        for (key,value) in nameToVar {
+            if let prop = defaults.stringForKey(key)?.toInt() {
+                nameToVar[key] = CGFloat(prop)
+            }
+        }
         bounceMultiplier = [0.98,0.9,0.8,0.65,0.5]
-        power = 1
-        accuracy = 1
-        speed = 1.0
-        power = 1.0
-        calmness = 1.0
     }
     
 }
