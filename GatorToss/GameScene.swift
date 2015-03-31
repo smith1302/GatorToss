@@ -208,6 +208,7 @@ class GameScene: SKScene {
     
     func mascotStopped() {
         mascot1.didStop = true
+        distanceLabel.hidden = true
         let distanceAdjusted = (mascotDistance() < 0) ? 0 : mascotDistance()
         if game.bestDistance < distanceAdjusted {
             game.bestDistance = distanceAdjusted
@@ -339,6 +340,7 @@ class GameScene: SKScene {
         
         resetDistanceLabel()
         bounceLabel = UILabel()
+        distanceLabel.hidden = false
         distanceLabel.text = "0 Yards"
 
         canBounce = true
@@ -369,10 +371,10 @@ class GameScene: SKScene {
         gradNode.position = CGPointMake(gradNode.size.width/2, gradNode.size.height/2)
 
         //Make clouds
-        makeCloud(50, y: 240, alpha: 1)
-        makeCloud(450, y: 350, alpha: 1)
-        makeCloud(20, y: 790, alpha: 0.8)
-        makeCloud(400, y: 920, alpha: 0.8)
+        makeCloud(50, y: 240, alpha: 1, cloudType: 0)
+        makeCloud(450, y: 350, alpha: 1, cloudType: 1)
+        makeCloud(20, y: 790, alpha: 0.8, cloudType: 1)
+        makeCloud(400, y: 920, alpha: 0.8, cloudType: 0)
         
         // Make ground
         ground = SKSpriteNode(imageNamed: "ground.fw.png")
@@ -402,7 +404,7 @@ class GameScene: SKScene {
         
         // Make a river1
         riverHeight = self.frame.size.height/4.5
-        river1 = SKSpriteNode(color:UIColor(hex: 0x138BED), size: CGSizeMake(self.frame.size.width*2 + 10, riverHeight))
+        river1 = SKSpriteNode(color:UIColor(hex: 0x138BED), size: CGSizeMake(self.frame.size.width*2.5, riverHeight))
         river1.position = CGPointMake(river1.size.width/2, river1.size.height/2 - mascot.size.height)
         river1.anchorPoint = CGPointMake(0.5, 0.5 - ((mascot.size.height*3/4)/river1.size.height))
         river1.xScale = 1
@@ -452,11 +454,9 @@ class GameScene: SKScene {
 
     }
     
-    func makeCloud(x:CGFloat, y:CGFloat, alpha:CGFloat) {
-        // 0 - n-1
-        let diceRoll = Int(arc4random_uniform(2))
+    func makeCloud(x:CGFloat, y:CGFloat, alpha:CGFloat, cloudType:Int) {
         var cloud:SKSpriteNode!
-        if diceRoll == 0 {
+        if cloudType == 0 {
             cloud = SKSpriteNode(imageNamed: "cloud1.png")
         } else {
             cloud = SKSpriteNode(imageNamed: "cloud2.png")

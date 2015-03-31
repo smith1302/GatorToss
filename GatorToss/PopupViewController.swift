@@ -25,8 +25,19 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     var gameDelegate:GameScene?
     var distance:Int
     
+    // counting label (points/money)
+    var countingLabelStart:Int = 0
+    var increasePointsTimer:NSTimer?
+    let countingTotalTime:NSTimeInterval = 3
+    var timeIntervalStep:NSTimeInterval = 0
+    
     init(distance:Int) {
         self.distance = distance
+        if distance < 300 {
+            countingTotalTime = 1
+        } else {
+            countingTotalTime = 3
+        }
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -41,8 +52,8 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
         let screenHeight = self.view.frame.size.height
         
         popUp = UIView(frame: view.frame)
-        popUp.backgroundColor = UIColor(hex: 0xABCCEA)
-        popUp.alpha = 0.69
+        popUp.backgroundColor = UIColor(hex: 0x81A7C9)
+        popUp.alpha = 0.65
         
         var startingY:CGFloat = 50
         let distanceLabelH:CGFloat = 76
@@ -111,10 +122,15 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
-        UIView.animateWithDuration(0.4, delay: 0.4, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.3, delay: 0.4, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             self.textHolder.transform = CGAffineTransformMakeTranslation(0, 0)
             self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, 0)
-        }, completion: nil)
+        }, completion: {
+            finished in
+            if finished {
+                self.handlePoints()
+            }
+        })
     }
     
 
@@ -124,7 +140,15 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func resumePlay() {
-        gameDelegate?.reset()
+        UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+            self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, (160+20))
+            self.textHolder.transform = CGAffineTransformMakeTranslation(0, -1*(self.view.frame.size.height))
+        }, completion: {
+            finished in
+            if let delegate = self.gameDelegate {
+                delegate.reset()
+            }
+        })
     }
     
     func leaderboardPressed() {
@@ -134,8 +158,9 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func upgradePressed() {
-        UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, -1*(160+20))
+        UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+            self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, (160+20))
+            self.textHolder.transform = CGAffineTransformMakeTranslation(0, -1*(self.view.frame.size.height))
         }, completion: {
             finished in
             if let delegate = self.gameDelegate {
@@ -151,9 +176,22 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func handlePoints() {
+        countingLabelStart = game.points
         let thisThrowPoints = calculatePoints(distance)
         game.points += thisThrowPoints
-        pointsLabel.text = "Points: \(game.points)"
+        
+        let goalDifference = game.points - countingLabelStart
+        timeIntervalStep = countingTotalTime/NSTimeInterval(goalDifference)
+        
+        increasePoints()
+    }
+    
+    func increasePoints() {
+        if countingLabelStart > game.points {
+            return
+        }
+        pointsLabel.text = "Money: $\(countingLabelStart++)"
+        NSTimer.scheduledTimerWithTimeInterval(timeIntervalStep, target: self, selector: "increasePoints", userInfo: nil, repeats: false)
     }
     
     //hides leaderboard screen
