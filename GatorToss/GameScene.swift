@@ -23,7 +23,6 @@ class GameScene: SKScene {
     var cloud2:SKSpriteNode!
     var gradNode:SKSpriteNode!
     var buoy:SKSpriteNode?
-    //var mascot:SKSpriteNode!
     var ground:SKSpriteNode!
     var groundArt:Ground!
     var sprite:SKSpriteNode!
@@ -209,7 +208,7 @@ class GameScene: SKScene {
     
     func mascotStopped() {
         mascot1.didStop = true
-        let distanceAdjusted = mascotDistance()
+        let distanceAdjusted = (mascotDistance() < 0) ? 0 : mascotDistance()
         if game.bestDistance < distanceAdjusted {
             game.bestDistance = distanceAdjusted
         }
@@ -217,7 +216,7 @@ class GameScene: SKScene {
         self.physicsWorld.gravity = CGVectorMake(0, waterGravity)
         river1.physicsBody = nil
         
-        let delay = 1.3 * Double(NSEC_PER_SEC)
+        let delay = 1 * Double(NSEC_PER_SEC)
         var time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue(), {
             self.popUpController = PopupViewController(distance: distanceAdjusted)
@@ -229,7 +228,7 @@ class GameScene: SKScene {
     
     func mascotDistance() -> Int {
         let mascotDistanceToSide = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
-        let distanceThrownX = mascotDistanceToSide.x - groundWidth
+        let distanceThrownX = mascotDistanceToSide.x - ground.size.width
         let distanceAdjusted = Int(distanceThrownX/distanceDivider)
         return distanceAdjusted
     }
@@ -258,6 +257,13 @@ class GameScene: SKScene {
 
         if mascot1.sprite.physicsBody?.velocity.dx <= 1 && mascot1.sprite.physicsBody?.velocity.dy <= 1 && mascot1.didStop == false && tebow.didThrow == true {
             mascotStopped()
+        } else {
+            // Distance Label
+            let mascotDistanceToSide = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
+            let distanceThrownX = mascotDistanceToSide.x - ground.size.width
+            if distanceThrownX >= 0 {
+                distanceLabel.text = "\(Int(distanceThrownX/distanceDivider)) Yards"
+            }
         }
         
         
@@ -275,7 +281,7 @@ class GameScene: SKScene {
         
         //moves the ground 1 position at a time to left
         let groundPos = self.convertPoint(ground.position, fromNode: world)
-        if(groundPos.x < -groundWidth) {
+        if(groundPos.x < -ground.size.width) {
             self.removeChildrenInArray([ground])
         }
        
@@ -296,15 +302,7 @@ class GameScene: SKScene {
             let cloudPosition = self.convertPoint(cloud.position, fromNode: world)
             if(cloudPosition.x <= 0 - cloud.size.width/2){
                 cloud.position.x += self.frame.size.width + cloud.size.width
-                
             }
-        }
-
-        // Distance Label
-        let mascotDistanceToSide = self.convertPoint(mascot1.sprite.position, fromNode: mascot1.sprite.scene!)
-        let distanceThrownX = mascotDistanceToSide.x - groundWidth
-        if distanceThrownX >= 0 {
-            distanceLabel.text = "\(Int(distanceThrownX/distanceDivider)) Yards"
         }
         
         if !tebow.didThrow {
@@ -428,7 +426,7 @@ class GameScene: SKScene {
             buoy = SKSpriteNode(imageNamed: "buoy.png")
             buoy!.xScale = 0.4
             buoy!.yScale = 0.4
-            buoy!.position = CGPointMake(CGFloat(game.bestDistance)*distanceDivider + groundWidth, riverHeight + buoy!.size.height/2 - 23)
+            buoy!.position = CGPointMake(CGFloat(game.bestDistance)*distanceDivider + ground.size.width, riverHeight + buoy!.size.height/2 - 26)
             buoy!.zPosition = -1
         }
         

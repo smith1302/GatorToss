@@ -12,6 +12,8 @@ import GameKit
 class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     
     var popUp: UIView!
+    var textHolder: UIView!
+    var buttonHolder:UIView!
     var continueButton:UIButton!
     var upgradeButton:UIButton!
     var leaderboardButton: UIButton!
@@ -37,79 +39,84 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
         
         let screenWidth = self.view.frame.size.width
         let screenHeight = self.view.frame.size.height
-        let paddingX:CGFloat = screenWidth/5
-        let paddingY:CGFloat = 50
-        var buttonH:CGFloat = 60
-        var buttonPadding:CGFloat = 20
-        var popUpH:CGFloat = screenHeight - paddingY*2 - buttonH - buttonPadding
-        var popUpW:CGFloat = screenWidth - paddingX*2
         
-        popUp = UIView(frame: CGRectMake(paddingX, paddingY, popUpW, popUpH))
-        popUp.backgroundColor = UIColor(hex: 0xFFEAB8)
-        popUp.layer.cornerRadius = 9
-        popUp.layer.borderColor = UIColor(hex:0xF5DB9F).CGColor
-        popUp.layer.borderWidth = 5
-        self.view.addSubview(popUp)
+        popUp = UIView(frame: view.frame)
+        popUp.backgroundColor = UIColor(hex: 0xABCCEA)
+        popUp.alpha = 0.69
         
-        let numButtons:CGFloat = 3
-        let buttonW:CGFloat =  (popUpW - (numButtons-1)*buttonPadding)/numButtons
+        var startingY:CGFloat = 50
+        let distanceLabelH:CGFloat = 76
+        let bestLabelH:CGFloat = 25
+        let pointsLabelH:CGFloat = 25
         
-        continueButton = UIButton(frame: CGRectMake(paddingX, popUpH + paddingY + buttonPadding, buttonW, buttonH))
-        continueButton.backgroundColor = UIColor(hex: 0xFFEAB8)
-        continueButton.layer.cornerRadius = 6
-        continueButton.titleLabel?.textColor = UIColor.blackColor()
-        continueButton.setTitle("Play", forState: .Normal)
-        continueButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        continueButton.addTarget(self, action: "resumePlay", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(continueButton)
+        textHolder = UIView(frame: view.frame)
         
-        upgradeButton = UIButton(frame: CGRectMake(paddingX + buttonW + buttonPadding, popUpH + paddingY + buttonPadding, buttonW, buttonH))
-        upgradeButton.backgroundColor = UIColor(hex: 0xFFEAB8)
-        upgradeButton.layer.cornerRadius = 6
-        upgradeButton.setTitle("Coaches Corner", forState: .Normal)
-        upgradeButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        upgradeButton.addTarget(self, action: "upgradePressed", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(upgradeButton)
+        distanceLabel = UILabel(frame: CGRectMake(0, startingY, screenWidth, distanceLabelH))
+        distanceLabel.textColor = UIColor.whiteColor()
+        distanceLabel.font = UIFont.boldSystemFontOfSize(distanceLabelH)
+        distanceLabel.textAlignment = .Center
+        distanceLabel.text = "\(distance) Yards"
         
-        leaderboardButton = UIButton(frame: CGRectMake(paddingX + buttonW*2 + buttonPadding*2, popUpH + paddingY + buttonPadding, buttonW, buttonH))
-        leaderboardButton.backgroundColor = UIColor(hex: 0xFFEAB8)
-        leaderboardButton.layer.cornerRadius = 6
-        leaderboardButton.setTitle("Leaderboard", forState: .Normal)
-        leaderboardButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-        leaderboardButton.addTarget(self, action: "leaderboardPressed", forControlEvents: UIControlEvents.TouchUpInside)
-        self.view.addSubview(leaderboardButton)
-        
-        var startingY:CGFloat = 20
-        let titleH:CGFloat = 20
-        let title = UILabel(frame: CGRectMake(0, startingY, popUpW, titleH))
-        title.text = "Title"
-        title.font = UIFont.boldSystemFontOfSize(titleH)
-        title.textColor = UIColor.blackColor()
-        title.textAlignment = .Center
-        title.alpha = 0.9
-        popUp.addSubview(title)
-        
-        let sideInnerPadding:CGFloat = 25
-        let labelH:CGFloat = 19
-        startingY += titleH+20
-        distanceLabel = UILabel(frame: CGRectMake(sideInnerPadding, startingY, popUpW, labelH))
-        distanceLabel.text = "Distance: \(distance) Yards"
-        popUp.addSubview(distanceLabel)
-        
-        startingY += titleH+20
-        bestLabel = UILabel(frame: CGRectMake(sideInnerPadding, startingY, popUpW, labelH))
+        startingY += distanceLabelH + 16
+        bestLabel = UILabel(frame: CGRectMake(0, startingY, screenWidth, bestLabelH))
+        bestLabel.textColor = UIColor.whiteColor()
+        bestLabel.font = UIFont.boldSystemFontOfSize(bestLabelH)
+        bestLabel.textAlignment = .Center
         bestLabel.text = "Best: \(game.bestDistance) Yards"
-        popUp.addSubview(bestLabel)
         
-        startingY += labelH+20
-        pointsLabel = UILabel(frame: CGRectMake(sideInnerPadding, startingY, popUpW, labelH))
-        pointsLabel.text = "Points: \(game.points)"
-        popUp.addSubview(pointsLabel)
+        startingY += bestLabelH + 8
+        pointsLabel = UILabel(frame: CGRectMake(0, startingY, screenWidth, pointsLabelH))
+        pointsLabel.textColor = UIColor.whiteColor()
+        pointsLabel.font = UIFont.boldSystemFontOfSize(pointsLabelH)
+        pointsLabel.textAlignment = .Center
+        pointsLabel.text = "Money: $\(game.points)"
+        
+        let buttonPadding:CGFloat = 70
+        let buttonW:CGFloat = 130*0.6
+        let buttonH:CGFloat = 159*0.6
+        
+        buttonHolder = UIView(frame: CGRectMake(screenWidth/2 - buttonPadding - buttonW*3/2, screenHeight - 20 - buttonH, buttonW*3 + buttonPadding*2, buttonH))
+        
+        continueButton = UIButton(frame: CGRectMake(0, 0, buttonW, buttonH))
+        continueButton.setImage(UIImage(named: "keepPlaying.fw.png"), forState: .Normal)
+        continueButton.addTarget(self, action: "resumePlay", forControlEvents: .TouchUpInside)
+        continueButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        
+        upgradeButton = UIButton(frame: CGRectMake(buttonW + buttonPadding, 0, buttonW, buttonH))
+        upgradeButton.setImage(UIImage(named: "coachsCorner.fw.png"), forState: .Normal)
+        upgradeButton.addTarget(self, action: "upgradePressed", forControlEvents: .TouchUpInside)
+        upgradeButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        
+        leaderboardButton = UIButton(frame: CGRectMake(buttonW*2 + buttonPadding*2, 0, buttonW, buttonH))
+        leaderboardButton.setImage(UIImage(named: "leaderBoard.fw.png"), forState: .Normal)
+        leaderboardButton.addTarget(self, action: "leaderboardPressed", forControlEvents: .TouchUpInside)
+        leaderboardButton.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
+        
+        view.addSubview(popUp)
+        view.addSubview(textHolder)
+        view.addSubview(buttonHolder)
+        textHolder.addSubview(distanceLabel)
+        textHolder.addSubview(bestLabel)
+        textHolder.addSubview(pointsLabel)
+        buttonHolder.addSubview(continueButton)
+        buttonHolder.addSubview(upgradeButton)
+        buttonHolder.addSubview(leaderboardButton)
+        
+        buttonHolder.transform = CGAffineTransformMakeTranslation(0, (buttonH+20))
+        textHolder.transform = CGAffineTransformMakeTranslation(0, -1*self.view.frame.size.height)
+        
         handlePoints()
-        
         saveHighscore(distance)
         
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        UIView.animateWithDuration(0.4, delay: 0.4, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            self.textHolder.transform = CGAffineTransformMakeTranslation(0, 0)
+            self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, 0)
+        }, completion: nil)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -127,7 +134,14 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func upgradePressed() {
-        gameDelegate?.goToCoachsCorner()
+        UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, -1*(160+20))
+        }, completion: {
+            finished in
+            if let delegate = self.gameDelegate {
+                delegate.goToCoachsCorner()
+            }
+        })
     }
     
     func calculatePoints(distance:Int) -> Int {
