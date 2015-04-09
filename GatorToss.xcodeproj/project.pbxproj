@@ -23,6 +23,7 @@
 		F7CDC8B81A9525C2008FCB2F /* GatorTossTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CDC8B71A9525C2008FCB2F /* GatorTossTests.swift */; };
 		F7CDC8C61A953DBB008FCB2F /* Tebow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CDC8C51A953DBB008FCB2F /* Tebow.swift */; };
 		F7D365B81AC60A960081EE59 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7D365B71AC60A960081EE59 /* GameKit.framework */; };
+		F7D3C1431AD34AAE002EC86C /* PNGAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3C1421AD34AAE002EC86C /* PNGAnimation.swift */; };
 		F7D3D6A31AAF998D00714457 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D3D6A21AAF998D00714457 /* Game.swift */; };
 		F7D526DA1AB8A9AB00240DDA /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D526D91AB8A9AB00240DDA /* PopupViewController.swift */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		F7CDC8B71A9525C2008FCB2F /* GatorTossTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GatorTossTests.swift; sourceTree = "<group>"; };
 		F7CDC8C51A953DBB008FCB2F /* Tebow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tebow.swift; sourceTree = "<group>"; };
 		F7D365B71AC60A960081EE59 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		F7D3C1421AD34AAE002EC86C /* PNGAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PNGAnimation.swift; sourceTree = "<group>"; };
 		F7D3D6A21AAF998D00714457 /* Game.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		F7D526D91AB8A9AB00240DDA /* PopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,6 +171,7 @@
 				F7CDC8C51A953DBB008FCB2F /* Tebow.swift */,
 				37FE12321AAF9C0100683344 /* Mascot.swift */,
 				F7D3D6A21AAF998D00714457 /* Game.swift */,
+				F7D3C1421AD34AAE002EC86C /* PNGAnimation.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				F7CDC8A21A9525C2008FCB2F /* GameScene.swift in Sources */,
 				373AD0651AB8B17B00AB52D0 /* CoachsCornerViewController.swift in Sources */,
 				373AD05F1AB8AD9A00AB52D0 /* OpeningViewController.swift in Sources */,
+				F7D3C1431AD34AAE002EC86C /* PNGAnimation.swift in Sources */,
 				F75DB44E1AC8FCD3008D5414 /* MovementLine.swift in Sources */,
 				F7D3D6A31AAF998D00714457 /* Game.swift in Sources */,
 				F7CDC8A41A9525C2008FCB2F /* GameViewController.swift in Sources */,

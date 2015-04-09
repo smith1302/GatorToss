@@ -88,7 +88,8 @@ class CoachsCornerViewController: UIViewController {
         let textPadding:CGFloat = 13
         let textH:CGFloat = 19
         let priceW:CGFloat = 50
-        let upgradeButtonPadding:CGFloat = 15
+        let upgradeButtonPadding:CGFloat = 20
+        let upgradeButtonSize:CGFloat = textH + 5
         startingY = 0
         
         roundLabel = UILabel(frame: CGRectMake(0, startingY, upgradeView.frame.width/2, textH))
@@ -114,11 +115,11 @@ class CoachsCornerViewController: UIViewController {
             upgradePriceLabel[key]?.textColor = UIColor(hex: 0x1AB000)
             upgradePriceLabel[key]?.textAlignment = .Right
             
-            upgradeButtons[key] = UIButton(frame: CGRectMake(upgradeView.frame.width - upgradePriceLabel[key]!.frame.width - upgradeButtonPadding, startingY, textH, textH))
+            upgradeButtons[key] = UIButton(frame: CGRectMake(upgradeView.frame.width - upgradePriceLabel[key]!.frame.width - upgradeButtonPadding, startingY, upgradeButtonSize, upgradeButtonSize))
             upgradeButtons[key]?.setTitle("+", forState: UIControlState.Normal)
             upgradeButtons[key]?.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             upgradeButtons[key]?.titleLabel?.textAlignment = .Right
-            upgradeButtons[key]?.titleLabel?.font = UIFont.boldSystemFontOfSize(textH+4)
+            upgradeButtons[key]?.titleLabel?.font = UIFont.boldSystemFontOfSize(upgradeButtonSize)
             upgradeButtons[key]?.addTarget(self, action: "upgradePressed:", forControlEvents: .TouchUpInside)
             startingY += textH + textPadding
             

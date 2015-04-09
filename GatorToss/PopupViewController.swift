@@ -140,7 +140,7 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func resumePlay() {
-        UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+        UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, (160+20))
             self.textHolder.transform = CGAffineTransformMakeTranslation(0, -1*(self.view.frame.size.height))
         }, completion: {
@@ -158,7 +158,7 @@ class PopupViewController: UIViewController, GKGameCenterControllerDelegate {
     }
     
     func upgradePressed() {
-        UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+        UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             self.buttonHolder.transform = CGAffineTransformMakeTranslation(0, (160+20))
             self.textHolder.transform = CGAffineTransformMakeTranslation(0, -1*(self.view.frame.size.height))
         }, completion: {

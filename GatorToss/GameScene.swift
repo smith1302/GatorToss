@@ -46,7 +46,7 @@ class GameScene: SKScene {
     var popUpController:PopupViewController?
     var gameViewController:GameViewController!
     
-    let waterGravity:CGFloat = -0.5
+    let waterGravity:CGFloat = -0.9
     let airGravity:CGFloat = -2
 
     override func didMoveToView(view: SKView) {
@@ -122,10 +122,11 @@ class GameScene: SKScene {
     
     //when runButton is clicked
     func runButtonClicked(button:UIButton) {
-        tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(log10(game.speed)+3.0, 0))
+        tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(log10(game.speed)+7.0, 0))
         rotator.removeActionForKey("rotateSequence")
         tebow.didMove = true
         buttonUp(button)
+        tebow.setMoving()
     }
     
     //when throwButton is clicked
@@ -134,6 +135,7 @@ class GameScene: SKScene {
         if !tebow.canThrow {
             return
         }
+        tebow.setThrowing()
         rotator.removeActionForKey("rotateSequence")
         runButton.hidden = true
         Button.hidden = true
@@ -236,6 +238,11 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        
+        // If tebow isnt moving set state to standing
+        if tebow.sprite.physicsBody?.velocity.dx <= 1 && tebow.isMoving() {
+            tebow.setStanding()
+        }
 
         //Save landing speed to use when he bounces back up
         if let fallSpeed = mascot1.sprite.physicsBody?.velocity.dy { // Check for nil
@@ -308,8 +315,8 @@ class GameScene: SKScene {
         
         if !tebow.didThrow {
             mascot1.sprite.hidden = false
-            mascot1.sprite.position.x = tebow.sprite.position.x + tebow.sprite.frame.width/2
-            mascot1.sprite.position.y = tebow.sprite.position.y + tebow.sprite.frame.height/2 + mascot1.sprite.frame.height/2
+            mascot1.sprite.position.x = tebow.sprite.position.x - tebow.sprite.size.width/2 + mascot1.sprite.size.width/2 - 2
+            mascot1.sprite.position.y = tebow.sprite.position.y + tebow.sprite.frame.height/2 + mascot1.sprite.frame.height/2 - 28
             self.centerOnNode(tebow.sprite)
             // Tebow cant throw if he is past the ledge (must have atleast 1/4 of his body on)
             if tebow.sprite.position.x - tebow.sprite.size.width/4 > ground.position.x + ground.size.width/2 {
@@ -388,15 +395,19 @@ class GameScene: SKScene {
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.size)
         ground.physicsBody!.dynamic = false
         
-        let tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(25, 55))
-        tebowSprite.position = CGPointMake(startingPoint + tebowSprite.size.width/2, ground.size.height + tebowSprite.size.height/2 + 10)
+        
+        // Make Tebow
+        let tebowSprite = SKSpriteNode(texture: SKTexture(imageNamed: "tebow_stand.png"))
+        //tebowSprite = SKSpriteNode(color: UIColor.redColor(), size: CGSizeMake(25, 55))
+        tebowSprite.position = CGPointMake(startingPoint + tebowSprite.size.width/2, ground.size.height + (tebowSprite.size.height*0.6)/2 + 10)
+        tebowSprite.xScale = 0.6
+        tebowSprite.yScale = 0.6
         tebow = Tebow(sprite: tebowSprite)
         tebow.applyPhysicsBody()
         
         // Make Mascot
         let mascot = SKSpriteNode(color:UIColor.orangeColor(), size: CGSizeMake(mascotSize, mascotSize))
         mascot.anchorPoint = CGPointMake(0.5, 0.5)
-        mascot.position = CGPointMake(tebow.sprite.position.x + tebow.sprite.frame.width/2, mascotSize/2)
         mascot.physicsBody = nil
         mascot.xScale = 1
         mascot.yScale = 1
@@ -412,8 +423,8 @@ class GameScene: SKScene {
         river1.alpha = 0.7
         
         // Make Rotator
-        rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(20, 3))
-        rotator.anchorPoint = CGPointMake(0, 0.5)
+        rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 6))
+        rotator.anchorPoint = CGPointMake(-1, 0)
         // Rotate animation
         rotator.position = CGPointMake(tebow.sprite.size.width/2, 0)
         let duration:Double = 0.6
@@ -448,8 +459,8 @@ class GameScene: SKScene {
         
         gradNode.zPosition = -10
         river1.zPosition = 10
-        tebowSprite.zPosition = 9
-        mascot.zPosition = 8
+        tebowSprite.zPosition = 8
+        mascot.zPosition = 9
         ground.zPosition = 7
 
     }
