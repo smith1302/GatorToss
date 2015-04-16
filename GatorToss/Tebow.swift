@@ -96,12 +96,12 @@ class Tebow {
     
     func getXPower(rad:CGFloat) -> CGFloat {
         let xRatio = cos(rad)
-        return self.getVelocityBonus()*(2*log10(game.power) + 2)*xRatio
+        return self.getVelocityBonus()*(5*log10(game.power) + 3)*xRatio
     }
     
     func getYPower(rad:CGFloat) -> CGFloat {
         let yRatio = sin(rad)
-        return self.getVelocityBonus()*(2*log10(game.power) + 2) * yRatio
+        return self.getVelocityBonus()*(5*log10(game.power) + 3) * yRatio
     }
     
     func getXVelocity() -> CGFloat? {

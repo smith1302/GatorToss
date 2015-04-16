@@ -115,7 +115,7 @@ class CoachsCornerViewController: UIViewController {
             upgradePriceLabel[key]?.textColor = UIColor(hex: 0x1AB000)
             upgradePriceLabel[key]?.textAlignment = .Right
             
-            upgradeButtons[key] = UIButton(frame: CGRectMake(upgradeView.frame.width - upgradePriceLabel[key]!.frame.width - upgradeButtonPadding, startingY, upgradeButtonSize, upgradeButtonSize))
+            upgradeButtons[key] = UIButton(frame: CGRectMake(upgradeView.frame.width - upgradePriceLabel[key]!.frame.width - upgradeButtonPadding, startingY - upgradeButtonSize/2, upgradeButtonSize, upgradeButtonSize))
             upgradeButtons[key]?.setTitle("+", forState: UIControlState.Normal)
             upgradeButtons[key]?.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             upgradeButtons[key]?.titleLabel?.textAlignment = .Right

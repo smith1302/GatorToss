@@ -21,6 +21,8 @@ class Mascot {
     var oldDy:CGFloat
     var didStop:Bool // boolean that signals if the mascot has stopped moving after being thrown
     var distanceTraveledInterval:CGFloat! // used as a counter to generate background objects (clouds) every so often
+    var particleLastRelease:CGFloat
+    var releaseParticleDistance:CGFloat
     
     init(sprite:SKSpriteNode) {
         self.mascotIdentityTracker = 0
@@ -32,6 +34,8 @@ class Mascot {
         self.fallSpeed = 0
         self.oldDy = 0
         self.distanceTraveledInterval = 0
+        self.particleLastRelease = 0
+        self.releaseParticleDistance = 1
         self.didStop = false
     }
     
