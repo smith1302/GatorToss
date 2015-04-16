@@ -558,7 +558,8 @@ class GameScene: SKScene {
         rotator.anchorPoint = CGPointMake(-1, 0)
         // Rotate animation
         rotator.position = CGPointMake(tebow.sprite.size.width/2, 0)
-        let duration:Double = 0.6
+        //let duration:Double = log10(Double(game.calmness)) + 0.2
+        let duration:Double = log10(Double(game.calmness)) + 0.2-Double(game.calmness)/50
         let degToRad:CGFloat = 0.0175
         let rotateUp = SKAction.rotateToAngle(80*degToRad, duration: duration)
         let rotateDown = SKAction.rotateToAngle(5*degToRad, duration: duration)
