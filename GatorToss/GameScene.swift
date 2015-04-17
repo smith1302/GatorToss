@@ -74,7 +74,7 @@ class GameScene: SKScene {
         self.size = view.bounds.size
         self.backgroundColor = spaceColor
         self.physicsWorld.gravity = CGVectorMake(0, airGravity)
-        
+        doTutorial = 2
         // World Scene (basically our camera)
         world = SKNode()
         self.addChild(world)
@@ -243,9 +243,9 @@ class GameScene: SKScene {
         // Throw mascot
         mascot1.applyPhysicsBody()
         mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake(tebow.getXPower(rotator.zRotation), tebow.getYPower(rotator.zRotation)))
-        let rotateAction:SKAction = SKAction.rotateByAngle(CGFloat(-1*M_PI_2), duration: 1)
-        let rotateForever = SKAction.repeatActionForever(rotateAction)
-        mascot1.sprite.runAction(rotateForever)
+        //let rotateAction:SKAction = SKAction.rotateByAngle(CGFloat(-1*M_PI_2), duration: 1)
+        //let rotateForever = SKAction.repeatActionForever(rotateAction)
+        //mascot1.sprite.runAction(rotateForever)
         // Stop tebow from sliding
         tebow.sprite.physicsBody = nil
         self.centerOnNode(tebow.sprite)
@@ -305,8 +305,8 @@ class GameScene: SKScene {
     func addBounceLabel(textForLabel: String) {
         canBounce = false
         bounceLabel?.text = textForLabel
-        bounceLabel!.frame = CGRectMake(0, self.frame.size.height - 20 - 30, self.frame.size.width, 25)
-        bounceLabel!.font = UIFont.boldSystemFontOfSize(24)
+        bounceLabel!.frame = CGRectMake(0, self.frame.size.height - 27 - 30, self.frame.size.width, 31)
+        bounceLabel!.font = UIFont.boldSystemFontOfSize(27)
         bounceLabel!.textColor = UIColor.whiteColor()
         bounceLabel?.layer.borderColor = UIColor.blackColor().CGColor
         self.view?.addSubview(bounceLabel!)
@@ -563,7 +563,7 @@ class GameScene: SKScene {
         river1.alpha = 0.7
         
         // Make Rotator
-        rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 6))
+        rotator = SKSpriteNode(imageNamed: "arrow.fw.png")
         rotator.anchorPoint = CGPointMake(-1, 0)
         // Rotate animation
         rotator.position = CGPointMake(tebow.sprite.size.width/2, 0)
