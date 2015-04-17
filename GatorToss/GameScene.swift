@@ -547,7 +547,7 @@ class GameScene: SKScene {
         tebow.applyPhysicsBody()
         
         // Make Mascot
-        let mascot = SKSpriteNode(texture: SKTexture(imageNamed: "bigDog.png"))
+        let mascot = SKSpriteNode(texture: SKTexture(imageNamed: "alabama.png"))
         mascot.anchorPoint = CGPointMake(0.5, 0.5)
         mascot.physicsBody = nil
         mascot.xScale = 1
@@ -565,7 +565,6 @@ class GameScene: SKScene {
         
         // Make Rotator
         rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 6))
-        rotator = SKSpriteNode(imageNamed: <#String#>)
         rotator.anchorPoint = CGPointMake(-1, 0)
         // Rotate animation
         rotator.position = CGPointMake(tebow.sprite.size.width/2, 0)

@@ -131,10 +131,6 @@ class CoachsCornerViewController: UIViewController {
         upgradeView.addSubview(roundLabel)
         upgradeView.addSubview(pointsLabel)
         
-        let image:UIButton = UIButton(frame: CGRectMake(<#x: CGFloat#>, <#y: CGFloat#>, <#width: CGFloat#>, <#height: CGFloat#>))
-        image.setImage(UIImage(named: "whatefver.png"), forState: UIControlState.Normal)
-        upgradeView.addSubview(image)
-        
         //Navigation Controller
         self.navigationController?.navigationBarHidden = true
         
