@@ -132,21 +132,23 @@ class CoachsCornerViewController: UIViewController {
         upgradeView.addSubview(pointsLabel)
         
 
-        let seminoleImage:UIButton = UIButton(frame: CGRectMake(30, 200, 25, 25))
+        let tennesseeImage:UIButton = UIButton(frame: CGRectMake(30, 200, 25, 25))
+        tennesseeImage.setImage(UIImage(named: "tennessee.png"), forState: UIControlState.Normal)
+        upgradeView.addSubview(tennesseeImage)
+        
+        let bamaImage:UIButton = UIButton(frame: CGRectMake(90, 200, 25, 25))
+        bamaImage.setImage(UIImage(named: "alabama.png"), forState: UIControlState.Normal)
+        upgradeView.addSubview(bamaImage)
+        
+        let seminoleImage:UIButton = UIButton(frame: CGRectMake(150, 200, 25, 25))
         seminoleImage.setImage(UIImage(named: "seminole.png"), forState: UIControlState.Normal)
         upgradeView.addSubview(seminoleImage)
         
-        let bulldogImage:UIButton = UIButton(frame: CGRectMake(90, 200, 25, 25))
+        let bulldogImage:UIButton = UIButton(frame: CGRectMake(210, 200, 25, 25))
         bulldogImage.setImage(UIImage(named: "bigDog.png"), forState: UIControlState.Normal)
         upgradeView.addSubview(bulldogImage)
         
-        let tennesseeImage:UIButton = UIButton(frame: CGRectMake(150, 200, 25, 25))
-        tennesseeImage.setImage(UIImage(named: "bigDog.png"), forState: UIControlState.Normal)
-        upgradeView.addSubview(tennesseeImage)
         
-        let bamaImage:UIButton = UIButton(frame: CGRectMake(210, 200, 25, 25))
-        bamaImage.setImage(UIImage(named: "bigDog.png"), forState: UIControlState.Normal)
-        upgradeView.addSubview(bamaImage)
         
 
         //Navigation Controller
