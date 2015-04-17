@@ -131,9 +131,22 @@ class CoachsCornerViewController: UIViewController {
         upgradeView.addSubview(roundLabel)
         upgradeView.addSubview(pointsLabel)
         
-        let image:UIButton = UIButton(frame: CGRectMake(<#x: CGFloat#>, <#y: CGFloat#>, <#width: CGFloat#>, <#height: CGFloat#>))
-        image.setImage(UIImage(named: "whatefver.png"), forState: UIControlState.Normal)
-        upgradeView.addSubview(image)
+        let seminoleImage:UIButton = UIButton(frame: CGRectMake(30, 200, 25, 25))
+        seminoleImage.setImage(UIImage(named: "seminole.png"), forState: UIControlState.Normal)
+        upgradeView.addSubview(seminoleImage)
+        
+        let bulldogImage:UIButton = UIButton(frame: CGRectMake(90, 200, 25, 25))
+        bulldogImage.setImage(UIImage(named: "bigDog.png"), forState: UIControlState.Normal)
+        upgradeView.addSubview(bulldogImage)
+        
+        let tennesseeImage:UIButton = UIButton(frame: CGRectMake(150, 200, 25, 25))
+        tennesseeImage.setImage(UIImage(named: "bigDog.png"), forState: UIControlState.Normal)
+        upgradeView.addSubview(tennesseeImage)
+        
+        let bamaImage:UIButton = UIButton(frame: CGRectMake(210, 200, 25, 25))
+        bamaImage.setImage(UIImage(named: "bigDog.png"), forState: UIControlState.Normal)
+        upgradeView.addSubview(bamaImage)
+        
         
         //Navigation Controller
         self.navigationController?.navigationBarHidden = true

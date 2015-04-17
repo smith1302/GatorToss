@@ -565,7 +565,6 @@ class GameScene: SKScene {
         
         // Make Rotator
         rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 6))
-        rotator = SKSpriteNode(imageNamed: <#String#>)
         rotator.anchorPoint = CGPointMake(-1, 0)
         // Rotate animation
         rotator.position = CGPointMake(tebow.sprite.size.width/2, 0)
