@@ -66,8 +66,9 @@ class CoachsCornerViewController: UIViewController {
         upgradeView = UIView(frame: CGRectMake(25, startingY, self.view.frame.size.width/2, self.view.frame.size.height - startingY - backButtonH - 30))
         
         let coachImageStartX:CGFloat = upgradeView.frame.origin.x + upgradeView.frame.size.width + 25
-        coachImage = UIImageView(frame: CGRectMake(coachImageStartX, startingY, self.view.frame.size.width - coachImageStartX - 25, upgradeView.frame.size.height))
-        coachImage.backgroundColor = UIColor.redColor()
+        coachImage = UIImageView(frame: CGRectMake(coachImageStartX + 20, startingY, self.view.frame.size.width - coachImageStartX - 25-40, upgradeView.frame.size.height-40))
+        //coachImage.backgroundColor = UIColor.redColor()
+        coachImage.image = UIImage(named: "gatorHead.png")
         
         startingY += upgradeView.frame.height + 15
         backButton = UIButton(frame: CGRectMake(upgradeView.frame.origin.x, startingY, 100, backButtonH))
@@ -78,6 +79,7 @@ class CoachsCornerViewController: UIViewController {
         backButton.frame.size.width = backButton.titleLabel!.frame.size.width
         backButton.addTarget(self, action: "goBack", forControlEvents: .TouchUpInside)
         
+        self.view.backgroundColor = UIColor(hex: 0xC5E6FC)
         
         self.view.addSubview(titleLabel)
         self.view.addSubview(upgradeView)
