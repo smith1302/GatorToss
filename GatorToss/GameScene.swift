@@ -56,24 +56,24 @@ class GameScene: SKScene {
     var currentTutIndex:Int = -1
     var tutorialLabel:UILabel!
     var tutorialInstruction:UILabel!
-    var doTutorial:Bool {
+    var doTutorial:Int { // Setting 2 means do tutorial, setting 1 means dont. Getting a 1 means tutorial in progressing, getting 0 means its not
         get {
             let defaults = NSUserDefaults.standardUserDefaults()
-            if let val = defaults.boolForKey("doTutorial") as Bool? {
-                return val
+            if let val = defaults.integerForKey("doTutorial") as Int? {
+                return val == 2 ? 1 : 0
             } else {
-                return true
+                return 1
             }
         }
         set(val) {
-            NSUserDefaults.standardUserDefaults().setBool(val, forKey: "doTutorial")
+            NSUserDefaults.standardUserDefaults().setInteger(val, forKey: "doTutorial")
         }
     }
 
     override func didMoveToView(view: SKView) {
         self.size = view.bounds.size
         self.backgroundColor = spaceColor
-        
+        doTutorial = 2
         self.physicsWorld.gravity = CGVectorMake(0, airGravity)
         
         // World Scene (basically our camera)
@@ -122,7 +122,7 @@ class GameScene: SKScene {
         self.view?.addSubview(distanceLabel)
         reset()
         
-        if doTutorial {
+        if doTutorial == 1 {
             let tutColor:UIColor = UIColor(white: 0, alpha: 0.6)
             maskLayer.opaque = false
             maskLayer.fillColor = tutColor.CGColor
@@ -130,9 +130,9 @@ class GameScene: SKScene {
             self.view!.layer.addSublayer(maskLayer)
             maskLayer.frame = self.view!.layer.bounds
             
-            tutorialLabel = UILabel(frame: CGRectMake(self.view!.frame.width/4, 40, self.view!.frame.width/2, 60))
+            tutorialLabel = UILabel(frame: CGRectMake(self.view!.frame.width/4, 40, self.view!.frame.width/2, 100))
             tutorialLabel.textAlignment = .Center
-            tutorialLabel.numberOfLines = 2
+            tutorialLabel.numberOfLines = 3
             tutorialLabel.textColor = UIColor(white: 1, alpha: 0.95)
             tutorialLabel.font = UIFont.boldSystemFontOfSize(21)
             self.view?.addSubview(tutorialLabel)
@@ -152,6 +152,9 @@ class GameScene: SKScene {
             let secondTF = CGRectMake(sbf.origin.x + pad*3.5, sbf.origin.y - pad*3.5 - sbf.size.height, sbf.size.height - pad, sbf.size.height - pad)
             let thirdTF = CGRectMake(rbf.origin.x - pad, rbf.origin.y - pad, rbf.size.width + pad*2, rbf.size.height + pad*2)
             let fourTF = CGRectMake(tbf.origin.x - pad, tbf.origin.y - pad, tbf.size.width + pad*2, tbf.size.height + pad*2)
+            let fiveTF = CGRectMake(distanceLabel.center.x - 25, distanceLabel.center.y - 50, 100, 100)
+            println(self.river1.frame.origin.y)
+            let sixTF = CGRectMake(self.view!.center.x - 25, self.view!.frame.size.height - river1.frame.size.height/2 - 60, 50, 50)
             tutorialFrames.append(firstTF)
             tutorialText.append("This is Tim Tebow.")
             tutorialFrames.append(secondTF)
@@ -162,6 +165,10 @@ class GameScene: SKScene {
             tutorialText.append("Then, tap it repeatedly to speed Tebow up")
             tutorialFrames.append(fourTF)
             tutorialText.append("Tap this before Tebow falls off the ledge to throw.")
+            tutorialFrames.append(fiveTF)
+            tutorialText.append("This will display how far you've thrown the mascot.")
+            tutorialFrames.append(sixTF)
+            tutorialText.append("Tapping at the moment the mascot hits the water results in a better bounce.")
             nextTutorialStep()
         }
         
@@ -169,7 +176,7 @@ class GameScene: SKScene {
     
     func nextTutorialStep() -> Bool {
         if currentTutIndex+1 >= tutorialFrames.count {
-            doTutorial = false
+            doTutorial = 1
             maskLayer.removeFromSuperlayer()
             tutorialLabel.removeFromSuperview()
             tutorialInstruction.removeFromSuperview()
@@ -201,20 +208,20 @@ class GameScene: SKScene {
     }
     
     func buttonDown(button:UIButton) {
-        if doTutorial { return }
+        if (doTutorial == 1) { return }
         button.transform = CGAffineTransformMakeScale(1.1, 1.1)
         button.alpha = 0.6
     }
     
     func buttonUp(button:UIButton) {
-        if doTutorial { nextTutorialStep(); return }
+        if (doTutorial == 1) { nextTutorialStep(); return }
         button.transform = CGAffineTransformMakeScale(1, 1)
         button.alpha = 1
     }
     
     //when runButton is clicked
     func runButtonClicked(button:UIButton) {
-        if doTutorial { return }
+        if (doTutorial == 1) { return }
         tebow.sprite.physicsBody?.applyImpulse(CGVectorMake(log10(game.speed)+7.0, 0))
         rotator.removeActionForKey("rotateSequence")
         tebow.didMove = true
@@ -225,7 +232,7 @@ class GameScene: SKScene {
     //when throwButton is clicked
     //need to release the mascot
     func throwButtonClicked(Button:UIButton){
-        if doTutorial { return }
+        if (doTutorial == 1) { return }
         if !tebow.canThrow {
             return
         }
@@ -251,14 +258,14 @@ class GameScene: SKScene {
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        if doTutorial {
+        if (doTutorial == 1) {
             nextTutorialStep()
         }
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault && canBounce == true && mascotDistance() > 0 && !doTutorial {
+        if tebow.didThrow && mascot1.bounceFriction == mascot1.bounceFrictionDefault && canBounce == true && mascotDistance() > 0 && (doTutorial == 0) {
             let river1Y = river1.position.y + river1.frame.height/2
             let mascotY = mascot1.sprite.position.y - mascot1.sprite.frame.height/2
             let distance = distanceToBounce()
@@ -371,7 +378,8 @@ class GameScene: SKScene {
         
         if distanceToBounce() <= mascot1.sprite.frame.size.height*3/4 {
             // Water particles yay!
-            for i in 0..<3 {
+            let numParticles = mascot1.sprite.physicsBody?.velocity.dx > 50 ? 3 : 1
+            for i in 0..<numParticles {
                 let particle = WaterParticle()
                 particle.position = CGPointMake(mascot1.sprite.position.x, mascot1.sprite.position.y - distanceToBounce())
                 particle.zPosition = mascot1.sprite.zPosition+1
@@ -391,8 +399,10 @@ class GameScene: SKScene {
             let distanceThrownX = mascotDistanceToSide.x - ground.size.width
             if distanceThrownX >= 0 {
                 distanceLabel.text = "\(Int(distanceThrownX/distanceDivider)) Yards"
-                if mascot1.sprite.physicsBody?.velocity.dx > 680 {
-                    for i in 0..<3 {
+                let mascotVelX = mascot1.sprite.physicsBody?.velocity.dx
+                if mascotVelX > 550 {
+                    var numParticles:Int = mascotVelX > 680 ? 2 : 1
+                    for i in 0..<numParticles {
                         let particle = Particle()
                         particle.position = mascot1.sprite.position
                         particle.zPosition = mascot1.sprite.zPosition+1
@@ -537,7 +547,7 @@ class GameScene: SKScene {
         tebow.applyPhysicsBody()
         
         // Make Mascot
-        let mascot = SKSpriteNode(texture: SKTexture(imageNamed: "seminole.png"))
+        let mascot = SKSpriteNode(texture: SKTexture(imageNamed: "bigDog.png"))
         mascot.anchorPoint = CGPointMake(0.5, 0.5)
         mascot.physicsBody = nil
         mascot.xScale = 1
