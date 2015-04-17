@@ -271,24 +271,24 @@ class GameScene: SKScene {
             let distance = distanceToBounce()
             let mascotHeight = mascot1.sprite.frame.size.height
             
-            if distance < mascotHeight/3.50 {
+            if distance < mascotHeight/3.50 + game.accuracy/1000{
                 mascot1.bounceFriction = game.bounceMultiplier[0]
                 println("PERFECT!")
                 addBounceLabel("PERFECT!")
             }
-            else if distance < mascotHeight * 1.5 {
+            else if distance < mascotHeight * 1.5 + game.accuracy/1000 {
                 mascot1.bounceFriction = game.bounceMultiplier[1]
                 println("Very Good!")
                 addBounceLabel("Very Good!")
-            } else if distance < mascotHeight*2.5 {
+            } else if distance < mascotHeight*2.5 + game.accuracy/1000 {
                 mascot1.bounceFriction = game.bounceMultiplier[2]
                 println("Good")
                 addBounceLabel("Good")
-            } else if distance < mascotHeight*4.0 {
+            } else if distance < mascotHeight*4.0 + game.accuracy/1000 {
                 mascot1.bounceFriction = game.bounceMultiplier[3]
                 println("OK")
                 addBounceLabel("OK")
-            } else if distance < mascotHeight*5.0{
+            } else if distance < mascotHeight*5.0 + game.accuracy/1000{
                 mascot1.bounceFriction = game.bounceMultiplier[4]
                 println("Poor")
                 addBounceLabel("Poor")
@@ -565,10 +565,12 @@ class GameScene: SKScene {
         
         // Make Rotator
         rotator = SKSpriteNode(color: UIColor.yellowColor(), size: CGSizeMake(40, 6))
+        rotator = SKSpriteNode(imageNamed: <#String#>)
         rotator.anchorPoint = CGPointMake(-1, 0)
         // Rotate animation
         rotator.position = CGPointMake(tebow.sprite.size.width/2, 0)
-        let duration:Double = 0.6
+        //let duration:Double = log10(Double(game.calmness)) + 0.2
+        let duration:Double = log10(Double(game.calmness)) + 0.2-Double(game.calmness)/50
         let degToRad:CGFloat = 0.0175
         let rotateUp = SKAction.rotateToAngle(80*degToRad, duration: duration)
         let rotateDown = SKAction.rotateToAngle(5*degToRad, duration: duration)
