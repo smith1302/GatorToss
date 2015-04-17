@@ -73,7 +73,6 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         self.size = view.bounds.size
         self.backgroundColor = spaceColor
-        doTutorial = 2
         self.physicsWorld.gravity = CGVectorMake(0, airGravity)
         
         // World Scene (basically our camera)
@@ -244,9 +243,9 @@ class GameScene: SKScene {
         // Throw mascot
         mascot1.applyPhysicsBody()
         mascot1.sprite.physicsBody?.applyImpulse(CGVectorMake(tebow.getXPower(rotator.zRotation), tebow.getYPower(rotator.zRotation)))
-        //let rotateAction:SKAction = SKAction.rotateByAngle(CGFloat(-1*M_PI_2), duration: 1)
-        //let rotateForever = SKAction.repeatActionForever(rotateAction)
-        //mascot1.sprite.runAction(rotateForever)
+        let rotateAction:SKAction = SKAction.rotateByAngle(CGFloat(-1*M_PI_2), duration: 1)
+        let rotateForever = SKAction.repeatActionForever(rotateAction)
+        mascot1.sprite.runAction(rotateForever)
         // Stop tebow from sliding
         tebow.sprite.physicsBody = nil
         self.centerOnNode(tebow.sprite)

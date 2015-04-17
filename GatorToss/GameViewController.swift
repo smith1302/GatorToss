@@ -27,6 +27,8 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
+    
+    var scene:GameScene?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,7 @@ class GameViewController: UIViewController {
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .AspectFill
             scene.gameViewController = self
+            self.scene = scene
             skView.presentScene(scene)
         }
         authenticateLocalPlayer();

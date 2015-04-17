@@ -47,6 +47,9 @@ class CoachsCornerViewController: UIViewController {
     var upgradeButtons:[String:UIButton] = [String:UIButton]()
     var upgradeLabels:[String:UILabel] = [String:UILabel]()
     var upgrades:[String]!
+    
+    var mascotButtons:[UIButton] = [UIButton]()
+    let notChosenAlpha:CGFloat = 0.3
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,25 +134,37 @@ class CoachsCornerViewController: UIViewController {
         upgradeView.addSubview(roundLabel)
         upgradeView.addSubview(pointsLabel)
         
-
         let tennesseeImage:UIButton = UIButton(frame: CGRectMake(30, 200, 25, 25))
-        tennesseeImage.setImage(UIImage(named: "tennessee.png"), forState: UIControlState.Normal)
+        tennesseeImage.setImage(UIImage(named: game.mascotImages[0]), forState: UIControlState.Normal)
+        tennesseeImage.alpha = game.chosenMascot == 0 ? 1 : notChosenAlpha
+        tennesseeImage.tag = 0
+        mascotButtons.append(tennesseeImage)
         upgradeView.addSubview(tennesseeImage)
         
         let bamaImage:UIButton = UIButton(frame: CGRectMake(90, 200, 25, 25))
-        bamaImage.setImage(UIImage(named: "alabama.png"), forState: UIControlState.Normal)
+        bamaImage.setImage(UIImage(named: game.mascotImages[1]), forState: UIControlState.Normal)
+        bamaImage.alpha = game.chosenMascot == 1 ? 1 : notChosenAlpha
+        bamaImage.tag = 1
+        mascotButtons.append(bamaImage)
         upgradeView.addSubview(bamaImage)
         
         let seminoleImage:UIButton = UIButton(frame: CGRectMake(150, 200, 25, 25))
-        seminoleImage.setImage(UIImage(named: "seminole.png"), forState: UIControlState.Normal)
+        seminoleImage.setImage(UIImage(named: game.mascotImages[2]), forState: UIControlState.Normal)
+        seminoleImage.alpha = game.chosenMascot == 2 ? 1 : notChosenAlpha
+        mascotButtons.append(seminoleImage)
+        seminoleImage.tag = 2
         upgradeView.addSubview(seminoleImage)
         
         let bulldogImage:UIButton = UIButton(frame: CGRectMake(210, 200, 25, 25))
-        bulldogImage.setImage(UIImage(named: "bigDog.png"), forState: UIControlState.Normal)
-        upgradeView.addSubview(bulldogImage)
+        bulldogImage.setImage(UIImage(named: game.mascotImages[3]), forState: UIControlState.Normal)
+        bulldogImage.alpha = game.chosenMascot == 3 ? 1 : notChosenAlpha
+        mascotButtons.append(bulldogImage)
+        bulldogImage.tag = 3
         
-        
-        
+        for b in mascotButtons {
+            b.addTarget(self, action: "clickMascot:", forControlEvents: UIControlEvents.TouchUpInside)
+            upgradeView.addSubview(b)
+        }
 
         //Navigation Controller
         self.navigationController?.navigationBarHidden = true
@@ -161,8 +176,17 @@ class CoachsCornerViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func clickMascot(button:UIButton) {
+        game.chosenMascot = button.tag
+        for b in mascotButtons {
+            b.alpha = notChosenAlpha
+        }
+        button.alpha = 1
+    }
+    
     func goBack() {
-        
+        let gvc = self.navigationController?.viewControllers[0] as GameViewController
+        gvc.scene?.reset()
         self.navigationController?.popViewControllerAnimated(true)
     }
     
