@@ -97,6 +97,22 @@ class Game {
         }
     }
     
+    var chosenMascot:Int {
+        get {
+            if let n = defaults.integerForKey("chosenMascot") as Int? {
+                return n
+            } else {
+                return 0
+            }
+        }
+        set (value) {
+            defaults.setValue(value, forKey: "chosenMascot")
+            defaults.synchronize()
+        }
+    }
+    
+    var mascotImages:[String] = ["seminole.png","bigDog.png","tennessee.png","alabama.png"]
+    
     init() {
         nameToVar = ["Arm Strength":1, "Calmness": 1, "Accuracy": 1 , "Speed": 1] // just set some defaults
         

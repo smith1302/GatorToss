@@ -547,7 +547,7 @@ class GameScene: SKScene {
         tebow.applyPhysicsBody()
         
         // Make Mascot
-        let mascot = SKSpriteNode(texture: SKTexture(imageNamed: "alabama.png"))
+        let mascot = SKSpriteNode(texture: SKTexture(imageNamed: game.mascotImages[game.chosenMascot]))
         mascot.anchorPoint = CGPointMake(0.5, 0.5)
         mascot.physicsBody = nil
         mascot.xScale = 1
